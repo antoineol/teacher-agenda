@@ -1,0 +1,40 @@
+.agenda {
+	ion-list {
+		padding-top: 10px;
+	}
+
+	p {
+		margin: 20px 0;
+		line-height: 22px;
+		font-size: 16px;
+	}
+
+	.entry-container {
+		position: relative;
+	}
+
+	.item-note, .start-time, .end-time {
+		font-size: 80%;
+	}
+	.duration {
+		font-style: italic;
+	}
+
+	.start-time, .end-time {
+		position: absolute;
+		right: 0;
+		z-index: 10;
+		//background-color: white;
+		padding: 0 10px;
+	}
+	.start-time {
+		top: -8px;
+	}
+	.end-time {
+		bottom: -7px;
+	}
+}
+
+.agenda-entry.item {
+	padding-right: 60px;
+}

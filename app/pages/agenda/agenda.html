@@ -1,0 +1,26 @@
+<ion-navbar *navbar>
+	<button menuToggle>
+		<ion-icon name="menu"></ion-icon>
+	</button>
+	<ion-title>Agenda</ion-title>
+</ion-navbar>
+
+
+<ion-content class="agenda">
+
+	<ion-list>
+		<div *ngFor="#entry of agenda" class="entry-container">
+			<button *ngIf="entry.student" class="agenda-entry" ion-item (click)="entryTapped($event, entry)">
+				{{entry.student.name}}
+			</button>
+			<span *ngIf="entry.student && !entry.adjacent" class="start-time">{{entry.startReadable}}</span>
+			<span *ngIf="entry.student" class="end-time">{{entry.endReadable}}</span>
+			<div *ngIf="!entry.student" class="agenda-entry" ion-item>
+				<div class="item-note duration" item-right>
+					{{entry.durationReadable}}
+				</div>
+			</div>
+		</div>
+	</ion-list>
+
+</ion-content>

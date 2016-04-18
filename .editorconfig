@@ -1,0 +1,21 @@
+# http://editorconfig.org
+# This file provides a configuration to apply to this project. It is a cross-IDE configuration (for IDEs supporting this format).
+root = true
+
+[*]
+charset = utf-8
+indent_style = tab
+indent_size = 4
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.md]
+indent_style = space
+insert_final_newline = false
+trim_trailing_whitespace = false
+
+[{package.json,bower.json,config.js}]
+# The bower and npm CLI reformat these files this way, so let's avoid to conflict with them
+indent_style = space
+indent_size = 2
