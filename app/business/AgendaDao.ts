@@ -4,6 +4,7 @@ import {Observable} from "rxjs/Observable";
 import {AgendaEntry} from "../model/AgendaEntry";
 import {Student} from "../model/Student";
 import {Parameters} from "../model/Parameters";
+import "rxjs/add/observable/of";
 
 @Injectable()
 export class Cache {

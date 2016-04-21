@@ -15,9 +15,9 @@ export class AgendaService {
 	constructor(private agendaDao:AgendaDao) {}
 
 	getFormattedAgenda(start:Moment, end:Moment):Observable<AgendaEntry[]> {
-		console.log(moment.duration(2, "minutes").humanize());
-		console.log(moment.duration(44, "minutes").humanize());
-		console.log(moment.duration(45, "minutes").humanize());
+		// console.log(moment.duration(2, "minutes").humanize());
+		// console.log(moment.duration(44, "minutes").humanize());
+		// console.log(moment.duration(45, "minutes").humanize());
 		return Observable.forkJoin([
 			this.agendaDao.findAgenda(),
 			this.agendaDao.findStudents(),

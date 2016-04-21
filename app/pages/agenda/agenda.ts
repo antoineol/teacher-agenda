@@ -12,8 +12,8 @@ export class AgendaPage {
 	agenda:AgendaEntry[];
 	constructor(private nav:NavController, agendaService:AgendaService) {
 		try {
-			let start = moment().startOf('day');
-			let end = moment().endOf('day');
+			let start = moment("2016-04-16T07:00:00.000Z").startOf('day');
+			let end = moment("2016-04-16T07:00:00.000Z").endOf('day');
 			agendaService.getFormattedAgenda(start, end).subscribe((agenda:AgendaEntry[]) => {
 				console.log("Formatted agenda:", agenda);
 				this.agenda = agenda;
