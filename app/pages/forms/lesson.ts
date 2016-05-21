@@ -6,6 +6,7 @@ import {Parameters} from "../../model/Parameters";
 import {Student} from "../../model/Student";
 import {TranslateService} from "ng2-translate/ng2-translate";
 import {Conf} from "../../config/Config";
+import moment = require("moment");
 
 
 @Page({
@@ -43,6 +44,8 @@ export class LessonFormPage {
 				{id: Freq.BIMONTHLY, label: translate.instant('frequency.bimonthly')}
 			];
 		});
+
+		console.log("localeData:", moment.localeData('fr'));
 	}
 
 	createLesson(event:any) {
