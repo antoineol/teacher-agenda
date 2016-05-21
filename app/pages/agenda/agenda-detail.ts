@@ -1,5 +1,5 @@
 import {Page, NavParams} from "ionic-angular/index";
-import {AgendaEntry} from "../../model/AgendaEntry";
+import {AgendaEntry} from "../../model/Lesson";
 
 @Page({
 	templateUrl: 'build/pages/agenda/agenda-detail.html'

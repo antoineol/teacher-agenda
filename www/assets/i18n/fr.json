@@ -1,0 +1,27 @@
+{
+	"agenda": {
+		"title": "Agenda"
+	},
+	"lesson": {
+		"edit": "Modifier un cours",
+		"add": "Ajouter un cours",
+		"date": "Date",
+		"duration": "Durée",
+		"student": "Étudiant",
+		"validate": "Ajouter",
+		"repetition": "Répétition",
+		"repetitionEnd": "Fin de répétition"
+	},
+	"picker": {
+		"cancel": "Annuler",
+		"done": "Choisir"
+	},
+	"frequency": {
+		"none": "Aucune",
+		"daily": "Quotidienne",
+		"weekly": "Hebdomadaire",
+		"biweekly": "Bihebdomadaire",
+		"monthly": "Mensuelle",
+		"bimonthly": "Bimensuelle"
+	}
+}

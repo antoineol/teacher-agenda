@@ -2,7 +2,7 @@
 	<button menuToggle>
 		<ion-icon name="menu"></ion-icon>
 	</button>
-	<ion-title>Agenda</ion-title>
+	<ion-title>{{ "agenda.title" | translate }}</ion-title>
 	<ion-buttons end>
 		<button (click)="addEntry()">
 			<ion-icon name="add"></ion-icon>
@@ -14,7 +14,7 @@
 <ion-content class="agenda">
 
 	<ion-list>
-		<div *ngFor="#entry of agenda" class="entry-container">
+		<div *ngFor="let entry of agenda" class="entry-container">
 			<button *ngIf="entry.student" class="agenda-entry" ion-item (click)="entryTapped($event, entry)">
 				{{entry.student.name}}
 			</button>

@@ -2,12 +2,45 @@
 	<button menuToggle>
 		<ion-icon name="menu"></ion-icon>
 	</button>
-	<ion-title>{{entry.student.name}}</ion-title>
+	<ion-title>{{ (edit ? "lesson.edit" : "lesson.add") | translate }}</ion-title>
 </ion-navbar>
 
 
 <ion-content class="lesson-form">
 
-	Lesson form
+	<form (submit)="createLesson($event)">
+		<ion-list>
+			<ion-item>
+				<ion-label>{{"lesson.date" | translate}}</ion-label>
+				<ion-input type="date" [(ngModel)]="lesson.date"></ion-input>
+			</ion-item>
+			<ion-item>
+				<ion-label>{{"lesson.duration" | translate}}</ion-label>
+				<ion-input type="number" [(ngModel)]="lesson.duration"></ion-input>
+			</ion-item>
+			<ion-item>
+				<ion-label>{{"lesson.student" | translate}}</ion-label>
+				<ion-select [(ngModel)]="lesson.studentId">
+					<ion-option *ngFor="let student of students" [value]="student.id">{{student.name}}</ion-option>
+				</ion-select>
+			</ion-item>
+			<ion-item>
+				<ion-label>{{"lesson.repetition" | translate}}</ion-label>
+				<ion-select [(ngModel)]="lesson.repetition">
+					<ion-option *ngFor="let f of freq" [value]="f.id">{{f.label}}</ion-option>
+				</ion-select>
+			</ion-item>
+			<ion-item *ngIf="lesson.repetition">
+				<ion-label>{{"lesson.repetitionEnd" | translate}}</ion-label>
+				<ion-select [(ngModel)]="lesson.repetitionEnd">
+					<ion-option *ngFor="let f of freq" [value]="f.id">{{f.label}}</ion-option>
+				</ion-select>
+			</ion-item>
+		</ion-list>
+
+		<div padding>
+			<button block primary type="submit">{{"lesson.validate" | translate}}</button>
+		</div>
+	</form>
 
 </ion-content>
