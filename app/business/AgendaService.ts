@@ -1,21 +1,27 @@
 import {Injectable} from "@angular/core";
-import {AgendaDao} from "./AgendaDao";
 import {Observable} from "rxjs/Observable";
-import {AgendaEntry} from "../model/Lesson";
-import * as _ from "underscore";
-import {Student} from "../model/Student";
-import {Parameters} from "../model/Parameters";
 import {Moment} from "moment";
 import moment = require("moment");
-import 'rxjs/add/observable/forkJoin';
+import _ = require("underscore");
+import {AgendaDao} from "./AgendaDao";
+import {AgendaEntry} from "../model/Lesson";
+import {Student} from "../model/Student";
+import {Parameters} from "../model/Parameters";
 import {Conf} from "../config/Config";
+import 'rxjs/add/observable/forkJoin';
 
 @Injectable()
 export class AgendaService {
 
+	private static defaultStart = moment("2016-05-18T07:00:00.000Z").startOf('day');
+	private static defaultEnd = moment("2016-05-18T07:00:00.000Z").endOf('day');
+
+	private start = AgendaService.defaultStart;
+	private end = AgendaService.defaultEnd;
+
 	constructor(private agendaDao:AgendaDao) {}
 
-	getFormattedAgenda(start:Moment, end:Moment):Observable<AgendaEntry[]> {
+	getFormattedAgenda():Observable<AgendaEntry[]> {
 		return Observable.forkJoin([
 			this.agendaDao.findAgenda(),
 			this.agendaDao.findStudents(),
@@ -25,7 +31,7 @@ export class AgendaService {
 			let studentsArray:Student[] = results[1];
 			let parameters:Parameters = results[2];
 
-			let filteredAgenda = this.extendAndFilterAgenda(agenda, start, end, studentsArray, parameters);
+			let filteredAgenda = this.extendAndFilterAgenda(agenda, this.start, this.end, studentsArray, parameters);
 			return this.formatForDisplay(filteredAgenda, parameters);
 		});
 	}
@@ -46,10 +52,12 @@ export class AgendaService {
 			}
 
 			let marginCoef = 13;
-			entry.marginTopBottom = marginCoef * ((entry.duration / parameters.defaultDuration) - 1);
+			let marginTopBottom = marginCoef * ((entry.duration / parameters.defaultDuration) - 1);
+			if (marginTopBottom < 0) {
+				marginTopBottom = 0;
+			}
+			entry.marginTopBottom = marginTopBottom + 'px';
 		}
-
-		// return agenda;
 
 
 		let agendaWithSpaces:AgendaEntry[] = [];
@@ -59,7 +67,7 @@ export class AgendaService {
 				if (entry.start.isAfter(previous.end)) {
 					var duration = moment.duration(entry.start.diff(previous.end));
 					agendaWithSpaces.push(<AgendaEntry>{
-						date: previous.end,
+						date: null,
 						duration: duration.asMinutes(),
 						// durationMoment: duration
 						durationReadable: Conf.humanizeDuration(duration)
@@ -76,10 +84,8 @@ export class AgendaService {
 	}
 
 	private extendAndFilterAgenda(agenda:AgendaEntry[], start:Moment, end:Moment, studentsArray:Student[], parameters:Parameters):AgendaEntry[] {
-		moment.update
 		let students = _.indexBy(studentsArray, "id");
-		// let formattedAgenda:AgendaEntry[] = [];
-		// Prepare the agenda entries
+		// prepare start/end/duration in entries
 		for (let entry of agenda) {
 			// Convert student foreign key to object
 			if (_.isString(entry.studentId)) {
@@ -97,6 +103,16 @@ export class AgendaService {
 		agenda = agenda.filter((entry: AgendaEntry, index: number, array: AgendaEntry[]):boolean => {
 			return entry.end.isAfter(start) && entry.start.isBefore(end);
 		});
+		// Sort by start date
+		agenda.sort(AgendaService.compareAgendaEntriesByStartDate);
 		return agenda;
+	}
+
+	private static compareAgendaEntriesByStartDate(a:AgendaEntry, b:AgendaEntry) {
+		if (a.start.isBefore(b.start))
+			return -1;
+		if (a.start.isAfter(b.start))
+			return 1;
+		return 0;
 	}
 }

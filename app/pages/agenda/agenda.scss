@@ -1,7 +1,7 @@
 .agenda {
-	ion-list {
-		padding-top: 10px;
-	}
+	//ion-list {
+		//padding-top: 10px;
+	//}
 
 	p {
 		margin: 20px 0;
@@ -18,6 +18,7 @@
 	}
 	.duration {
 		font-style: italic;
+		padding-right: 2em;
 	}
 
 	.start-time, .end-time {
@@ -33,8 +34,12 @@
 	.end-time {
 		bottom: -7px;
 	}
+
+	.swiper-slide {
+		align-items: flex-start;
+	}
 }
 
-.agenda-entry.item {
+/*.agenda-entry.item {
 	padding-right: 60px;
-}
+}*/

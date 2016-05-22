@@ -1,6 +1,9 @@
 {
 	"agenda": {
-		"title": "Agenda"
+		"title": "Agenda",
+		"error": {
+			"loadAgenda": "Une erreur est survenue pendant le chargement de l'agenda. Veuillez réessayer plus tard."
+		}
 	},
 	"lesson": {
 		"edit": "Modifier un cours",
@@ -10,7 +13,7 @@
 		"student": "Étudiant",
 		"validate": "Ajouter",
 		"repetition": "Répétition",
-		"repetitionEnd": "Fin de répétition"
+		"repetitionEnd": "Jusqu'à (inclus)"
 	},
 	"picker": {
 		"cancel": "Annuler",
@@ -23,5 +26,6 @@
 		"biweekly": "Bihebdomadaire",
 		"monthly": "Mensuelle",
 		"bimonthly": "Bimensuelle"
-	}
+	},
+	"error": "Un problème inconnu est survenu. Vous pouvez fermer l'application et essayer à nouveau."
 }

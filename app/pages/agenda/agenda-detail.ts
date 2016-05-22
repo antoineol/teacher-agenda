@@ -1,4 +1,4 @@
-import {Page, NavParams} from "ionic-angular/index";
+import {Page, NavParams} from "ionic-angular";
 import {AgendaEntry} from "../../model/Lesson";
 
 @Page({

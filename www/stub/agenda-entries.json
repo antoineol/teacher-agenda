@@ -1,12 +1,12 @@
 [
 	{
-		"date": "2016-05-18T05:00:00.000Z",
-		"studentId": "482b4f74-ba0d-4b10-acf2-69ffff8f0c4f"
-	},
-	{
 		"date": "2016-05-18T08:00:00.000Z",
 		"duration": 90,
 		"studentId": "6c7d3d17-31cd-411c-bb54-243e7c16c76a"
+	},
+	{
+		"date": "2016-05-18T05:00:00.000Z",
+		"studentId": "482b4f74-ba0d-4b10-acf2-69ffff8f0c4f"
 	},
 	{
 		"date": "2016-05-18T09:00:00.000Z",

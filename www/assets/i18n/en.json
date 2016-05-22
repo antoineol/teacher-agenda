@@ -1,6 +1,9 @@
 {
 	"agenda": {
-		"title": "Agenda"
+		"title": "Agenda",
+		"error": {
+			"loadAgenda": "An error occurred while loading the agenda. Please try again later."
+		}
 	},
 	"lesson": {
 		"edit": "Modify a lesson",
@@ -10,7 +13,7 @@
 		"student": "Student",
 		"validate": "Add",
 		"repetition": "Repetition",
-		"repetitionEnd": "Repetition end"
+		"repetitionEnd": "Until (included)"
 	},
 	"picker": {
 		"cancel": "Cancel",
@@ -23,5 +26,6 @@
 		"biweekly": "Biweekly",
 		"monthly": "Monthly",
 		"bimonthly": "Bimonthly"
-	}
+	},
+	"error": "An unknown issue occurred. You may close the application and try again."
 }

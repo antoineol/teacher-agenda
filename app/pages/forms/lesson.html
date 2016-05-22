@@ -12,9 +12,12 @@
 		<ion-list>
 			<ion-item>
 				<ion-label>{{"lesson.date" | translate}}</ion-label>
-				<ion-input type="date" [(ngModel)]="lesson.date"></ion-input>
+				<ion-input type="date" [(ngModel)]="lesson.date" required></ion-input>
 			</ion-item>
-			{{lesson.date}}
+			<!--<ion-item>
+				<ion-label>{{"lesson.date" | translate}} <em>ion-datetime</em></ion-label>
+				<ion-datetime [(ngModel)]="lesson.date"></ion-datetime>
+			</ion-item>-->
 			<ion-item>
 				<ion-label>{{"lesson.duration" | translate}}</ion-label>
 				<ion-input type="number" [(ngModel)]="lesson.duration"></ion-input>
@@ -33,9 +36,7 @@
 			</ion-item>
 			<ion-item *ngIf="lesson.repetition">
 				<ion-label>{{"lesson.repetitionEnd" | translate}}</ion-label>
-				<ion-select [(ngModel)]="lesson.repetitionEnd">
-					<ion-option *ngFor="let f of freq" [value]="f.id">{{f.label}}</ion-option>
-				</ion-select>
+				<ion-input type="date" [(ngModel)]="lesson.repetitionEnd"></ion-input>
 			</ion-item>
 		</ion-list>
 

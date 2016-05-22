@@ -1,4 +1,4 @@
-import {Page, NavParams} from "ionic-angular/index";
+import {Page, NavParams} from "ionic-angular";
 import {Lesson, Freq} from "../../model/Lesson";
 import {Utils} from "../../business/Utils";
 import {AgendaDao} from "../../business/AgendaDao";
@@ -6,8 +6,13 @@ import {Parameters} from "../../model/Parameters";
 import {Student} from "../../model/Student";
 import {TranslateService} from "ng2-translate/ng2-translate";
 import {Conf} from "../../config/Config";
-import moment = require("moment");
+// import moment = require("moment");
 
+
+interface FreqChoice {
+	id:number;
+	label:string;
+}
 
 @Page({
 	templateUrl: 'build/pages/forms/lesson.html'
@@ -22,9 +27,9 @@ export class LessonFormPage {
 	};
 
 	students:Student[] = [];
-	freq = [];
+	freq:FreqChoice[] = [];
 
-	constructor(navParams:NavParams, agendaDao:AgendaDao, translate: TranslateService) {
+	constructor(navParams:NavParams, private agendaDao:AgendaDao, translate:TranslateService) {
 		this.edit = !!navParams.get('edit');
 		agendaDao.findParameters().subscribe((params:Parameters) => {
 			this.lesson.duration = params.defaultDuration;
@@ -45,11 +50,29 @@ export class LessonFormPage {
 			];
 		});
 
-		console.log("localeData:", moment.localeData('fr'));
+		// console.log("localeData:", moment.localeData('fr'));
 	}
 
 	createLesson(event:any) {
-		console.log("Create the lesson");
+		this.agendaDao.findParameters().subscribe((params:Parameters) => {
+			let lesson:Lesson = Object.assign({}, this.lesson);
+			// {studentId: "482b4f74-ba0d-4b10-acf2-69ffff8f0c4f", date: "2016-05-22", repetition: 0, duration: 45}
+			// Remove useless information from the JSON we are going to persist (default, empty...)
+			if (!lesson.studentId) {
+				delete lesson.studentId;
+			}
+			if (lesson.duration === params.defaultDuration) {
+				delete lesson.duration;
+			}
+			if (!lesson.repetition) {
+				delete lesson.repetition;
+				delete lesson.repetitionEnd;
+			}
+			if (!lesson.repetitionEnd) {
+				delete lesson.repetitionEnd;
+			}
+			console.log("Create the lesson:", lesson);
+		});
 	}
 
 	// pickDate(event:any) {

@@ -7,6 +7,3 @@ platforms/
 plugins/
 /typings
 !/typings/main.d.ts
-*.swp
-.DS_Store
-Thumbs.db

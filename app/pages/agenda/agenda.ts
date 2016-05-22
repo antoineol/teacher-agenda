@@ -1,35 +1,63 @@
-import {Page, NavController} from "ionic-angular";
+import {ViewChild} from '@angular/core';
+import {Page, NavController, Slide, Slides, Swiper} from "ionic-angular";
 import {AgendaEntry} from "../../model/Lesson";
 import {AgendaService} from "../../business/AgendaService";
 import moment = require("moment");
 import {AgendaDetailPage} from "./agenda-detail";
 import {LessonFormPage} from "../forms/lesson";
 import {TranslateService} from "ng2-translate/ng2-translate";
+import {ErrorService} from "../../framework/ErrorService";
+import {AgendaList} from "./agenda-list";
 
+
+interface SlideOptions {
+	initialSlide: number;
+	loop:boolean;
+}
 
 @Page({
-	templateUrl: 'build/pages/agenda/agenda.html'
+	templateUrl: 'build/pages/agenda/agenda.html',
+	directives: [AgendaList]
 })
 export class AgendaPage {
+
 	agenda:AgendaEntry[];
-	constructor(private nav:NavController, agendaService:AgendaService, translate: TranslateService) {
-		
-		// Sample to get a translation
-		// translate.get('segment.puppies').subscribe((val:string) => {
-		// 	console.log('puppies:', val);
-		// });
-		
+	slideOptions = {initialSlide: 1, loop: true};
+
+	@ViewChild('slider') slider: Slides;
+	@ViewChild('slide1') slide1: Slide;
+	@ViewChild('slide2') slide2: Slide;
+	@ViewChild('slide3') slide3: Slide;
+
+	constructor(private nav:NavController, agendaService:AgendaService, error:ErrorService) {
 		try {
-			let self = this;
-			let start = moment("2016-05-18T07:00:00.000Z").startOf('day');
-			let end = moment("2016-05-18T07:00:00.000Z").endOf('day');
-			agendaService.getFormattedAgenda(start, end).subscribe((agenda:AgendaEntry[]) => {
+			agendaService.getFormattedAgenda().subscribe((agenda:AgendaEntry[]) => {
 				// console.log("Formatted agenda:", agenda);
-				self.agenda = agenda;
-			});
+				this.agenda = agenda;
+			}, error.handler("agenda.error.loadAgenda"));
 		} catch(err) {
-			console.error(err.stack || err);
+			error.handler("agenda.error.loadAgenda")(err);
 		}
+	}
+
+	// ngAfterViewInit() {
+	// 	console.log("Slider:", this.slider);
+	// 	console.log("Slide 1:", this.slide1);
+	// 	console.log("Slide 2:", this.slide2);
+	// 	console.log("Slide 3:", this.slide3);
+	// }
+
+	// onSlideChanged(event:any) {
+	// 	console.log("getSlider:", this.slider.getSlider());
+	// 	console.log("onTransitionStart:", this.slider.onTransitionStart);
+	// 	console.log("Slide changed:", event);
+	// }
+
+	onSlideWillChange(swiper:any) {
+		let back = swiper.swipeDirection === 'prev';
+		console.log("Slide will change:", back);
+
+
 	}
 
 	entryTapped(event:any, entry:AgendaEntry) {
