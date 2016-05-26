@@ -26,6 +26,8 @@ export class AgendaList {
 	private start:Moment;
 	private end:Moment;
 
+	@Input() index:number;
+
 	@Input() private set range(range:AgendaRange) {
 		if (range.start === this.start && range.end === this.end) {
 			return;
@@ -39,8 +41,9 @@ export class AgendaList {
 			if (this.subscription) {
 				this.subscription.unsubscribe();
 			}
+			console.log("Loading agenda list for start:", range.start.format('L'), "end:", range.end.format('L'), "index:", this.index);
 			this.subscription = this.agendaService.getFormattedAgenda(range.start, range.end).subscribe((agenda:AgendaEntry[]) => {
-				// console.log("Formatted agenda:", agenda);
+				console.log("Formatted agenda:", agenda);
 				this.agenda = agenda;
 			}, this.error.handler("agenda.error.loadAgenda"));
 		} catch(err) {

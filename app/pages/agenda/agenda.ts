@@ -34,12 +34,15 @@ export class AgendaPage {
 		AgendaRange.nextDay(AgendaPage.defaultRange)
 	];
 
+	dayReadable:string;
+
 	// private range1:AgendaRange = AgendaRange.prevDay(AgendaPage.defaultStart, AgendaPage.defaultEnd);
 	// private range2:AgendaRange = {start: AgendaPage.defaultStart, end: AgendaPage.defaultEnd};
 	// private range3:AgendaRange = AgendaRange.nextDay(AgendaPage.defaultStart, AgendaPage.defaultEnd);
 
 	// private currentRange:AgendaRange = this.ranges[AgendaPage.initialSlide];
-	private currentRange = AgendaPage.initialSlide;
+	// private currentRange = AgendaPage.initialSlide;
+	private currentRange = AgendaPage.initialSlide - 1;
 
 	agenda:AgendaEntry[];
 
@@ -97,15 +100,24 @@ export class AgendaPage {
 
 	onSlideWillChange(swiper:any) {
 		let back = swiper.swipeDirection === 'prev';
+		let newRange:AgendaRange;
 		if (!back) {
-			this.currentRange = this.next();
-			let nextRange = this.ranges[this.currentRange];
-			this.ranges[this.nextNext()] = AgendaRange.nextDay(nextRange);
+			console.log("current:", this.currentRange);
+			let next = this.next(), nextNext = this.nextNext();
+			console.log("current:", this.currentRange, "next:", next, "nextNext:", nextNext);
+			newRange = this.ranges[next];
+			this.ranges[nextNext] = AgendaRange.nextDay(newRange);
+			this.currentRange = next
 		} else {
-			this.currentRange = this.prev();
-			let prevRange = this.ranges[this.currentRange];
-			this.ranges[this.prevPrev()] = AgendaRange.prevDay(prevRange);
+			console.log("current:", this.currentRange);
+			let prev = this.prev(), prevPrev = this.prevPrev();
+			console.log("current:", this.currentRange, "prev:", prev, "prevPrev:", prevPrev);
+			newRange = this.ranges[prev];
+			this.ranges[prevPrev] = AgendaRange.prevDay(newRange);
+			this.currentRange = prev;
 		}
+		this.dayReadable = newRange.start.format('L');
+		console.log("current updated:", this.currentRange, "ranges updated:", this.ranges);
 
 		console.log("Slide will change. backward:", back);
 	}

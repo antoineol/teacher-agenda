@@ -2,7 +2,7 @@
 	<button menuToggle>
 		<ion-icon name="menu"></ion-icon>
 	</button>
-	<ion-title>{{ "agenda.title" | translate }}</ion-title>
+	<ion-title>{{ "agenda.title" | translate }} {{dayReadable}}</ion-title>
 	<ion-buttons end>
 		<button (click)="addEntry()">
 			<ion-icon name="add"></ion-icon>
@@ -17,15 +17,15 @@
 	<ion-slides #slider (willChange)="onSlideWillChange($event)" [options]="slideOptions">
 
 		<ion-slide #slide1>
-			<agenda-list [range]="ranges[0]"></agenda-list>
+			<agenda-list [range]="ranges[0]" [index]="0"></agenda-list>
 		</ion-slide>
 
 		<ion-slide #slide2>
-			<agenda-list [range]="ranges[1]"></agenda-list>
+			<agenda-list [range]="ranges[1]" [index]="1"></agenda-list>
 		</ion-slide>
 
 		<ion-slide #slide3>
-			<agenda-list [range]="ranges[2]"></agenda-list>
+			<agenda-list [range]="ranges[2]" [index]="2"></agenda-list>
 		</ion-slide>
 
 	</ion-slides>

@@ -6,9 +6,9 @@ export class AgendaRange {
 	start:Moment;
 	end:Moment;
 	static prevDay(range:AgendaRange) {
-		return {start: range.start.clone().subtract(1, 'd'), end: range.end.clone().subtract(1, 'd')};
+		return {start: range.start.clone().subtract(1, 'd').startOf('day'), end: range.end.clone().subtract(1, 'd').endOf('day')};
 	}
 	static nextDay(range:AgendaRange) {
-		return {start: range.start.clone().add(1, 'd'), end: range.end.clone().add(1, 'd')};
+		return {start: range.start.clone().add(1, 'd').startOf('day'), end: range.end.clone().add(1, 'd').endOf('day')};
 	}
 }

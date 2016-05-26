@@ -1,3 +1,4 @@
+{{agenda?.length}}
 <ion-list>
 	<div *ngFor="let entry of agenda" class="entry-container">
 		<button *ngIf="entry.student" class="agenda-entry" ion-item (click)="entryTapped($event, entry)">
