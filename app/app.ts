@@ -14,7 +14,7 @@ import {Conf} from "./config/Config";
 import moment = require("moment");
 import 'moment/locale/fr';
 import 'moment/locale/zh-cn';
-moment.locale(Conf.lang.replace('zh', 'zh-cn'));
+moment.locale(Conf.langMoment);
 
 
 interface PageEntry {

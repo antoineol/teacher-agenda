@@ -13,19 +13,19 @@
 
 <ion-content class="agenda">
 
-
+<!--TODO remove #slider #slide1 #slide2 #slide3 if not used-->
 	<ion-slides #slider (willChange)="onSlideWillChange($event)" [options]="slideOptions">
 
 		<ion-slide #slide1>
-			<h2>Slide 1</h2>
+			<agenda-list [range]="ranges[0]"></agenda-list>
 		</ion-slide>
 
 		<ion-slide #slide2>
-			<agenda-list></agenda-list>
+			<agenda-list [range]="ranges[1]"></agenda-list>
 		</ion-slide>
 
 		<ion-slide #slide3>
-			<h2>Slide 3</h2>
+			<agenda-list [range]="ranges[2]"></agenda-list>
 		</ion-slide>
 
 	</ion-slides>

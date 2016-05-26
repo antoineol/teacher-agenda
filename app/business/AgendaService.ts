@@ -13,15 +13,9 @@ import 'rxjs/add/observable/forkJoin';
 @Injectable()
 export class AgendaService {
 
-	private static defaultStart = moment("2016-05-18T07:00:00.000Z").startOf('day');
-	private static defaultEnd = moment("2016-05-18T07:00:00.000Z").endOf('day');
-
-	private start = AgendaService.defaultStart;
-	private end = AgendaService.defaultEnd;
-
 	constructor(private agendaDao:AgendaDao) {}
 
-	getFormattedAgenda():Observable<AgendaEntry[]> {
+	getFormattedAgenda(start:Moment, end:Moment):Observable<AgendaEntry[]> {
 		return Observable.forkJoin([
 			this.agendaDao.findAgenda(),
 			this.agendaDao.findStudents(),
@@ -31,7 +25,7 @@ export class AgendaService {
 			let studentsArray:Student[] = results[1];
 			let parameters:Parameters = results[2];
 
-			let filteredAgenda = this.extendAndFilterAgenda(agenda, this.start, this.end, studentsArray, parameters);
+			let filteredAgenda = this.extendAndFilterAgenda(agenda, start, end, studentsArray, parameters);
 			return this.formatForDisplay(filteredAgenda, parameters);
 		});
 	}
