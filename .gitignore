@@ -1,6 +1,10 @@
 # Specifies files to intentionally ignore when using Git
 # http://git-scm.com/docs/gitignore
 
+.idea
+!.idea/*.iml
+!.idea/modules.xml
+
 node_modules/
 www/build/
 platforms/

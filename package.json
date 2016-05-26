@@ -20,7 +20,6 @@
     "es6-promise": "3.0.2",
     "es6-shim": "^0.35.0",
     "humanize-duration": "^3.7.0",
-    "ionic": "^2.0.0-beta.25",
     "ionic-angular": "^2.0.0-beta.7",
     "ionic-native": "^1.1.0",
     "ionicons": "3.0.0-alpha.3",
