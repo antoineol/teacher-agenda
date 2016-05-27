@@ -131,6 +131,8 @@ export class AgendaPage {
 			let firstRange = this.ranges[0];
 			this.ranges.unshift(AgendaRange.prevDay(firstRange));
 			// this.slider.slideTo(++i, 0, false);
+			// TODO idea: don't put 0 as delay, but the default duration
+			// It would then override the user action.
 		}
 		let newRange = this.ranges[i];
 		this.dayReadable = newRange.start.format('L');
