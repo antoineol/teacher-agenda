@@ -13,20 +13,26 @@
 
 <ion-content class="agenda">
 
+	{{rangesPreview()}}
 <!--TODO remove #slider #slide1 #slide2 #slide3 if not used-->
-	<ion-slides #slider (willChange)="onSlideWillChange($event)" [options]="slideOptions">
+	<!--(willChange)="onSlideWillChange($event)" (didChange)="onSlideChanged($event)"-->
+	<ion-slides #slider (willChange)="updateSlideRange($event)" (didChange)="updateSlideRangeEnd($event)" (click)="clickMe()" [options]="slideOptions">
 
-		<ion-slide #slide1>
+		<ion-slide *ngFor="let range of ranges; let i = index">
+			<agenda-list [range]="range" [index]="i"></agenda-list>
+		</ion-slide>
+
+		<!--<ion-slide>
 			<agenda-list [range]="ranges[0]" [index]="0"></agenda-list>
 		</ion-slide>
 
-		<ion-slide #slide2>
+		<ion-slide>
 			<agenda-list [range]="ranges[1]" [index]="1"></agenda-list>
 		</ion-slide>
 
-		<ion-slide #slide3>
+		<ion-slide>
 			<agenda-list [range]="ranges[2]" [index]="2"></agenda-list>
-		</ion-slide>
+		</ion-slide>-->
 
 	</ion-slides>
 

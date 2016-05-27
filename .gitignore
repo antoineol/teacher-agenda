@@ -11,3 +11,4 @@ platforms/
 plugins/
 /typings
 !/typings/main.d.ts
+!/typings/globals/swiper
