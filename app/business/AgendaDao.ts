@@ -4,11 +4,18 @@ import {AgendaEntry} from "../model/Lesson";
 import {Student} from "../model/Student";
 import {Parameters} from "../model/Parameters";
 import {StorageDao} from "../framework/StorageDao";
+import {ReplaySubject} from "rxjs/ReplaySubject";
 
 @Injectable()
 export class AgendaDao {
 
+	private agendaUpdates = new ReplaySubject<AgendaEntry[]>(1);
+
 	constructor(private dao:StorageDao) {
+	}
+
+	latestAgenda():Observable<AgendaEntry[]> {
+		return Observable.merge(this.findAgenda(), this.agendaUpdates);
 	}
 
 	findAgenda():Observable<AgendaEntry[]> {
@@ -22,4 +29,15 @@ export class AgendaDao {
 	findParameters():Observable<Parameters> {
 		return this.dao.find("parameters", "stub/parameters.json");
 	}
+
+	insertAgendaEntry(entry:AgendaEntry):Observable<void> {
+		return this.findAgenda().mergeMap((entries:AgendaEntry[]) => {
+			entries.push(entry);
+			// console.log("agendaUpdates", entries)
+			this.agendaUpdates.next(entries);
+			// TODO update URL once we have a persistent source for updates
+			return this.dao.insert("agenda", "stub/agenda-entries.json", entry);
+		});
+	}
+
 }

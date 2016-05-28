@@ -13,7 +13,10 @@
 		"student": "Étudiant",
 		"validate": "Ajouter",
 		"repetition": "Répétition",
-		"repetitionEnd": "Jusqu'à (inclus)"
+		"repetitionEnd": "Jusqu'à (inclus)",
+		"error": {
+			"insert": "Une erreur est survenue pendant la création du nouveau cours. Veuillez réessayer plus tard."
+		}
 	},
 	"picker": {
 		"cancel": "Annuler",

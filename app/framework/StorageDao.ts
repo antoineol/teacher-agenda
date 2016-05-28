@@ -22,18 +22,38 @@ export class Cache {
 @Injectable()
 export class StorageDao {
 
+	private loadingObs = new Map<string, Observable<any>>();
+
 	constructor(private http:Http, private cache:Cache) {
 	}
 
 	public find(key:string, url:string):Observable<any> {
-		let cached = this.cache.get(key);
-		if (cached) {
-			return Observable.of(cached);
+
+		// The shared observable is already used as a memory cache.
+		// The use of cache can be re-enabled if persistent, like local storage.
+
+		// let cached = this.cache.get(key);
+		// console.log("cached", key, ":", cached);
+		// if (cached) {
+		// 	return Observable.of(cached);
+		// }
+
+		let cachedObs:Observable<any> = this.loadingObs.get(key);
+		if (cachedObs) {
+			return cachedObs;
 		}
-		return this.http.get(url).map((resp:Response) => {
+		cachedObs = this.http.get(url).map((resp:Response) => {
 			let parsed:any = resp.json();
 			this.cache.set(key, parsed);
 			return parsed;
-		});
+		}).share();
+		this.loadingObs.set(key, cachedObs);
+		return cachedObs;
+	}
+
+	public insert(key:string, url:string, value:any):Observable<void> {
+		// TODO implement once we have a persistent storage
+		// Mock: persistent inserts/updates not supported yet.
+		return Observable.of(null);
 	}
 }

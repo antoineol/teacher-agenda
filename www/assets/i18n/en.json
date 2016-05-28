@@ -13,7 +13,10 @@
 		"student": "Student",
 		"validate": "Add",
 		"repetition": "Repetition",
-		"repetitionEnd": "Until (included)"
+		"repetitionEnd": "Until (included)",
+		"error": {
+			"insert": "An error occurred while creating the new lesson. Please try again later."
+		}
 	},
 	"picker": {
 		"cancel": "Cancel",

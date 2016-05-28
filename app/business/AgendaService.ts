@@ -8,7 +8,6 @@ import {AgendaEntry} from "../model/Lesson";
 import {Student} from "../model/Student";
 import {Parameters} from "../model/Parameters";
 import {Conf} from "../config/Config";
-import 'rxjs/add/observable/forkJoin';
 import {AgendaConfig} from "../config/AgendaConfig";
 import {AgendaRange} from "../model/AgendaRange";
 import {Slides} from "ionic-angular/index";
@@ -19,11 +18,12 @@ export class AgendaService {
 	constructor(private agendaDao:AgendaDao) {}
 
 	getFormattedAgenda(start:Moment, end:Moment):Observable<AgendaEntry[]> {
-		return Observable.forkJoin([
-			this.agendaDao.findAgenda(),
+		return Observable.combineLatest/*forkJoin*/([
+			this.agendaDao.latestAgenda(),
 			this.agendaDao.findStudents(),
 			this.agendaDao.findParameters()
 		]).map((results:any[]) => {
+			// console.log("getFormattedAgenda callback");
 			let agenda:AgendaEntry[] = results[0];
 			let studentsArray:Student[] = results[1];
 			let parameters:Parameters = results[2];

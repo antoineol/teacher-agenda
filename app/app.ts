@@ -8,13 +8,18 @@ import 'moment/locale/fr';
 import 'moment/locale/zh-cn';
 moment.locale(Conf.langMoment);
 
+// Starts by adding operators and methods to observables
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/mergeMap';
+// import 'rxjs/add/observable/forkJoin';
+import 'rxjs/add/observable/combineLatest';
+import "rxjs/add/observable/of";
+import "rxjs/add/observable/merge";
+
 import {App, IonicApp, Platform} from 'ionic-angular';
 import {StatusBar} from 'ionic-native';
 import {AgendaPage} from './pages/agenda/agenda';
 import {injectables, pipes} from "./injectables";
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/forkJoin';
-import "rxjs/add/observable/of";
 import {TranslateService} from "ng2-translate/ng2-translate";
 
 

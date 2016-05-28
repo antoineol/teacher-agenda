@@ -23,8 +23,6 @@ export class AgendaList {
 
 	private subscription:Subscription;
 
-	// private start:Moment;
-	// private end:Moment;
 	private _range:AgendaRange;
 
 	// Debug purpose: to check the current slide index
@@ -35,8 +33,6 @@ export class AgendaList {
 			return;
 		}
 		this._range = range;
-		// this.start = range.start;
-		// this.end = range.end;
 		// Challenge: how to keep the 3 agenda lists separate, with different content, but using the
 		// same service to provide the list of entries?
 		// All component instances must be automatically updated when a new entry is added through the form.

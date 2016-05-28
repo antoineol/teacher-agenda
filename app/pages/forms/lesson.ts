@@ -1,4 +1,4 @@
-import {Page, NavParams} from "ionic-angular";
+import {Page, NavParams, NavController} from "ionic-angular";
 import {Lesson, Freq} from "../../model/Lesson";
 import {Utils} from "../../business/Utils";
 import {AgendaDao} from "../../business/AgendaDao";
@@ -6,6 +6,7 @@ import {Parameters} from "../../model/Parameters";
 import {Student} from "../../model/Student";
 import {TranslateService} from "ng2-translate/ng2-translate";
 import {Conf} from "../../config/Config";
+import {ErrorService} from "../../framework/ErrorService";
 // import moment = require("moment");
 
 
@@ -29,7 +30,7 @@ export class LessonFormPage {
 	students:Student[] = [];
 	freq:FreqChoice[] = [];
 
-	constructor(navParams:NavParams, private agendaDao:AgendaDao, translate:TranslateService) {
+	constructor(private nav:NavController, private navParams:NavParams, private agendaDao:AgendaDao, translate:TranslateService, private error:ErrorService) {
 		this.edit = !!navParams.get('edit');
 		agendaDao.findParameters().subscribe((params:Parameters) => {
 			this.lesson.duration = params.defaultDuration;
@@ -71,7 +72,12 @@ export class LessonFormPage {
 			if (!lesson.repetitionEnd) {
 				delete lesson.repetitionEnd;
 			}
-			console.log("Create the lesson:", lesson);
+
+			// console.log("Create the lesson:", lesson);
+			this.agendaDao.insertAgendaEntry(lesson).subscribe(() => {
+				// console.log("Lesson inserted");
+			}, this.error.handler("lesson.error.insert"));
+			this.nav.pop();
 		});
 	}
 

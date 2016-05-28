@@ -2,7 +2,6 @@
 
 ## TODO
 
-- Refactor agenda-list (check if some code can be moved to the service)
 - Add entry
 - Remove entry
 - Navigate between days
