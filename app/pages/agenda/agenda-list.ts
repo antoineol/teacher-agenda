@@ -23,18 +23,20 @@ export class AgendaList {
 
 	private subscription:Subscription;
 
-	private start:Moment;
-	private end:Moment;
+	// private start:Moment;
+	// private end:Moment;
+	private _range:AgendaRange;
 
 	// Debug purpose: to check the current slide index
 	@Input() index:number;
 
 	@Input() private set range(range:AgendaRange) {
-		if (range.start === this.start && range.end === this.end) {
+		if (range === this._range) {
 			return;
 		}
-		this.start = range.start;
-		this.end = range.end;
+		this._range = range;
+		// this.start = range.start;
+		// this.end = range.end;
 		// Challenge: how to keep the 3 agenda lists separate, with different content, but using the
 		// same service to provide the list of entries?
 		// All component instances must be automatically updated when a new entry is added through the form.
@@ -42,9 +44,9 @@ export class AgendaList {
 			if (this.subscription) {
 				this.subscription.unsubscribe();
 			}
-			console.log("Loading agenda list for start:", range.start.format('L'), "end:", range.end.format('L'), "index:", this.index);
+			// console.log("Loading agenda list for start:", range.start.format('L'), "end:", range.end.format('L'), "index:", this.index);
 			this.subscription = this.agendaService.getFormattedAgenda(range.start, range.end).subscribe((agenda:AgendaEntry[]) => {
-				console.log("Agenda from", range.start.format('L'), 'to', range.end.format('L'), 'index:', this.index, agenda.map((e:AgendaEntry) => moment(e.date).format('L') + ' ' + e.startReadable));
+				// console.log("Agenda from", range.start.format('L'), 'to', range.end.format('L'), 'index:', this.index, agenda.map((e:AgendaEntry) => moment(e.date).format('L') + ' ' + e.startReadable));
 				this.agenda = agenda;
 			}, this.error.handler("agenda.error.loadAgenda"));
 		} catch(err) {

@@ -39,7 +39,7 @@ export class AgendaService {
 	// Bug: sliding twice to the left if we don't call slideTo().
 	//  https://github.com/driftyco/ionic/issues/6678
 	updateSlideRange(ranges:AgendaRange[], slider:Slides, back:boolean, newIndex:number, slideWorkaround?:boolean = true) {
-		console.log("newIndex:", newIndex);
+		// console.log("newIndex:", newIndex);
 		if (!back) { // slide forward
 			while (newIndex > AgendaConfig.cachedSlidesOnOneSide) {
 				newIndex--;
