@@ -4,7 +4,7 @@ import {Moment} from "moment";
 import moment = require("moment");
 import _ = require("underscore");
 import {AgendaDao} from "./AgendaDao";
-import {AgendaEntry} from "../model/Lesson";
+import {AgendaEntry, Freq} from "../model/Lesson";
 import {Student} from "../model/Student";
 import {Parameters} from "../model/Parameters";
 import {Conf} from "../config/Config";
@@ -150,12 +150,58 @@ export class AgendaService {
 			// add momentjs objects
 			entry.start = moment(entry.date);
 			entry.end = moment(entry.start).add(entry.duration, "minutes");
+			if (entry.repetitionEnd) {
+				entry.repetEnd = moment(entry.repetitionEnd).endOf('day');
+			}
 			// moment.duration()
 			// agendaEntry.mDuration = moment.duration(agendaEntry.duration, 'm');
 		}
+
+		let weekDays:number[] = [];
+		let tmpDate = start.clone();
+		let endDay = end.clone().add(1, 'd').day();
+		// let i = tmpDate.day();
+		// while (i != endDay)
+		// console.log("tmpDate.day():", tmpDate.day(), "endDay:", endDay);
+		for (let i = tmpDate.day(); i != endDay && weekDays.length < 7; i = tmpDate.add(1, 'd').day()) {
+			weekDays.push(i);
+		}
+		// console.log("weekDays:", weekDays);
+
 		// Filter to display only entries in the requested range.
 		agenda = agenda.filter((entry: AgendaEntry, index: number, array: AgendaEntry[]):boolean => {
-			return entry.end.isAfter(start) && entry.start.isBefore(end);
+			if (!entry.repetition) {
+				return entry.end.isAfter(start) && entry.start.isBefore(end);
+			}
+			if (entry.start.isAfter(end) || (entry.repetEnd && entry.repetEnd.isBefore(start))) {
+				return false;
+			}
+			switch (entry.repetition) {
+				case Freq.DAILY:
+					return true;
+				case Freq.WEEKLY:
+					// First, prepare outside the filter() an array of days from start to end
+					return weekDays.indexOf(entry.start.day()) !== -1;
+				default:
+					return false;
+			}
+
+
+			// if (entry.end.isBefore(start)) {
+			// 	return false;
+			// }
+			// // entry.end.isAfter(start) true
+			// if (/*entry.end.isAfter(start) && */entry.start.isBefore(end)) {
+			// 	return true;
+			// }
+			// if (!entry.repetition) {
+			// 	return false;
+			// }
+
+			//(entry.repetEnd && entry.repetEnd.isBefore(start))
+
+			// return false;
+			// return entry.end.isAfter(start) && entry.start.isBefore(end);
 		});
 		// Sort by start date
 		agenda.sort(AgendaService.compareAgendaEntriesByStartDate);

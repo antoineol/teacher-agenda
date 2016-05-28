@@ -2,9 +2,12 @@
 
 ## TODO
 
-- Support repetition in the calendar
+- StorageDao: modify to cache the values even after the Http has answered. Currently, share() only caches when the request is in progress.
+- persist in local storage
 - Remove entry
 - Navigate between days
+
+- Later: allow to choose multiple dates for an entry (ex: repeat Tuesday + Thursday)
 
 ## Business rules
 

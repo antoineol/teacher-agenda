@@ -8,6 +8,7 @@ export interface AgendaEntry extends Lesson {
 	startReadable?:string; // start, formatted to display
 	end?:Moment; // start + duration, converted to moment
 	endReadable?:string; // end, formatted to display
+	repetEnd?:Moment;
 	marginTopBottom?:string; // display info
     student?:Student; // ref to the student having the lesson
 	adjacent?:boolean; // true if this lesson is immediately following another lesson.
