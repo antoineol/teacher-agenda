@@ -2,7 +2,7 @@
 	<button menuToggle>
 		<ion-icon name="menu"></ion-icon>
 	</button>
-	<ion-title>{{ "agenda.title" | translate }} {{dayReadable}}</ion-title>
+	<ion-title><!--{{ "agenda.title" | translate }} -->{{dayReadable}}</ion-title>
 	<ion-buttons end>
 		<button (click)="addEntry()">
 			<ion-icon name="add"></ion-icon>
@@ -13,29 +13,17 @@
 
 <ion-content class="agenda">
 
-	{{rangesPreview()}}
-<!--TODO remove #slider #slide1 #slide2 #slide3 if not used-->
-	<!--(willChange)="onSlideWillChange($event)" (didChange)="onSlideChanged($event)"-->
-	<ion-slides #slider (willChange)="updateSlideRange($event)" (didChange)="updateSlideRangeEnd($event)" (click)="clickMe()" [options]="slideOptions">
+	<button class="arrow arrow-right" (click)="slideNext()" light clear><ion-icon name="arrow-dropright"></ion-icon></button>
+	<button class="arrow arrow-left" (click)="slidePrev()" light clear><ion-icon name="arrow-dropleft"></ion-icon></button>
+
+	<!--{{rangesPreview()}}-->
+	<!--(willChange)="updateSlideRange($event)" (didChange)="updateSlideRangeEnd($event)"-->
+	<ion-slides #slider (willChange)="updateSlideRange($event)" [options]="slideOptions">
 
 		<ion-slide *ngFor="let range of ranges; let i = index">
 			<agenda-list [range]="range" [index]="i"></agenda-list>
 		</ion-slide>
 
-		<!--<ion-slide>
-			<agenda-list [range]="ranges[0]" [index]="0"></agenda-list>
-		</ion-slide>
-
-		<ion-slide>
-			<agenda-list [range]="ranges[1]" [index]="1"></agenda-list>
-		</ion-slide>
-
-		<ion-slide>
-			<agenda-list [range]="ranges[2]" [index]="2"></agenda-list>
-		</ion-slide>-->
-
 	</ion-slides>
-
-
 
 </ion-content>

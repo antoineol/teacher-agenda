@@ -1,5 +1,13 @@
 /// <reference path="../typings_manual/my.d.ts" />
 // import 'es6-shim';
+
+import {Conf} from "./config/Config";
+// Load the locale for momentjs - early init to ensure all components use the right local
+import moment = require("moment");
+import 'moment/locale/fr';
+import 'moment/locale/zh-cn';
+moment.locale(Conf.langMoment);
+
 import {App, IonicApp, Platform} from 'ionic-angular';
 import {StatusBar} from 'ionic-native';
 import {AgendaPage} from './pages/agenda/agenda';
@@ -8,13 +16,6 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/forkJoin';
 import "rxjs/add/observable/of";
 import {TranslateService} from "ng2-translate/ng2-translate";
-import {Conf} from "./config/Config";
-
-// Load the locale for momentjs
-import moment = require("moment");
-import 'moment/locale/fr';
-import 'moment/locale/zh-cn';
-moment.locale(Conf.langMoment);
 
 
 interface PageEntry {

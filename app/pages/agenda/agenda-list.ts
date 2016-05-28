@@ -26,6 +26,7 @@ export class AgendaList {
 	private start:Moment;
 	private end:Moment;
 
+	// Debug purpose: to check the current slide index
 	@Input() index:number;
 
 	@Input() private set range(range:AgendaRange) {

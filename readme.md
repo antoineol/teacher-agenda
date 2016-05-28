@@ -2,6 +2,7 @@
 
 ## TODO
 
+- Refactor agenda-list (check if some code can be moved to the service)
 - Add entry
 - Remove entry
 - Navigate between days
@@ -12,3 +13,4 @@
     - Can visualize the total amount paid in advance, and the number of lessons covered by the payment.
     - For a given lesson, it is indicated whether the student already paid for it.
 - Student detail view: a way to display lessons for this student (could be a link)
+- Prices can change from a date. It should not impact the calculation of salaries for previous lessons

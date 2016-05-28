@@ -1,45 +1,30 @@
+@import "../../theme/app.variables";
+
 .agenda {
-	//ion-list {
-		//padding-top: 10px;
-	//}
-
-	p {
-		margin: 20px 0;
-		line-height: 22px;
-		font-size: 16px;
+	ion-slide {
+		padding: 0 36px;
 	}
-
-	.entry-container {
-		position: relative;
-	}
-
-	.item-note, .start-time, .end-time {
-		font-size: 80%;
-	}
-	.duration {
-		font-style: italic;
-		padding-right: 2em;
-	}
-
-	.start-time, .end-time {
+	.arrow {
 		position: absolute;
+		top: 0;
+		bottom: 0;
+		width: 36px;
+		vertical-align: middle;
+		font-size: 36px;
+		text-align: center;
+		line-height: 100%;
+		//margin: auto;
+		height: 100%;
+		margin: 0;
+		z-index: 2;
+	}
+	.arrow-right {
 		right: 0;
-		z-index: 10;
-		//background-color: white;
-		padding: 0 10px;
 	}
-	.start-time {
-		top: -8px;
+	.arrow-left {
+		left: 0;
 	}
-	.end-time {
-		bottom: -7px;
-	}
-
-	.swiper-slide {
-		align-items: flex-start;
+	.button-clear-light {
+		color: map-get($colors, primary);
 	}
 }
-
-/*.agenda-entry.item {
-	padding-right: 60px;
-}*/

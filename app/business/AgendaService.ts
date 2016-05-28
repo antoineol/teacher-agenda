@@ -9,6 +9,9 @@ import {Student} from "../model/Student";
 import {Parameters} from "../model/Parameters";
 import {Conf} from "../config/Config";
 import 'rxjs/add/observable/forkJoin';
+import {AgendaConfig} from "../config/AgendaConfig";
+import {AgendaRange} from "../model/AgendaRange";
+import {Slides} from "ionic-angular/index";
 
 @Injectable()
 export class AgendaService {
@@ -29,6 +32,63 @@ export class AgendaService {
 			return this.formatForDisplay(filteredAgenda, parameters);
 		});
 	}
+
+
+	// Bug: does not trigger if the animation is interrupted/paused by the user
+	//  https://github.com/driftyco/ionic/issues/6676
+	// Bug: sliding twice to the left if we don't call slideTo().
+	//  https://github.com/driftyco/ionic/issues/6678
+	updateSlideRange(ranges:AgendaRange[], slider:Slides, back:boolean, newIndex:number, slideWorkaround?:boolean = true) {
+		console.log("newIndex:", newIndex);
+		if (!back) { // slide forward
+			while (newIndex > AgendaConfig.cachedSlidesOnOneSide) {
+				newIndex--;
+				let lastRange = ranges[ranges.length - 1];
+				ranges.push(AgendaRange.nextDay(lastRange));
+				ranges.shift();
+			}
+		} else {
+			while (newIndex < AgendaConfig.cachedSlidesOnOneSide) {
+				newIndex++;
+				let firstRange = ranges[0];
+				ranges.unshift(AgendaRange.prevDay(firstRange));
+				ranges.pop();
+				// slider.slideTo(i + 1, 0, false);
+				// setTimeout(() => {
+				// 	slider.slideTo(i, 300, false);
+				// });
+			}
+		}
+		if (slideWorkaround) {
+			// Workaround to go to the right index; breaks the animation
+			slider.slideTo(newIndex, 0, false);
+		}
+		// Update the date in the title
+		let newRange = ranges[newIndex];
+		return newRange.start.format('L');
+	}
+
+	initRanges():AgendaRange[] {
+		let defaultRange:AgendaRange = AgendaConfig.defaultRange;
+		let cachedSlidesOnOneSide:number = AgendaConfig.cachedSlidesOnOneSide;
+		let length = 2 * cachedSlidesOnOneSide + 1;
+		let ranges = new Array(length);
+		ranges[cachedSlidesOnOneSide] = defaultRange;
+		let pushedRange = defaultRange;
+		for (let i = cachedSlidesOnOneSide - 1; i >= 0; i--) {
+			pushedRange = AgendaRange.prevDay(pushedRange);
+			ranges[i] = pushedRange;
+		}
+		pushedRange = defaultRange;
+		for (let i = cachedSlidesOnOneSide + 1; i < length; i++) {
+			pushedRange = AgendaRange.nextDay(pushedRange);
+			ranges[i] = pushedRange;
+		}
+		return ranges;
+	}
+
+
+	// Internal utils
 
 	// Presentation layer
 	private formatForDisplay(agenda:AgendaEntry[], parameters:Parameters) {
