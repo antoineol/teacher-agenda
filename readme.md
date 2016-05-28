@@ -2,7 +2,7 @@
 
 ## TODO
 
-- Add entry
+- Support repetition in the calendar
 - Remove entry
 - Navigate between days
 
