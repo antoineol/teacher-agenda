@@ -20,8 +20,9 @@ export class Utils {
 		return Intl.NumberFormat(<any>Conf.lang, {
 			style: 'currency',
 			currency: Conf.currency,
-			currencyDisplay: 'symbol',
-			// currencyDisplay: 'name'
-		}).format(price);
+			currencyDisplay: 'symbol'
+		}).format(price)
+			.replace('CNY', 'RMB') // CNY is the output in fr, but not the most common symbol. RMB is more natural.
+			;
 	}
 }

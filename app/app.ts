@@ -56,7 +56,9 @@ class MyApp {
 				];
 
 				// Back button text: provide translations (only English by default with ionic)
-				ionicConfig.set('backButtonText', this.translate.instant('global.backButton'));
+				if (ionicConfig.get('backButtonText')) {
+					ionicConfig.set('backButtonText', this.translate.instant('global.backButton'));
+				}
 			}, this.error.handler("error"));
 		} catch (err) {this.error.handler("error")(err);}
 
