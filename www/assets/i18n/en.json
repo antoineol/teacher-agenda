@@ -9,7 +9,11 @@
 		"edit": "Modify",
 		"from": "From",
 		"until": "until",
-		"included": "included"
+		"included": "included",
+		"deleteConfirm": {
+			"title": "Delete the lesson",
+			"message": "Please confirm the removal of this lesson. Beware: all occurrences of this series will be removed."
+		}
 	},
 	"lesson": {
 		"edit": "Modify a lesson",
@@ -17,16 +21,19 @@
 		"date": "Date",
 		"duration": "Duration",
 		"student": "Student",
-		"validate": "Add",
+		"validateAdd": "Add",
+		"validateEdit": "Modify",
 		"repetition": "Repetition",
 		"repetitionEnd": "Until (included)",
 		"error": {
 			"insert": "An error occurred while creating the new lesson. Please try again later."
 		}
 	},
-	"picker": {
+	"alert": {
 		"cancel": "Cancel",
-		"done": "Done"
+		"done": "Done",
+		"confirm": "Confirm",
+		"validate": "OK"
 	},
 	"frequency": {
 		"none": "None",

@@ -6,10 +6,10 @@ import {TranslateService} from "ng2-translate/ng2-translate";
 @Injectable()
 export class ErrorService {
 
-	private nav:NavController;
+	// private nav:NavController;
 
 	constructor(private app: IonicApp, private translate:TranslateService) {
-		this.nav = app.getActiveNav();
+		// this.nav = app.getActiveNav();
 	}
 
 	/**
@@ -33,11 +33,12 @@ export class ErrorService {
 	}
 
 	private toast(message:string) {
+		let nav:NavController = this.app.getActiveNav();
 		let toast:Toast = Toast.create({
 			message: message,
-			duration: message.length * 100
+			duration: message.length * 100 + 2000
 		});
-		this.nav.present(toast);
+		nav.present(toast);
 	}
 
 }

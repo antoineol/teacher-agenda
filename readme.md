@@ -2,8 +2,8 @@
 
 ## TODO
 
-- Remove entry
-- Edit entry
+- ion-select (lesson form) has english button texts: should internationalize.
+- Edit entry - changes not applied to previous view
 - persist in local storage + env switch to use mocks when useful
 - Add students
 - handle the case when the price changes from a date for a given student

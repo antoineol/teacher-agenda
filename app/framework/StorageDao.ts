@@ -27,7 +27,7 @@ export class StorageDao {
 	constructor(private http:Http, private cache:Cache) {
 	}
 
-	public find(key:string, url:string):Observable<any> {
+	public find(cacheKey:string, url:string):Observable<any> {
 
 		// The shared observable is already used as a memory cache.
 		// The use of cache can be re-enabled if persistent, like local storage.
@@ -38,7 +38,7 @@ export class StorageDao {
 		// 	return Observable.of(cached);
 		// }
 
-		let cachedObs:Observable<any> = this.loadingObs.get(key);
+		let cachedObs:Observable<any> = this.loadingObs.get(cacheKey);
 		// console.log(key, ":", cachedObs);
 		if (cachedObs) {
 			return cachedObs;
@@ -47,17 +47,23 @@ export class StorageDao {
 		cachedObs = this.http.get(url).map((resp:Response) => {
 			// console.log("Did call HTTP");
 			let parsed:any = resp.json();
-			this.cache.set(key, parsed);
+			this.cache.set(cacheKey, parsed);
 			return parsed;
 		})/*.share()*/;
 		cachedObs = Observable.from(cachedObs.toPromise());
-		this.loadingObs.set(key, cachedObs);
+		this.loadingObs.set(cacheKey, cachedObs);
 		return cachedObs;
 	}
 
-	public insert(key:string, url:string, value:any):Observable<void> {
+	public insert(cacheKey:string, url:string, entity:any):Observable<void> {
 		// TODO implement once we have a persistent storage
 		// Mock: persistent inserts/updates not supported yet.
+		return Observable.of(null);
+	}
+
+	public remove(cacheKey:string, url:string, entity:any):Observable<void> {
+		// TODO implement once we have a persistent storage
+		// Mock: persistent removes not supported yet.
 		return Observable.of(null);
 	}
 }

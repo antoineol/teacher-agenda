@@ -25,4 +25,9 @@ export class Utils {
 			.replace('CNY', 'RMB') // CNY is the output in fr, but not the most common symbol. RMB is more natural.
 			;
 	}
+
+	// http://stackoverflow.com/questions/18082/validate-decimal-numbers-in-javascript-isnumeric
+	static isNumeric(n) {
+		return !isNaN(parseFloat(n)) && isFinite(n);
+	}
 }

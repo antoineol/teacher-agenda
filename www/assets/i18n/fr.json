@@ -6,7 +6,14 @@
 		},
 		"price_colon": "Prix :",
 		"remove": "Supprimer",
-		"edit": "Modifier"
+		"edit": "Modifier",
+		"from": "Depuis le",
+		"until": "jusqu'au",
+		"included": "inclus",
+		"deleteConfirm": {
+			"title": "Supprimer le cours",
+			"message": "Veuillez confirmer la suppression de ce cours. Attention : toutes les occurrences de cette série seront supprimées."
+		}
 	},
 	"lesson": {
 		"edit": "Modifier un cours",
@@ -14,16 +21,19 @@
 		"date": "Date",
 		"duration": "Durée",
 		"student": "Étudiant",
-		"validate": "Ajouter",
+		"validateAdd": "Ajouter",
+		"validateEdit": "Modifier",
 		"repetition": "Répétition",
 		"repetitionEnd": "Jusqu'à (inclus)",
 		"error": {
 			"insert": "Une erreur est survenue pendant la création du nouveau cours. Veuillez réessayer plus tard."
 		}
 	},
-	"picker": {
+	"alert": {
 		"cancel": "Annuler",
-		"done": "Choisir"
+		"done": "Choisir",
+		"confirm": "Confirmer",
+		"validate": "OK"
 	},
 	"frequency": {
 		"none": "Aucune",

@@ -40,4 +40,18 @@ export class AgendaDao {
 		});
 	}
 
+	removeAgendaEntry(entry:AgendaEntry):Observable<void> {
+		return this.findAgenda().mergeMap((entries:AgendaEntry[]) => {
+			let i = entries.indexOf(entry);
+			if (i === -1) {
+				return Promise.reject(new Error("Entry to remove not found in the list of entries (AgendaDao)"));
+			}
+
+			entries.splice(i, 1);
+			this.agendaUpdates.next(entries);
+			// TODO update URL once we have a persistent source for updates
+			return this.dao.remove("agenda", "stub/agenda-entries.json", entry);
+		});
+	}
+
 }
