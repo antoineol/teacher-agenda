@@ -36,5 +36,7 @@
 	"global": {
 		"backButton": "Retour"
 	},
-	"error": "Un problème inconnu est survenu. Vous pouvez fermer l'application et essayer à nouveau."
+	"error": "Un problème inconnu est survenu. Vous pouvez fermer l'application et essayer à nouveau.",
+	"money": "{{value}} {{currency}}",
+	"moneySymbol": "{{value}} {{currency}}"
 }

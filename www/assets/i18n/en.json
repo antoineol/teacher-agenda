@@ -6,7 +6,10 @@
 		},
 		"price_colon": "Price:",
 		"remove": "Remove",
-		"edit": "Modify"
+		"edit": "Modify",
+		"from": "From",
+		"until": "until",
+		"included": "included"
 	},
 	"lesson": {
 		"edit": "Modify a lesson",
@@ -36,5 +39,7 @@
 	"global": {
 		"backButton": "Back"
 	},
-	"error": "An unknown issue occurred. You may close the application and try again."
+	"error": "An unknown issue occurred. You may close the application and try again.",
+	"money": "{{currency}} {{value}}",
+	"moneySymbol": "{{currency}}{{value}}"
 }

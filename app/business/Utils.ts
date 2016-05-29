@@ -1,4 +1,5 @@
 import moment = require("moment");
+import {Conf} from "../config/Config";
 
 
 export class Utils {
@@ -12,4 +13,15 @@ export class Utils {
 	static browserLang:string = navigator.language.split('-')[0];
 
 	static now = moment();
+
+	// Internationalization API
+	// NumberFormat: https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/NumberFormat
+	static formatCurrency(price:number):string {
+		return Intl.NumberFormat(<any>Conf.lang, {
+			style: 'currency',
+			currency: Conf.currency,
+			currencyDisplay: 'symbol',
+			// currencyDisplay: 'name'
+		}).format(price);
+	}
 }
