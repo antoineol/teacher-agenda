@@ -10,4 +10,6 @@ export class AgendaDetailPage {
 	constructor(navParams:NavParams) {
 		this.entry = navParams.get('entry');
 	}
+	
+	
 }

@@ -2,10 +2,13 @@
 
 ## TODO
 
-- StorageDao: modify to cache the values even after the Http has answered. Currently, share() only caches when the request is in progress.
-- persist in local storage
 - Remove entry
-- Navigate between days
+- Edit entry
+- persist in local storage
+- Add students
+- handle the case when the price changes from a date for a given student
+- For each student, add an amount paid + render in the agenda until which day it was paid
+- Enrich with income calculations
 
 - Later: allow to choose multiple dates for an entry (ex: repeat Tuesday + Thursday)
 

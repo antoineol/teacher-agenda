@@ -20,7 +20,7 @@ export const Freq = {
 	WEEKLY: 2,
 	BIWEEKLY: 3,
 	MONTHLY: 4,
-	BIMONTHLY: 5
+	// BIMONTHLY: 5
 };
 
 // Stored in DB
@@ -31,6 +31,11 @@ export interface Lesson {
 	repetition?:number; // Freq.*
 	repetitionEnd?:string; // Date.toJSON()
 	// discount for this lesson = variation of price to take into account in the total
+}
+
+export interface FreqChoice {
+	id:number;
+	label:string;
 }
 
 // export interface AgendaEntryOrdered {

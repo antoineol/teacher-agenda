@@ -24,11 +24,11 @@
 	},
 	"frequency": {
 		"none": "Aucune",
-		"daily": "Quotidienne",
-		"weekly": "Hebdomadaire",
-		"biweekly": "Bihebdomadaire",
-		"monthly": "Mensuelle",
-		"bimonthly": "Bimensuelle"
+		"daily": "Tous les jours",
+		"weekly": "Toutes les semaines",
+		"biweekly": "Toutes les deux semaines",
+		"monthly": "Tous les mois",
+		"bimonthly": "Tous les deux mois"
 	},
 	"error": "Un problème inconnu est survenu. Vous pouvez fermer l'application et essayer à nouveau."
 }

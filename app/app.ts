@@ -11,9 +11,11 @@ moment.locale(Conf.langMoment);
 // Starts by adding operators and methods to observables
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/operator/toPromise';
 // import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/observable/combineLatest';
 import "rxjs/add/observable/of";
+import "rxjs/add/observable/from";
 import "rxjs/add/observable/merge";
 
 import {App, IonicApp, Platform} from 'ionic-angular';

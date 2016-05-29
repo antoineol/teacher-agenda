@@ -39,17 +39,18 @@ export class StorageDao {
 		// }
 
 		let cachedObs:Observable<any> = this.loadingObs.get(key);
-		console.log(key, ":", cachedObs);
+		// console.log(key, ":", cachedObs);
 		if (cachedObs) {
 			return cachedObs;
 		}
-		console.log("Will call HTTP");
+		// console.log("Will call HTTP");
 		cachedObs = this.http.get(url).map((resp:Response) => {
-			console.log("Did call HTTP");
+			// console.log("Did call HTTP");
 			let parsed:any = resp.json();
 			this.cache.set(key, parsed);
 			return parsed;
-		}).share(); // TODO does not work once HTTP already answered - check if there is another operator, or interface with a ReplaySubject
+		})/*.share()*/;
+		cachedObs = Observable.from(cachedObs.toPromise());
 		this.loadingObs.set(key, cachedObs);
 		return cachedObs;
 	}

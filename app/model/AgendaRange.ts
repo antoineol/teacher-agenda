@@ -11,4 +11,8 @@ export class AgendaRange {
 	static nextDay(range:AgendaRange) {
 		return {start: range.start.clone().add(1, 'd').startOf('day'), end: range.end.clone().add(1, 'd').endOf('day')};
 	}
+	static fromDate(date:string) {
+		let m = moment(date);
+		return {start: m.startOf('day'), end: m.endOf('day')};
+	}
 }

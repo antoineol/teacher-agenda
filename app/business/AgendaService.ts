@@ -23,10 +23,10 @@ export class AgendaService {
 			this.agendaDao.findStudents(),
 			this.agendaDao.findParameters()
 		]).map((results:any[]) => {
-			// console.log("getFormattedAgenda callback");
 			let agenda:AgendaEntry[] = results[0];
 			let studentsArray:Student[] = results[1];
 			let parameters:Parameters = results[2];
+			// console.log("getFormattedAgenda callback", agenda);
 
 			let filteredAgenda = this.extendAndFilterAgenda(agenda, start, end, studentsArray, parameters);
 			return this.formatForDisplay(filteredAgenda, parameters);
@@ -38,7 +38,7 @@ export class AgendaService {
 	//  https://github.com/driftyco/ionic/issues/6676
 	// Bug: sliding twice to the left if we don't call slideTo().
 	//  https://github.com/driftyco/ionic/issues/6678
-	updateSlideRange(ranges:AgendaRange[], slider:Slides, back:boolean, newIndex:number, slideWorkaround?:boolean = true) {
+	updateSlideRange(ranges:AgendaRange[], slider:Slides, back:boolean, newIndex:number, slideWorkaround:boolean = true) {
 		// console.log("newIndex:", newIndex);
 		if (!back) { // slide forward
 			while (newIndex > AgendaConfig.cachedSlidesOnOneSide) {
@@ -65,21 +65,48 @@ export class AgendaService {
 		}
 		// Update the date in the title
 		let newRange = ranges[newIndex];
-		return newRange.start.format('L');
+		// return newRange.start.format('L');
+		// console.log("newRange:", newRange, "toJSON:", newRange.start.toJSON(), "format:", newRange.start.format());
+		return newRange.start.format().substr(0, 10);//2016-05-19T00:00:00+08:00
+		// toJSON: 		2016-05-18T16:00:00.000Z
+		// toISOString:	2016-05-18T16:00:00.000Z
 	}
 
 	initRanges():AgendaRange[] {
-		let defaultRange:AgendaRange = AgendaConfig.defaultRange;
+		return this.getRangesForDate(AgendaConfig.defaultDate);
+
+		// let defaultRange:AgendaRange = AgendaConfig.defaultRange;
+		// let cachedSlidesOnOneSide:number = AgendaConfig.cachedSlidesOnOneSide;
+		// let length = 2 * cachedSlidesOnOneSide + 1;
+		// let ranges = new Array(length);
+		// ranges[cachedSlidesOnOneSide] = defaultRange;
+		// let pushedRange = defaultRange;
+		// for (let i = cachedSlidesOnOneSide - 1; i >= 0; i--) {
+		// 	pushedRange = AgendaRange.prevDay(pushedRange);
+		// 	ranges[i] = pushedRange;
+		// }
+		// pushedRange = defaultRange;
+		// for (let i = cachedSlidesOnOneSide + 1; i < length; i++) {
+		// 	pushedRange = AgendaRange.nextDay(pushedRange);
+		// 	ranges[i] = pushedRange;
+		// }
+		// return ranges;
+	}
+
+
+
+	getRangesForDate(date:string):AgendaRange[] {
+		let currentRange:AgendaRange = AgendaRange.fromDate(date);
 		let cachedSlidesOnOneSide:number = AgendaConfig.cachedSlidesOnOneSide;
 		let length = 2 * cachedSlidesOnOneSide + 1;
 		let ranges = new Array(length);
-		ranges[cachedSlidesOnOneSide] = defaultRange;
-		let pushedRange = defaultRange;
+		ranges[cachedSlidesOnOneSide] = currentRange;
+		let pushedRange = currentRange;
 		for (let i = cachedSlidesOnOneSide - 1; i >= 0; i--) {
 			pushedRange = AgendaRange.prevDay(pushedRange);
 			ranges[i] = pushedRange;
 		}
-		pushedRange = defaultRange;
+		pushedRange = currentRange;
 		for (let i = cachedSlidesOnOneSide + 1; i < length; i++) {
 			pushedRange = AgendaRange.nextDay(pushedRange);
 			ranges[i] = pushedRange;
@@ -138,6 +165,8 @@ export class AgendaService {
 	}
 
 	private extendAndFilterAgenda(agenda:AgendaEntry[], start:Moment, end:Moment, studentsArray:Student[], parameters:Parameters):AgendaEntry[] {
+		start = start.startOf('day');
+		end = end.endOf('day');
 		let students = _.indexBy(studentsArray, "id");
 		// prepare start/end/duration in entries
 		for (let entry of agenda) {
@@ -157,16 +186,24 @@ export class AgendaService {
 			// agendaEntry.mDuration = moment.duration(agendaEntry.duration, 'm');
 		}
 
-		let weekDays:number[] = [];
+		// Prepare the array of weekdays displayed in the range
 		let tmpDate = start.clone();
-		let endDay = end.clone().add(1, 'd').day();
-		// let i = tmpDate.day();
-		// while (i != endDay)
-		// console.log("tmpDate.day():", tmpDate.day(), "endDay:", endDay);
-		for (let i = tmpDate.day(); i != endDay && weekDays.length < 7; i = tmpDate.add(1, 'd').day()) {
+		let weekDays:number[] = [tmpDate.day()];
+		let endDay = end.clone().day();
+		for (let i = tmpDate.add(1, 'd').day(); i != endDay && tmpDate.isBefore(end); i = tmpDate.add(1, 'd').day()) {
 			weekDays.push(i);
 		}
 		// console.log("weekDays:", weekDays);
+		// Boolean to help to determinate if a biweekly entry is included in the range
+		let moreThan2weeks = end.diff(start, 'weeks') > 2;
+		// Prepare the array of month dates displayed in the range
+		tmpDate = start.clone();
+		let monthDates:number[] = [tmpDate.date()];
+		let endDate = end.clone().date();
+		for (let i = tmpDate.add(1, 'd').date(); i != endDate && tmpDate.isBefore(end); i = tmpDate.add(1, 'd').date()) {
+			monthDates.push(i);
+		}
+		// console.log("monthDates:", monthDates);
 
 		// Filter to display only entries in the requested range.
 		agenda = agenda.filter((entry: AgendaEntry, index: number, array: AgendaEntry[]):boolean => {
@@ -180,8 +217,16 @@ export class AgendaService {
 				case Freq.DAILY:
 					return true;
 				case Freq.WEEKLY:
-					// First, prepare outside the filter() an array of days from start to end
 					return weekDays.indexOf(entry.start.day()) !== -1;
+				case Freq.BIWEEKLY:
+					return weekDays.indexOf(entry.start.day()) !== -1
+						&& (moreThan2weeks
+						|| entry.start.diff(start, 'w') % 2 === 0
+						|| entry.start.diff(end, 'w') % 2 === 0);
+				case Freq.MONTHLY:
+					return monthDates.indexOf(entry.start.date()) !== -1;
+
+				// TODO implement other frequencies
 				default:
 					return false;
 			}

@@ -6,6 +6,7 @@ import {AgendaList} from "./agenda-list";
 import {AgendaRange} from "../../model/AgendaRange";
 import {AgendaService} from "../../business/AgendaService";
 import {AgendaConfig} from "../../config/AgendaConfig";
+import moment = require("moment");
 
 
 @Page({
@@ -14,11 +15,19 @@ import {AgendaConfig} from "../../config/AgendaConfig";
 })
 export class AgendaPage {
 
-	private ranges:AgendaRange[]/* = AgendaPage.initRanges(AgendaPage.defaultRange, AgendaPage.cachedSlidesOnOneSide)*/;
+	private ranges:AgendaRange[];
 
-	dayReadable:string = AgendaConfig.defaultRange.start.format('L');
 
-	agenda:AgendaEntry[];
+	private _currentDate:string;
+
+	// getter/setter for use with the template 2-way binding
+	get currentDate():string {return this._currentDate;}
+	set currentDate(date:string) {
+		this._currentDate = date;
+		this.ranges = this.agendaService.getRangesForDate(date);
+	}
+
+	private agenda:AgendaEntry[];
 
 	slideOptions = {initialSlide: AgendaConfig.cachedSlidesOnOneSide}; // used in template
 
@@ -37,31 +46,46 @@ export class AgendaPage {
 		return this.ranges.map((range:AgendaRange) => range.start.format('L')).join(' ');
 	}
 
+	// private slideWithButton:boolean;
+
 	// Workaround because the swipe to change of slide has bugs
 	slideNext() {
-		this.dayReadable = this.agendaService.updateSlideRange(this.ranges, this.slider, false, AgendaConfig.cachedSlidesOnOneSide + 1, false);
+		// this.dayReadable =
+		this._currentDate = this.agendaService.updateSlideRange(this.ranges, this.slider, false, AgendaConfig.cachedSlidesOnOneSide + 1, false);
 		// The user is automatically positioned to the new slide. So we manually create a sliding effect.
 		this.slider.slideTo(AgendaConfig.cachedSlidesOnOneSide - 1, 0, false);
 		setTimeout(() => {
 			this.slider.slideNext(300, false);
 		}, 50);
+
+		// this.slideWithButton = true;
+		// this.slider.slideTo(AgendaConfig.cachedSlidesOnOneSide - 1, 0);
 	}
 
 	// Workaround because the swipe to change of slide has bugs
 	slidePrev() {
-		this.dayReadable = this.agendaService.updateSlideRange(this.ranges, this.slider, true, AgendaConfig.cachedSlidesOnOneSide - 1, false);
+		// this.dayReadable =
+		this._currentDate = this.agendaService.updateSlideRange(this.ranges, this.slider, true, AgendaConfig.cachedSlidesOnOneSide - 1, false);
 		// The user is automatically positioned to the new slide. So we manually create a sliding effect.
 		this.slider.slideTo(AgendaConfig.cachedSlidesOnOneSide + 1, 0, false);
 		setTimeout(() => {
 			this.slider.slidePrev(300, false);
 		}, 50);
 
+		// this.slideWithButton = true;
+		// this.slider.slideTo(AgendaConfig.cachedSlidesOnOneSide + 1, 0);
 	}
 
 	updateSlideRange(swiper:any) {
-		let back = swiper.swipeDirection === 'prev';
-		let newIndex = this.slider.getActiveIndex();
-		this.dayReadable = this.agendaService.updateSlideRange(this.ranges, this.slider, back, newIndex);
+		// if (this.slideWithButton) {
+		// 	this.slideWithButton = false;
+		// 	this.slider.slideTo(AgendaConfig.cachedSlidesOnOneSide, 300, false);
+		// } else {
+			let back = swiper.swipeDirection === 'prev';
+			let newIndex = this.slider.getActiveIndex();
+			// this.dayReadable =
+			this._currentDate = this.agendaService.updateSlideRange(this.ranges, this.slider, back, newIndex);
+		// }
 	}
 
 	// updateSlideRangeEnd(swiper:any) {
@@ -72,25 +96,4 @@ export class AgendaPage {
 		this.nav.push(LessonFormPage);
 	}
 
-
-	// Internal utils
-
-	// private static initRanges():AgendaRange[] {
-	// 	let defaultRange:AgendaRange = AgendaConfig.defaultRange;
-	// 	let cachedSlidesOnOneSide:number = AgendaConfig.cachedSlidesOnOneSide;
-	// 	let length = 2 * cachedSlidesOnOneSide + 1;
-	// 	let ranges = new Array(length);
-	// 	ranges[cachedSlidesOnOneSide] = defaultRange;
-	// 	let pushedRange = defaultRange;
-	// 	for (let i = cachedSlidesOnOneSide - 1; i >= 0; i--) {
-	// 		pushedRange = AgendaRange.prevDay(pushedRange);
-	// 		ranges[i] = pushedRange;
-	// 	}
-	// 	pushedRange = defaultRange;
-	// 	for (let i = cachedSlidesOnOneSide + 1; i < length; i++) {
-	// 		pushedRange = AgendaRange.nextDay(pushedRange);
-	// 		ranges[i] = pushedRange;
-	// 	}
-	// 	return ranges;
-	// }
 }
