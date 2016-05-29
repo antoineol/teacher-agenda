@@ -40,6 +40,17 @@ export class AgendaDao {
 		});
 	}
 
+	updateAgendaEntry(entry:AgendaEntry):Observable<void> {
+		return this.findAgenda().mergeMap((entries:AgendaEntry[]) => {
+			// The reference should have already been updated.
+			// entries.push(entry);
+			// console.log("Update of entry", entry);
+			this.agendaUpdates.next(entries);
+			// TODO update URL once we have a persistent source for updates
+			return this.dao.insert("agenda", "stub/agenda-entries.json", entry);
+		});
+	}
+
 	removeAgendaEntry(entry:AgendaEntry):Observable<void> {
 		return this.findAgenda().mergeMap((entries:AgendaEntry[]) => {
 			let i = entries.indexOf(entry);

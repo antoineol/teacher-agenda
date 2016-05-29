@@ -9,34 +9,58 @@ import {Utils} from "./Utils";
 
 @Injectable()
 export class LessonFormService {
+
+	// private freqObs:Observable<FreqChoice[]>;
+	// private freqObjObs:Observable<Map<number, string>>;
+
 	constructor(private agendaDao:AgendaDao, private translate:TranslateService) {
-
+		// this.freqObs = Observable.from(this.translate.getTranslation(Conf.lang).map(() => {
+		// 	return [
+		// 		{id: Freq.NONE, label: this.translate.instant('frequency.none')},
+		// 		{id: Freq.DAILY, label: this.translate.instant('frequency.daily')},
+		// 		{id: Freq.WEEKLY, label: this.translate.instant('frequency.weekly')},
+		// 		{id: Freq.BIWEEKLY, label: this.translate.instant('frequency.biweekly')},
+		// 		{id: Freq.MONTHLY, label: this.translate.instant('frequency.monthly')},
+		// 		// {id: Freq.BIMONTHLY, label: this.translate.instant('frequency.bimonthly')}
+		// 	];
+		// }).toPromise());
+		// this.freqObjObs = Observable.from(this.translate.getTranslation(Conf.lang).map(() => {
+		// 	let m = new Map<number, string>();
+		// 	m.set(Freq.NONE, this.translate.instant('frequency.none'));
+		// 	m.set(Freq.DAILY, this.translate.instant('frequency.daily'));
+		// 	m.set(Freq.WEEKLY, this.translate.instant('frequency.weekly'));
+		// 	m.set(Freq.BIWEEKLY, this.translate.instant('frequency.biweekly'));
+		// 	m.set(Freq.MONTHLY, this.translate.instant('frequency.monthly'));
+		// 	// m.set(Freq.BIMONTHLY, this.translate.instant('frequency.bimonthly'));
+		// 	return m;
+		// }).toPromise());
 	}
 
-	getFrequencies():Observable<FreqChoice[]> {
-		return this.translate.getTranslation(Conf.lang).map(() => {
-			return [
-				{id: Freq.NONE, label: this.translate.instant('frequency.none')},
-				{id: Freq.DAILY, label: this.translate.instant('frequency.daily')},
-				{id: Freq.WEEKLY, label: this.translate.instant('frequency.weekly')},
-				{id: Freq.BIWEEKLY, label: this.translate.instant('frequency.biweekly')},
-				{id: Freq.MONTHLY, label: this.translate.instant('frequency.monthly')},
-				// {id: Freq.BIMONTHLY, label: this.translate.instant('frequency.bimonthly')}
-			];
-		});
-	}
+	// getFrequencies():Observable<FreqChoice[]> {
+	// 	return this.freqObs;
+	// }
+    //
+	// getFrequenciesObj():Observable<Map<number, string>> {
+	// 	return this.freqObjObs;
+	// }
 
 
-	createLesson(lesson:Lesson):Observable<void> {
+	submitLesson(lesson:Lesson, edit?:boolean):Observable<void> {
 		return this.agendaDao.findParameters().mergeMap((params:Parameters) => {
-			lesson = Object.assign({}, lesson);
+
+			// Restore a copy for the insert case if any side effect.
+			// Beware of the update case: it was commented to update directly the object reference
+			// and propagate automatically the changes in the app.
+			// lesson = Object.assign({}, lesson);
+
 			// {studentId: "482b4f74-ba0d-4b10-acf2-69ffff8f0c4f", date: "2016-05-22", repetition: 0, duration: 45}
 			// Remove useless information from the JSON we are going to persist (default, empty...)
 			if (!lesson.studentId) {
 				delete lesson.studentId;
 			}
 			if (typeof lesson.duration === 'string' && Utils.isNumeric(lesson.duration)) {
-				lesson.duration = parseInt(<string>lesson.duration);
+				lesson.duration = parseInt(<any>lesson.duration);
+				// console.log("lesson.duration:", lesson.duration, "typeof:", typeof lesson.duration)
 			}
 			if (lesson.duration === params.defaultDuration) {
 				delete lesson.duration;
@@ -49,9 +73,14 @@ export class LessonFormService {
 				delete lesson.repetitionEnd;
 			}
 
-			console.log("Create lesson:", lesson);
 			// console.log("Create the lesson:", lesson);
-			return this.agendaDao.insertAgendaEntry(lesson);
+			if (edit) {
+				// console.log("Update lesson:", lesson);
+				return this.agendaDao.updateAgendaEntry(lesson);
+			} else {
+				// console.log("Create lesson:", lesson);
+				return this.agendaDao.insertAgendaEntry(lesson);
+			}
 		});
 	}
 

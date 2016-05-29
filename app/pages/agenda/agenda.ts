@@ -39,7 +39,7 @@ export class AgendaPage {
 	@ViewChild('slider') slider:Slides;
 
 	constructor(private nav:NavController, private agendaService:AgendaService) {
-		console.log("agenda constructor");
+		// console.log("agenda constructor");
 		this.ranges = agendaService.initRanges();
 	}
 
@@ -48,9 +48,9 @@ export class AgendaPage {
 	// 	console.log("Slider:", this.slider);
 	// }
 
-	rangesPreview():string {
-		return this.ranges.map((range:AgendaRange) => range.start.format('L')).join(' ');
-	}
+	// rangesPreview():string {
+	// 	return this.ranges.map((range:AgendaRange) => range.start.format('L')).join(' ');
+	// }
 
 	// private slideWithButton:boolean;
 

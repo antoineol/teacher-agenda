@@ -13,6 +13,7 @@ import {Cache, StorageDao} from "./framework/StorageDao";
 import {MyMissingTranslationHandler} from "./framework/MyMissingTranslationHandler";
 import {ErrorService} from "./framework/ErrorService";
 import {LessonFormService} from "./business/LessonFormService";
+import {MiscService} from "./business/MiscService";
 // import {TranslatePipe} from "ionic-angular/index"; // look at the translation facilities embedded in ionic2
 
 
@@ -39,5 +40,6 @@ export const injectables:any[] = [
 	StorageDao,
 	ErrorService,
 	AgendaService,
-	LessonFormService
+	LessonFormService,
+	MiscService
 ];

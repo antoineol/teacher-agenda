@@ -13,9 +13,9 @@
 
 	<p>{{entry.startReadable}} - {{entry.endReadable}}</p>
 	<p><em>{{entry.durationReadable}}</em></p>
-	<p>{{"agenda.price_colon" | translate}} {{price}}</p>
-	<p>{{"agenda.from" | translate}} {{fromDate}}</p>
-	<p *ngIf="entry.repetition">{{repetition}} <span *ngIf="entry.repetEnd">{{"agenda.until" | translate}} {{toDate}} {{"agenda.included" | translate}}</span></p>
+	<p>{{"agenda.price_colon" | translate}} {{entry.priceReadable}}</p>
+	<p>{{"agenda.from" | translate}} {{entry.dateReadable}}</p>
+	<p *ngIf="entry.repetition">{{entry.repetitionReadable}} <span *ngIf="entry.repetEnd">{{"agenda.until" | translate}} {{entry.repetEndReadable}} {{"agenda.included" | translate}}</span></p>
 
 	<div padding>
 		<button block secondary (click)="edit()">{{"agenda.edit" | translate}}</button>

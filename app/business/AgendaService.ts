@@ -4,13 +4,15 @@ import {Moment} from "moment";
 import moment = require("moment");
 import _ = require("underscore");
 import {AgendaDao} from "./AgendaDao";
-import {AgendaEntry, Freq} from "../model/Lesson";
+import {AgendaEntry, Freq, FreqChoice} from "../model/Lesson";
 import {Student} from "../model/Student";
 import {Parameters} from "../model/Parameters";
 import {Conf} from "../config/Config";
 import {AgendaConfig} from "../config/AgendaConfig";
 import {AgendaRange} from "../model/AgendaRange";
 import {Slides} from "ionic-angular/index";
+import {Utils} from "./Utils";
+import {MiscService} from "./MiscService";
 
 @Injectable()
 export class AgendaService {
@@ -19,7 +21,7 @@ export class AgendaService {
 	currentDate:string = AgendaConfig.defaultDate;
 
 
-	constructor(private agendaDao:AgendaDao) {}
+	constructor(private agendaDao:AgendaDao, private miscService:MiscService) {}
 
 	getFormattedAgenda(start:Moment, end:Moment):Observable<AgendaEntry[]> {
 		return Observable.combineLatest/*forkJoin*/([
@@ -123,10 +125,18 @@ export class AgendaService {
 	// Internal utils
 
 	// Presentation layer
+	// Only call if you need to manually apply for formatting transformation. It is already included
+	// in the utils like getFormattedAgenda().
+	formatEntry(entry:AgendaEntry):Observable<void> {
+		return this.agendaDao.findParameters().map((parameters:Parameters) => {
+			return this.formatForDisplay([entry], parameters);
+		})
+	}
 	private formatForDisplay(agenda:AgendaEntry[], parameters:Parameters) {
 		for (let entry of agenda) {
 			let durationMoment = moment.duration(entry.duration, "minutes");
 			entry.durationReadable = Conf.humanizeDuration(durationMoment);
+			// console.log("Set durationReadable:", entry.durationReadable, "from", durationMoment, "from", entry.duration);
 			// Using humanize-duration instead of the embedded .humanize() which is not accurate enough.
 			// https://github.com/moment/moment/issues/348
 			// entry.durationReadable = moment.duration(entry.duration, "minutes").humanize();
@@ -135,6 +145,22 @@ export class AgendaService {
 			}
 			if (entry.end) {
 				entry.endReadable = entry.end.format("LT");
+			}
+			if (entry.date) {
+				entry.dateReadable = moment(entry.date).format('L');
+			}
+			if (entry.student) {
+				entry.priceReadable = Utils.formatCurrency(entry.student.price);
+			}
+
+			if (entry.repetition) {
+				this.miscService.getFrequenciesObj().subscribe((freq:Map<number, string>) => {
+					entry.repetitionReadable = freq.get(entry.repetition);
+				});
+
+				if (entry.repetEnd) {
+					entry.repetEndReadable = entry.repetEnd.format('L');
+				}
 			}
 
 			let marginCoef = 13;

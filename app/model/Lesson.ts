@@ -8,6 +8,10 @@ export interface AgendaEntry extends Lesson {
 	startReadable?:string; // start, formatted to display
 	end?:Moment; // start + duration, converted to moment
 	endReadable?:string; // end, formatted to display
+	dateReadable?:string;
+	priceReadable?:string;
+	repetitionReadable?:string;
+	repetEndReadable?:string;
 	repetEnd?:Moment;
 	marginTopBottom?:string; // display info
     student?:Student; // ref to the student having the lesson

@@ -8,6 +8,7 @@ import {ErrorService} from "../../framework/ErrorService";
 import {TranslateService} from "ng2-translate/ng2-translate";
 import {Conf} from "../../config/Config";
 import {LessonFormPage} from "../forms/lesson";
+import {MiscService} from "../../business/MiscService";
 
 @Page({
 	templateUrl: 'build/pages/agenda/agenda-detail.html'
@@ -15,31 +16,32 @@ import {LessonFormPage} from "../forms/lesson";
 export class AgendaDetailPage {
 
 	private entry:AgendaEntry;
-	private fromDate:string;
-	private toDate:string;
-	private repetition:string;
-	private price:string;
+	// private fromDate:string;
+	// private toDate:string;
+	// private repetition:string;
+	// private price:string;
 
-	constructor(private nav:NavController, navParams:NavParams, private lessonService:LessonFormService, private agendaDao:AgendaDao, private error:ErrorService, private translate:TranslateService) {
+	constructor(private nav:NavController, navParams:NavParams, private miscService:MiscService, private agendaDao:AgendaDao, private error:ErrorService, private translate:TranslateService) {
+		// console.log("Constructor of agenda-detail");
 		this.entry = navParams.get('entry');
-		this.initFields(this.entry);
+		// this.initFields(this.entry);
 	}
 
-	initFields(entry:AgendaEntry) {
-		this.fromDate = moment(entry.date).format('L');
-		this.price = Utils.formatCurrency(this.entry.student.price);
+	// initFields(entry:AgendaEntry) {
+		// this.fromDate = moment(entry.date).format('L');
+		// this.price = Utils.formatCurrency(this.entry.student.price);
 
-		if (entry.repetition) {
-			this.lessonService.getFrequencies().subscribe((freq:FreqChoice[]) => {
-				let found = freq.find((elt:FreqChoice) => elt.id === entry.repetition);
-				this.repetition = found ? found.label : undefined;
-			});
-
-			if (entry.repetEnd) {
-				this.toDate = entry.repetEnd.format('L');
-			}
-		}
-	}
+		// if (entry.repetition) {
+		// 	this.miscService.getFrequencies().subscribe((freq:FreqChoice[]) => {
+		// 		let found = freq.find((elt:FreqChoice) => elt.id === entry.repetition);
+		// 		this.repetition = found ? found.label : undefined;
+		// 	});
+        //
+		// 	if (entry.repetEnd) {
+		// 		this.toDate = entry.repetEnd.format('L');
+		// 	}
+		// }
+	// }
 
 	remove() {
 		this.translate.getTranslation(Conf.lang).subscribe(() => {

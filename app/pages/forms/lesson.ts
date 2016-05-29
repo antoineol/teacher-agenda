@@ -5,6 +5,8 @@ import {AgendaDao} from "../../business/AgendaDao";
 import {Student} from "../../model/Student";
 import {ErrorService} from "../../framework/ErrorService";
 import {LessonFormService} from "../../business/LessonFormService";
+import {MiscService} from "../../business/MiscService";
+import {AgendaService} from "../../business/AgendaService";
 // import moment = require("moment");
 
 
@@ -23,7 +25,7 @@ export class LessonFormPage {
 	students:Student[] = [];
 	freq:FreqChoice[] = [];
 
-	constructor(private nav:NavController, private navParams:NavParams, private agendaDao:AgendaDao, private error:ErrorService, private lessonService:LessonFormService) {
+	constructor(private nav:NavController, private navParams:NavParams, private agendaService:AgendaService, private agendaDao:AgendaDao, private error:ErrorService, private lessonService:LessonFormService, miscService:MiscService) {
 		let initLesson = navParams.get('lesson');
 		this.edit = !!initLesson;
 
@@ -32,13 +34,16 @@ export class LessonFormPage {
 
 		agendaDao.findStudents().subscribe((students:Student[]) => this.students = students);
 
-		lessonService.getFrequencies().subscribe((freq:FreqChoice[]) => this.freq = freq);
+		miscService.getFrequencies().subscribe((freq:FreqChoice[]) => this.freq = freq);
 
 		// console.log("localeData:", moment.localeData('fr'));
 	}
 
 	createLesson(event:any) {
-		this.lessonService.createLesson(this.lesson).subscribe(() => {
+		if (this.edit) {
+			this.agendaService.formatEntry(this.lesson).subscribe();
+		}
+		this.lessonService.submitLesson(this.lesson, this.edit).subscribe(() => {
 			this.nav.pop();
 		}, this.error.handler("lesson.error.insert"));
 	}

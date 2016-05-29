@@ -27,7 +27,8 @@ export class Utils {
 	}
 
 	// http://stackoverflow.com/questions/18082/validate-decimal-numbers-in-javascript-isnumeric
-	static isNumeric(n) {
+	// n is mainly intended to be a string, but it should work with any type.
+	static isNumeric(n:any) {
 		return !isNaN(parseFloat(n)) && isFinite(n);
 	}
 }
