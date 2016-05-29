@@ -3,7 +3,10 @@
 		"title": "Agenda",
 		"error": {
 			"loadAgenda": "An error occurred while loading the agenda. Please try again later."
-		}
+		},
+		"price_colon": "Price:",
+		"remove": "Remove",
+		"edit": "Modify"
 	},
 	"lesson": {
 		"edit": "Modify a lesson",

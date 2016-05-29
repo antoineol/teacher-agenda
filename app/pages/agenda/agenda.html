@@ -2,7 +2,7 @@
 	<button menuToggle>
 		<ion-icon name="menu"></ion-icon>
 	</button>
-	<ion-title><!--{{ "agenda.title" | translate }} --> <!--{{dayReadable}}--> <ion-input type="date" [(ngModel)]="currentDate"></ion-input></ion-title>
+	<ion-title><ion-input type="date" [(ngModel)]="currentDate"></ion-input></ion-title>
 	<ion-buttons end>
 		<button (click)="addEntry()">
 			<ion-icon name="add"></ion-icon>

@@ -25,7 +25,8 @@ export const injectables:any[] = [
 		useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'),
 		deps: [Http]
 	}),
-	provide(MissingTranslationHandler, { useClass: MyMissingTranslationHandler }),
+	// If the default behavior (fallback to default language, then to the key) is not good enough:
+	// provide(MissingTranslationHandler, { useClass: MyMissingTranslationHandler }),
 	TranslateService,
 
 	// Global pipes

@@ -3,7 +3,10 @@
 		"title": "Agenda",
 		"error": {
 			"loadAgenda": "Une erreur est survenue pendant le chargement de l'agenda. Veuillez réessayer plus tard."
-		}
+		},
+		"price_colon": "Prix :",
+		"remove": "Supprimer",
+		"edit": "Modifier"
 	},
 	"lesson": {
 		"edit": "Modifier un cours",

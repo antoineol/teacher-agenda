@@ -18,12 +18,17 @@ export class AgendaPage {
 	private ranges:AgendaRange[];
 
 
-	private _currentDate:string;
+	// private _currentDate:string;
 
 	// getter/setter for use with the template 2-way binding
-	get currentDate():string {return this._currentDate;}
+	// get currentDate():string {return this._currentDate;}
+	// set currentDate(date:string) {
+	// 	this._currentDate = date;
+	// 	this.ranges = this.agendaService.getRangesForDate(date);
+	// }
+	get currentDate():string {return this.agendaService.currentDate;}
 	set currentDate(date:string) {
-		this._currentDate = date;
+		this.agendaService.currentDate = date;
 		this.ranges = this.agendaService.getRangesForDate(date);
 	}
 
@@ -34,6 +39,7 @@ export class AgendaPage {
 	@ViewChild('slider') slider:Slides;
 
 	constructor(private nav:NavController, private agendaService:AgendaService) {
+		console.log("agenda constructor");
 		this.ranges = agendaService.initRanges();
 	}
 
@@ -50,8 +56,7 @@ export class AgendaPage {
 
 	// Workaround because the swipe to change of slide has bugs
 	slideNext() {
-		// this.dayReadable =
-		this._currentDate = this.agendaService.updateSlideRange(this.ranges, this.slider, false, AgendaConfig.cachedSlidesOnOneSide + 1, false);
+		this.agendaService.updateSlideRange(this.ranges, this.slider, false, AgendaConfig.cachedSlidesOnOneSide + 1, false);
 		// The user is automatically positioned to the new slide. So we manually create a sliding effect.
 		this.slider.slideTo(AgendaConfig.cachedSlidesOnOneSide - 1, 0, false);
 		setTimeout(() => {
@@ -64,8 +69,7 @@ export class AgendaPage {
 
 	// Workaround because the swipe to change of slide has bugs
 	slidePrev() {
-		// this.dayReadable =
-		this._currentDate = this.agendaService.updateSlideRange(this.ranges, this.slider, true, AgendaConfig.cachedSlidesOnOneSide - 1, false);
+		this.agendaService.updateSlideRange(this.ranges, this.slider, true, AgendaConfig.cachedSlidesOnOneSide - 1, false);
 		// The user is automatically positioned to the new slide. So we manually create a sliding effect.
 		this.slider.slideTo(AgendaConfig.cachedSlidesOnOneSide + 1, 0, false);
 		setTimeout(() => {
@@ -83,8 +87,7 @@ export class AgendaPage {
 		// } else {
 			let back = swiper.swipeDirection === 'prev';
 			let newIndex = this.slider.getActiveIndex();
-			// this.dayReadable =
-			this._currentDate = this.agendaService.updateSlideRange(this.ranges, this.slider, back, newIndex);
+			this.agendaService.updateSlideRange(this.ranges, this.slider, back, newIndex);
 		// }
 	}
 

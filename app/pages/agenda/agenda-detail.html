@@ -3,14 +3,22 @@
 		<ion-icon name="menu"></ion-icon>
 	</button>
 	<ion-title>{{entry.student.name}}</ion-title>
+	<ion-buttons end>
+		<button (click)="remove()">
+			{{"agenda.remove" | translate}}
+		</button>
+	</ion-buttons>
 </ion-navbar>
 
 
 <ion-content padding class="agenda">
 
-	<p>Start: {{entry.startReadable}}</p>
-	<p>End: {{entry.endReadable}}</p>
-	<p>Duration: {{entry.durationReadable}}</p>
-	<p>Price: {{entry.student.price}} RMB</p>
+	<p>{{entry.startReadable}} - {{entry.endReadable}}</p>
+	<p><em>{{entry.durationReadable}}</em></p>
+	<p>{{"agenda.price_colon" | translate}} {{entry.student.price}} RMB</p>
+
+	<div padding>
+		<button block secondary (click)="edit()">{{"agenda.edit" | translate}}</button>
+	</div>
 
 </ion-content>

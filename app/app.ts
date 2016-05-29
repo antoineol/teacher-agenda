@@ -18,11 +18,13 @@ import "rxjs/add/observable/of";
 import "rxjs/add/observable/from";
 import "rxjs/add/observable/merge";
 
-import {App, IonicApp, Platform} from 'ionic-angular';
+import {ViewChild} from '@angular/core';
+import {App, IonicApp, Platform, Nav} from 'ionic-angular';
 import {StatusBar} from 'ionic-native';
 import {AgendaPage} from './pages/agenda/agenda';
 import {injectables, pipes} from "./injectables";
 import {TranslateService} from "ng2-translate/ng2-translate";
+import {ErrorService} from "./framework/ErrorService";
 
 
 interface PageEntry {
@@ -37,18 +39,23 @@ interface PageEntry {
 	pipes: pipes
 })
 class MyApp {
-	rootPage:any = AgendaPage;
-	pages:PageEntry[];
+	@ViewChild(Nav) nav: Nav;
 
-	constructor(private app:IonicApp, private platform:Platform, private translate: TranslateService) {
+	rootPage:any = AgendaPage;
+	pages:PageEntry[] = [];
+
+	constructor(/*private app:IonicApp, */private platform:Platform, private translate: TranslateService, private error:ErrorService) {
 		try {
 			this.initializeApp();
 
 			// used for an example of ngFor and navigation
-			this.pages = [
-				{title: 'Agenda', component: AgendaPage}
-			];
-		} catch (err) {console.error(err.stack || err);}
+
+			this.translate.getTranslation(Conf.lang).subscribe(() => {
+				this.pages = [
+					{title: this.translate.instant('agenda.title'), component: AgendaPage}
+				];
+			}, this.error.handler("error"));
+		} catch (err) {this.error.handler("error")(err);}
 
 	}
 
@@ -64,12 +71,16 @@ class MyApp {
 	openPage(page:PageEntry) {
 		// Reset the content nav to have just this page
 		// we wouldn't want the back button to show in this scenario
-		let nav = this.app.getComponent('nav');
-		nav.setRoot(page.component);
+		this.nav.setRoot(page.component);
 	}
 
 	initializeTranslateServiceConfig() {
 		this.translate.setDefaultLang(Conf.defaultLang);
 		this.translate.use(Conf.lang);
+
+		// Workaround because default translations are missing, which causes an issue when
+		// a translation is missing in the current language, and it tries to fallback to the default language.
+		// https://github.com/ocombe/ng2-translate/issues/46
+		this.translate.getTranslation(Conf.defaultLang).subscribe();
 	}
 }

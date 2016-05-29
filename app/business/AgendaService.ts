@@ -15,6 +15,10 @@ import {Slides} from "ionic-angular/index";
 @Injectable()
 export class AgendaService {
 
+	// yyyy-mm-dd
+	currentDate:string = AgendaConfig.defaultDate;
+
+
 	constructor(private agendaDao:AgendaDao) {}
 
 	getFormattedAgenda(start:Moment, end:Moment):Observable<AgendaEntry[]> {
@@ -67,13 +71,14 @@ export class AgendaService {
 		let newRange = ranges[newIndex];
 		// return newRange.start.format('L');
 		// console.log("newRange:", newRange, "toJSON:", newRange.start.toJSON(), "format:", newRange.start.format());
-		return newRange.start.format().substr(0, 10);//2016-05-19T00:00:00+08:00
+		// return newRange.start.format().substr(0, 10);//2016-05-19T00:00:00+08:00
 		// toJSON: 		2016-05-18T16:00:00.000Z
 		// toISOString:	2016-05-18T16:00:00.000Z
+		this.currentDate = newRange.start.format().substr(0, 10);
 	}
 
 	initRanges():AgendaRange[] {
-		return this.getRangesForDate(AgendaConfig.defaultDate);
+		return this.getRangesForDate(this.currentDate);
 
 		// let defaultRange:AgendaRange = AgendaConfig.defaultRange;
 		// let cachedSlidesOnOneSide:number = AgendaConfig.cachedSlidesOnOneSide;

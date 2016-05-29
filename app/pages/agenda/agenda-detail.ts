@@ -10,6 +10,12 @@ export class AgendaDetailPage {
 	constructor(navParams:NavParams) {
 		this.entry = navParams.get('entry');
 	}
+
+	remove() {
+		console.log("Should remove the entry");
+	}
 	
-	
+	edit() {
+		console.log("Should edit the entry");
+	}
 }
