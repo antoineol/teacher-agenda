@@ -4,7 +4,7 @@
 
 - Remove entry
 - Edit entry
-- persist in local storage
+- persist in local storage + env switch to use mocks when useful
 - Add students
 - handle the case when the price changes from a date for a given student
 - For each student, add an amount paid + render in the agenda until which day it was paid

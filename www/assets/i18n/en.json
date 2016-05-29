@@ -33,5 +33,8 @@
 		"monthly": "Monthly",
 		"bimonthly": "Bimonthly"
 	},
+	"global": {
+		"backButton": "Back"
+	},
 	"error": "An unknown issue occurred. You may close the application and try again."
 }

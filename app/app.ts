@@ -19,7 +19,7 @@ import "rxjs/add/observable/from";
 import "rxjs/add/observable/merge";
 
 import {ViewChild} from '@angular/core';
-import {App, IonicApp, Platform, Nav} from 'ionic-angular';
+import {App, IonicApp, Platform, Nav, Config} from 'ionic-angular';
 import {StatusBar} from 'ionic-native';
 import {AgendaPage} from './pages/agenda/agenda';
 import {injectables, pipes} from "./injectables";
@@ -44,7 +44,7 @@ class MyApp {
 	rootPage:any = AgendaPage;
 	pages:PageEntry[] = [];
 
-	constructor(/*private app:IonicApp, */private platform:Platform, private translate: TranslateService, private error:ErrorService) {
+	constructor(/*private app:IonicApp, */private platform:Platform, private translate: TranslateService, private error:ErrorService, ionicConfig:Config) {
 		try {
 			this.initializeApp();
 
@@ -54,6 +54,9 @@ class MyApp {
 				this.pages = [
 					{title: this.translate.instant('agenda.title'), component: AgendaPage}
 				];
+
+				// Back button text: provide translations (only English by default with ionic)
+				ionicConfig.set('backButtonText', this.translate.instant('global.backButton'));
 			}, this.error.handler("error"));
 		} catch (err) {this.error.handler("error")(err);}
 
