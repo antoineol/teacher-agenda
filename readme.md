@@ -2,8 +2,6 @@
 
 ## TODO
 
-- Edit entry - change frequency first time not applied: every day to every week when positioned in a day outside the "new" weekly lessons. -- same for date "until" (change not applied if the clicked lesson move disappears from the initially opened range). Indeed, the modified entry is not reformatted by the service, because it does not belong to the reloaded range. Fix: must manually apply the UI changes.
-- ion-select (lesson form) has english button texts: should internationalize.
 - persist in local storage + env switch to use mocks when useful
 - Add students
 - handle the case when the price changes from a date for a given student

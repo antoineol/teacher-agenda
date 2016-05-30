@@ -35,7 +35,7 @@ export class AgendaService {
 			// console.log("getFormattedAgenda callback", agenda);
 
 			let filteredAgenda = this.extendAndFilterAgenda(agenda, start, end, studentsArray, parameters);
-			return this.formatForDisplay(filteredAgenda, parameters);
+			return this.formatForDisplay(filteredAgenda, parameters, studentsArray, true);
 		});
 	}
 
@@ -128,12 +128,31 @@ export class AgendaService {
 	// Only call if you need to manually apply for formatting transformation. It is already included
 	// in the utils like getFormattedAgenda().
 	formatEntry(entry:AgendaEntry):Observable<void> {
-		return this.agendaDao.findParameters().map((parameters:Parameters) => {
-			return this.formatForDisplay([entry], parameters);
-		})
+
+		return Observable.combineLatest([
+			this.agendaDao.findStudents(),
+			this.agendaDao.findParameters()
+		]).map((results:any[]) => {
+			let studentsArray:Student[] = results[0];
+			let parameters:Parameters = results[1];
+
+			return this.formatForDisplay([entry], parameters, studentsArray);
+		});
+
+		// return this.agendaDao.findParameters().map((parameters:Parameters) => {
+		// 	return this.formatForDisplay([entry], parameters);
+		// })
 	}
-	private formatForDisplay(agenda:AgendaEntry[], parameters:Parameters) {
+	private formatForDisplay(agenda:AgendaEntry[], parameters:Parameters, studentsArray:Student[], extended:boolean = false) {
+
+		// Ensure the variable normally set in extendAndFilterAgenda() are also set if the
+		// format method was called without the other method.
+		if (!extended) {
+			this.extendEntries(agenda, studentsArray, parameters);
+		}
+
 		for (let entry of agenda) {
+
 			let durationMoment = moment.duration(entry.duration, "minutes");
 			entry.durationReadable = Conf.humanizeDuration(durationMoment);
 			// console.log("Set durationReadable:", entry.durationReadable, "from", durationMoment, "from", entry.duration);
@@ -198,24 +217,8 @@ export class AgendaService {
 	private extendAndFilterAgenda(agenda:AgendaEntry[], start:Moment, end:Moment, studentsArray:Student[], parameters:Parameters):AgendaEntry[] {
 		start = start.startOf('day');
 		end = end.endOf('day');
-		let students = _.indexBy(studentsArray, "id");
-		// prepare start/end/duration in entries
-		for (let entry of agenda) {
-			// Convert student foreign key to object
-			if (_.isString(entry.studentId)) {
-				entry.student = students[<any>entry.studentId];
-			}
-			// eventually add default duration
-			entry.duration = entry.duration || parameters.defaultDuration;
-			// add momentjs objects
-			entry.start = moment(entry.date);
-			entry.end = moment(entry.start).add(entry.duration, "minutes");
-			if (entry.repetitionEnd) {
-				entry.repetEnd = moment(entry.repetitionEnd).endOf('day');
-			}
-			// moment.duration()
-			// agendaEntry.mDuration = moment.duration(agendaEntry.duration, 'm');
-		}
+
+		this.extendEntries(agenda, studentsArray, parameters);
 
 		// Prepare the array of weekdays displayed in the range
 		let tmpDate = start.clone();
@@ -282,6 +285,27 @@ export class AgendaService {
 		// Sort by start date
 		agenda.sort(AgendaService.compareAgendaEntriesByStartDate);
 		return agenda;
+	}
+
+	private extendEntries(agenda:AgendaEntry[], studentsArray:Student[], parameters:Parameters) {
+		let students = _.indexBy(studentsArray, "id");
+		// prepare start/end/duration in entries
+		for (let entry of agenda) {
+			// Convert student foreign key to object
+			if (_.isString(entry.studentId)) {
+				entry.student = students[<any>entry.studentId];
+			}
+			// eventually add default duration
+			entry.duration = entry.duration || parameters.defaultDuration;
+			// add momentjs objects
+			entry.start = moment(entry.date);
+			entry.end = moment(entry.start).add(entry.duration, "minutes");
+			if (entry.repetitionEnd) {
+				entry.repetEnd = moment(entry.repetitionEnd).endOf('day');
+			}
+			// moment.duration()
+			// agendaEntry.mDuration = moment.duration(agendaEntry.duration, 'm');
+		}
 	}
 
 	private static compareAgendaEntriesByStartDate(a:AgendaEntry, b:AgendaEntry) {

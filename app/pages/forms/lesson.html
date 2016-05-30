@@ -24,7 +24,7 @@
 			</ion-item>
 			<ion-item>
 				<ion-label>{{"lesson.student" | translate}}</ion-label>
-				<ion-select [(ngModel)]="lesson.studentId">
+				<ion-select [(ngModel)]="lesson.studentId" okText="{{'alert.validate' | translate}}" cancelText="{{'alert.cancel' | translate}}">
 					<ion-option *ngFor="let student of students" [value]="student.id">{{student.name}}</ion-option>
 				</ion-select>
 			</ion-item>
