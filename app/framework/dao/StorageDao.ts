@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {Http, Response} from "@angular/http";
 import {Observable} from "rxjs/Observable";
-import "rxjs/add/observable/of";
+import {LocalStorageDao} from "./LocalStorageDao";
 
 @Injectable()
 export class Cache {
@@ -24,10 +24,12 @@ export class StorageDao {
 
 	private loadingObs = new Map<string, Observable<any>>();
 
-	constructor(private http:Http, private cache:Cache) {
+	constructor(private http:Http, private cache:Cache, private localStorage:LocalStorageDao) {
 	}
 
 	public find(cacheKey:string, url:string):Observable<any> {
+
+		return this.localStorage.find(cacheKey);
 
 		// The shared observable is already used as a memory cache.
 		// The use of cache can be re-enabled if persistent, like local storage.
@@ -38,21 +40,21 @@ export class StorageDao {
 		// 	return Observable.of(cached);
 		// }
 
-		let cachedObs:Observable<any> = this.loadingObs.get(cacheKey);
-		// console.log(key, ":", cachedObs);
-		if (cachedObs) {
-			return cachedObs;
-		}
-		// console.log("Will call HTTP");
-		cachedObs = this.http.get(url).map((resp:Response) => {
-			// console.log("Did call HTTP");
-			let parsed:any = resp.json();
-			this.cache.set(cacheKey, parsed);
-			return parsed;
-		})/*.share()*/;
-		cachedObs = Observable.from(cachedObs.toPromise());
-		this.loadingObs.set(cacheKey, cachedObs);
-		return cachedObs;
+		// let cachedObs:Observable<any> = this.loadingObs.get(cacheKey);
+		// // console.log(key, ":", cachedObs);
+		// if (cachedObs) {
+		// 	return cachedObs;
+		// }
+		// // console.log("Will call HTTP");
+		// cachedObs = this.http.get(url).map((resp:Response) => {
+		// 	// console.log("Did call HTTP");
+		// 	let parsed:any = resp.json();
+		// 	this.cache.set(cacheKey, parsed);
+		// 	return parsed;
+		// })/*.share()*/;
+		// cachedObs = Observable.from(cachedObs.toPromise());
+		// this.loadingObs.set(cacheKey, cachedObs);
+		// return cachedObs;
 	}
 
 	public insert(cacheKey:string, url:string, entity:any):Observable<void> {

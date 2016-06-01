@@ -1,19 +1,13 @@
 import {provide, PLATFORM_PIPES} from "@angular/core";
 import {Http} from "@angular/http";
-import {
-	TranslateService,
-	TranslateLoader,
-	TranslateStaticLoader,
-	MissingTranslationHandler,
-	TranslatePipe
-} from "ng2-translate/ng2-translate";
+import {TranslateService, TranslateLoader, TranslateStaticLoader, TranslatePipe} from "ng2-translate/ng2-translate";
 import {AgendaDao} from "./business/AgendaDao";
 import {AgendaService} from "./business/AgendaService";
-import {Cache, StorageDao} from "./framework/StorageDao";
-import {MyMissingTranslationHandler} from "./framework/MyMissingTranslationHandler";
+import {Cache, StorageDao} from "./framework/dao/StorageDao";
 import {ErrorService} from "./framework/ErrorService";
 import {LessonFormService} from "./business/LessonFormService";
 import {MiscService} from "./business/MiscService";
+import {LocalStorageDao} from "./framework/dao/LocalStorageDao";
 // import {TranslatePipe} from "ionic-angular/index"; // look at the translation facilities embedded in ionic2
 
 
@@ -22,6 +16,7 @@ export const pipes:any[] = [
 ];
 
 export const injectables:any[] = [
+	// IONIC_DIRECTIVES,
 	provide(TranslateLoader, {
 		useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'),
 		deps: [Http]
@@ -38,6 +33,7 @@ export const injectables:any[] = [
 	AgendaDao,
 	Cache,
 	StorageDao,
+	LocalStorageDao,
 	ErrorService,
 	AgendaService,
 	LessonFormService,

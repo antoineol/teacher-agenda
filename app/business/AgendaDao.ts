@@ -3,7 +3,7 @@ import {Observable} from "rxjs/Observable";
 import {AgendaEntry} from "../model/Lesson";
 import {Student} from "../model/Student";
 import {Parameters} from "../model/Parameters";
-import {StorageDao} from "../framework/StorageDao";
+import {StorageDao} from "../framework/dao/StorageDao";
 import {ReplaySubject} from "rxjs/ReplaySubject";
 
 @Injectable()
@@ -19,15 +19,15 @@ export class AgendaDao {
 	}
 
 	findAgenda():Observable<AgendaEntry[]> {
-		return this.dao.find("agenda", "stub/agenda-entries.json");
+		return this.dao.find("agenda", "stub/agenda-entries.json").map((agenda:AgendaEntry[]) => agenda ? agenda : []);
 	}
 
 	findStudents():Observable<Student[]> {
-		return this.dao.find("students", "stub/students.json");
+		return this.dao.find("students", "stub/students.json").map((students:Student[]) => students ? students : []);
 	}
 
 	findParameters():Observable<Parameters> {
-		return this.dao.find("parameters", "stub/parameters.json");
+		return this.dao.find("parameters", "stub/parameters.json").map((params:Parameters) => params ? params : {});
 	}
 
 	insertAgendaEntry(entry:AgendaEntry):Observable<void> {

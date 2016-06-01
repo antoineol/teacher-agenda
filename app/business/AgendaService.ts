@@ -127,7 +127,7 @@ export class AgendaService {
 	// Presentation layer
 	// Only call if you need to manually apply for formatting transformation. It is already included
 	// in the utils like getFormattedAgenda().
-	formatEntry(entry:AgendaEntry):Observable<void> {
+	formatEntry(entry:AgendaEntry):Observable<AgendaEntry[]> {
 
 		return Observable.combineLatest([
 			this.agendaDao.findStudents(),
@@ -143,7 +143,7 @@ export class AgendaService {
 		// 	return this.formatForDisplay([entry], parameters);
 		// })
 	}
-	private formatForDisplay(agenda:AgendaEntry[], parameters:Parameters, studentsArray:Student[], extended:boolean = false) {
+	private formatForDisplay(agenda:AgendaEntry[], parameters:Parameters, studentsArray:Student[], extended:boolean = false):AgendaEntry[] {
 
 		// Ensure the variable normally set in extendAndFilterAgenda() are also set if the
 		// format method was called without the other method.

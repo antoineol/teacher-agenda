@@ -16,6 +16,7 @@ import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/observable/combineLatest';
 import "rxjs/add/observable/of";
 import "rxjs/add/observable/from";
+import "rxjs/add/observable/fromPromise";
 import "rxjs/add/observable/merge";
 
 import {ViewChild} from '@angular/core';
