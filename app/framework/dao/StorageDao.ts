@@ -3,28 +3,28 @@ import {Http, Response} from "@angular/http";
 import {Observable} from "rxjs/Observable";
 import {LocalStorageDao} from "./LocalStorageDao";
 
-@Injectable()
-export class Cache {
-
-	// Current implementation: in-memory cache. Can be moved to local storage or session storage.
-
-	cache = new Map<string, any>();
-
-	get(key:string):any {
-		return this.cache.get(key);
-	}
-
-	set(key:string, value:any):void {
-		this.cache.set(key, value);
-	}
-}
+// @Injectable()
+// export class Cache {
+//
+// 	// Current implementation: in-memory cache. Can be moved to local storage or session storage.
+//
+// 	cache = new Map<string, any>();
+//
+// 	get(key:string):any {
+// 		return this.cache.get(key);
+// 	}
+//
+// 	set(key:string, value:any):void {
+// 		this.cache.set(key, value);
+// 	}
+// }
 
 @Injectable()
 export class StorageDao {
 
 	private loadingObs = new Map<string, Observable<any>>();
 
-	constructor(private http:Http, private cache:Cache, private localStorage:LocalStorageDao) {
+	constructor(private http:Http, private localStorage:LocalStorageDao/*, private cache:Cache*/) {
 	}
 
 	public find(cacheKey:string, url:string):Observable<any> {
@@ -45,11 +45,10 @@ export class StorageDao {
 		// if (cachedObs) {
 		// 	return cachedObs;
 		// }
-		// // console.log("Will call HTTP");
 		// cachedObs = this.http.get(url).map((resp:Response) => {
-		// 	// console.log("Did call HTTP");
 		// 	let parsed:any = resp.json();
-		// 	this.cache.set(cacheKey, parsed);
+		// 	// Uncomment if the cache is finally used.
+		// 	// this.cache.set(cacheKey, parsed);
 		// 	return parsed;
 		// })/*.share()*/;
 		// cachedObs = Observable.from(cachedObs.toPromise());

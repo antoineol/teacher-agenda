@@ -3,7 +3,7 @@ import {Http} from "@angular/http";
 import {TranslateService, TranslateLoader, TranslateStaticLoader, TranslatePipe} from "ng2-translate/ng2-translate";
 import {AgendaDao} from "./business/AgendaDao";
 import {AgendaService} from "./business/AgendaService";
-import {Cache, StorageDao} from "./framework/dao/StorageDao";
+import {/*Cache, */StorageDao} from "./framework/dao/StorageDao";
 import {ErrorService} from "./framework/ErrorService";
 import {LessonFormService} from "./business/LessonFormService";
 import {MiscService} from "./business/MiscService";
@@ -31,7 +31,7 @@ export const injectables:any[] = [
 	provide(PLATFORM_PIPES, {useValue: pipes, multi: true}),
 
 	AgendaDao,
-	Cache,
+	// Cache,
 	StorageDao,
 	LocalStorageDao,
 	ErrorService,
