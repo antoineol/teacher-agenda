@@ -57,9 +57,12 @@ export class StorageDao {
 	}
 
 	public insert(cacheKey:string, url:string, entity:any):Observable<void> {
+		// KO: always adding at the same key. Currently investigating other approaches. PouchDB seems good.
+		return this.localStorage.insert(cacheKey, entity);
+
 		// TODO implement once we have a persistent storage
 		// Mock: persistent inserts/updates not supported yet.
-		return Observable.of(null);
+		// return Observable.of(null);
 	}
 
 	public remove(cacheKey:string, url:string, entity:any):Observable<void> {
