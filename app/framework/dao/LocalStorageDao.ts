@@ -36,6 +36,9 @@ export class LocalStorageDao {
 
 	public insert(cacheKey:string, entity:any):Observable<void> {
 		// TODO refresh or invalidate cache
+		console.log("Inserting:", cacheKey, entity);
+
+		this.sql.query()
 		return Observable.fromPromise(this.sql.setJson(cacheKey, entity).then((result:any) => {
 			console.log("insert result:", result);
 			return result;
