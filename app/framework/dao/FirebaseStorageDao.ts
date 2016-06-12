@@ -40,15 +40,23 @@ export class FirebaseStorageDao implements StorageDao {
 	}
 
 	public pushToList(collection:string, entity:any):Promise<void> {
+		this.checkFirebaseEntity(entity);
 		return <Promise<void>>/*FirebaseWithPromise<void>*/this.getListBinding(collection).push(entity);
 	}
 
-	public updateInList(collection:string, key:string, entity:any):Promise<void> {
-		return this.getListBinding(collection).update(key, entity);
+	public updateInList(collection:string, entity:any):Promise<void> {
+		this.checkUpdateFirebaseEntity(entity);
+		// console.log("Update collection", collection, ":", entity.$key, entity);
+		// TODO dirty but there is no clear/simple way yet to update the whole object in once.
+		// https://github.com/angular/angularfire2/issues/190
+		let updateEntity = Object.assign({}, entity);
+		delete updateEntity.$key;
+		return this.getListBinding(collection).update(entity, updateEntity);
 	}
 
-	public removeInList(collection:string, key:string):Promise<void> {
-		return this.getListBinding(collection).remove(key);
+	public removeInList(collection:string, entity:any):Promise<void> {
+		this.checkUpdateFirebaseEntity(entity);
+		return this.getListBinding(collection).remove(entity.$key);
 	}
 
 	public removeAllList(collection:string):Promise<void> {
@@ -56,10 +64,12 @@ export class FirebaseStorageDao implements StorageDao {
 	}
 
 	public insertObject(collection:string, entity:any):Promise<void> {
+		this.checkFirebaseEntity(entity);
 		return this.getObjectBinding(collection).set(entity);
 	}
 
 	public updateObject(collection:string, entity:any):Promise<void> {
+		this.checkFirebaseEntity(entity);
 		return this.getObjectBinding(collection).update(entity);
 	}
 
@@ -69,6 +79,22 @@ export class FirebaseStorageDao implements StorageDao {
 
 
 	// Internal Firebase util
+
+	private checkUpdateFirebaseEntity(entity:any):void {
+		if (!entity || !entity.$key) {
+			throw new Error("Not a firebase entity, null or without $key: " + entity);
+		}
+		this.checkFirebaseEntity(entity);
+	}
+	private checkFirebaseEntity(entity:any):void {
+		if (entity) {
+			for (let property in entity) {
+				if (entity.hasOwnProperty(property) && entity[property] == null) {
+					delete entity[property];
+				}
+			}
+		}
+	}
 
 	private getListBinding(collection:string):FirebaseListObservable<any> {
 		let binding:FirebaseListObservable<any> = <FirebaseListObservable<any>>this.bindings.get(collection);

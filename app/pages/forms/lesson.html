@@ -8,7 +8,7 @@
 
 <ion-content class="lesson-form">
 
-	<form (submit)="createLesson($event)">
+	<form (submit)="createLesson()">
 		<ion-list>
 			<ion-item>
 				<ion-label>{{"lesson.date" | translate}}</ion-label>
@@ -25,7 +25,7 @@
 			<ion-item>
 				<ion-label>{{"lesson.student" | translate}}</ion-label>
 				<ion-select [(ngModel)]="lesson.studentId" okText="{{'alert.validate' | translate}}" cancelText="{{'alert.cancel' | translate}}">
-					<ion-option *ngFor="let student of students" [value]="student.id">{{student.name}}</ion-option>
+					<ion-option *ngFor="let student of students" [value]="student.$key">{{student.name}}</ion-option>
 				</ion-select>
 			</ion-item>
 			<ion-item>
@@ -41,7 +41,7 @@
 		</ion-list>
 
 		<div padding>
-			<button block primary type="submit">{{ (edit ? "lesson.validateEdit" : "lesson.validateAdd") | translate}}</button>
+			<button block primary type="submit" [disabled]="updating">{{ (edit ? "lesson.validateEdit" : "lesson.validateAdd") | translate}}</button>
 		</div>
 	</form>
 

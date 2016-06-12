@@ -1,5 +1,6 @@
 export interface Student {
-	id:string;
+	// id:string;
+	$key?:string;
     name:string;
     price: number;
 }

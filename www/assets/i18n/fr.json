@@ -16,7 +16,7 @@
 		}
 	},
 	"lesson": {
-		"edit": "Modifier un cours",
+		"edit": "Modifier le cours",
 		"add": "Ajouter un cours",
 		"date": "Date",
 		"duration": "Durée",
@@ -26,7 +26,27 @@
 		"repetition": "Répétition",
 		"repetitionEnd": "Jusqu'à (inclus)",
 		"error": {
-			"insert": "Une erreur est survenue pendant la création du nouveau cours. Veuillez réessayer plus tard."
+			"insert": "Une erreur est survenue pendant la création du nouveau cours. Veuillez réessayer plus tard.",
+			"update": "Une erreur est survenue pendant la mise à jour du cours. Veuillez réessayer plus tard.",
+			"remove": "Une erreur est survenue pendant la suppression du cours. Veuillez réessayer plus tard."
+		}
+	},
+	"student": {
+		"title": "Étudiants",
+		"add": "Ajouter un élève",
+		"edit": "Modifier l'élève",
+		"name": "Nom",
+		"name_colon": "Nom :",
+		"price": "Prix",
+		"price_colon": "Prix :",
+		"deleteConfirm": {
+			"title": "Supprimer l'étudiant",
+			"message": "Veuillez confirmer la suppression de cet étudiant."
+		},
+		"error": {
+			"insert": "Une erreur est survenue pendant la création du nouvel étudiant. Veuillez réessayer plus tard.",
+			"update": "Une erreur est survenue pendant la mise à jour de l'étudiant. Veuillez réessayer plus tard.",
+			"remove": "Une erreur est survenue pendant la suppression de l'étudiant. Veuillez réessayer plus tard."
 		}
 	},
 	"alert": {
@@ -44,9 +64,12 @@
 		"bimonthly": "Tous les deux mois"
 	},
 	"global": {
-		"backButton": "Retour"
+		"backButton": "Retour",
+		"error": {
+			"init": "Une erreur est survenue sur cette page. Veuillez réessayer plus tard."
+		}
 	},
 	"error": "Un problème inconnu est survenu. Vous pouvez fermer l'application et essayer à nouveau.",
-	"money": "{{value}} {{currency}}",
-	"moneySymbol": "{{value}} {{currency}}"
+	"_money": "{{value}} {{currency}}",
+	"_moneySymbol": "{{value}} {{currency}}"
 }

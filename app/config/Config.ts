@@ -10,7 +10,7 @@ export class Conf {
 
 	static currency = 'CNY';
 
-	static stub = true;
+	static stub = false;
 
 	static humanizeDuration = humanizeDuration.humanizer({
 		language: Conf.langHumanize

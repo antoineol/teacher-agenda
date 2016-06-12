@@ -16,6 +16,7 @@ import {AgendaService} from "../../business/AgendaService";
 })
 export class LessonFormPage {
 	edit:boolean;
+	updating = false;
 
 	lesson:Lesson = {
 		studentId: null,
@@ -27,26 +28,50 @@ export class LessonFormPage {
 	freq:FreqChoice[] = [];
 
 	constructor(private nav:NavController, private navParams:NavParams, private agendaService:AgendaService, private agendaDao:AgendaDao, private error:ErrorService, private lessonService:LessonFormService, miscService:MiscService) {
-		let initLesson = navParams.get('lesson');
-		this.edit = !!initLesson;
+		let errKey = "global.error.init";
+		try {
+			let initLesson = navParams.get('lesson');
+			this.edit = !!initLesson;
 
-		this.lesson = initLesson || this.lesson;
-		lessonService.prepareLessonForForm(this.lesson, navParams.get('studentId'));
+			if (this.edit) {
+				this.lesson = {
+					$key: initLesson.$key,
+					studentId: initLesson.studentId,
+					date: initLesson.date,
+					duration: initLesson.duration,
+					repetition: initLesson.repetition,
+					repetitionEnd: initLesson.repetitionEnd,
+				};
+			}
+			// this.lesson = initLesson || this.lesson;
+			lessonService.prepareLessonForForm(this.lesson, navParams.get('studentId'));
 
-		agendaDao.findStudents().subscribe((students:Student[]) => this.students = students);
-
-		miscService.getFrequencies().subscribe((freq:FreqChoice[]) => this.freq = freq);
-
-		// console.log("localeData:", moment.localeData('fr'));
+			agendaDao.findStudents().subscribe((students:Student[]) => this.students = students, this.error.handler(errKey));
+			miscService.getFrequencies().subscribe((freq:FreqChoice[]) => this.freq = freq, this.error.handler(errKey));
+		} catch(err) {
+			this.error.handler(errKey)(err);
+		}
 	}
 
-	createLesson(event:any) {
-		if (this.edit) {
-			this.agendaService.formatEntry(this.lesson).subscribe();
+	createLesson() {
+		// console.log("Create lesson:", this.lesson);
+		let errKey = this.edit ? "lesson.error.update" : "lesson.error.insert";
+		this.updating = true;
+		try {
+			// if (this.edit) {
+			// 	this.agendaService.formatEntry(this.lesson).subscribe();
+			// }
+			this.lessonService.submitLesson(this.lesson, this.edit).subscribe(() => {
+				this.updating = false;
+				this.nav.pop();
+			}, (err) => {
+				this.updating = false;
+				this.error.handler(errKey)(err)
+			});
+		} catch (err) {
+			this.updating = false;
+			this.error.handler(errKey)(err);
 		}
-		this.lessonService.submitLesson(this.lesson, this.edit).subscribe(() => {
-			this.nav.pop();
-		}, this.error.handler("lesson.error.insert"));
 	}
 
 }

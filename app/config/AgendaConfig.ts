@@ -9,6 +9,7 @@ export class AgendaConfig {
 
 	// static defaultDate = "2016-05-18";
 	static defaultDate = today.format().substr(0, 10);
+	static defaultDuration = 45;
 
 	// private static defaultStart:Moment = today.clone().startOf('day');
 	// private static defaultEnd:Moment = today.clone().endOf('day');

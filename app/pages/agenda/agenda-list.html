@@ -1,7 +1,8 @@
 <!--Index: {{index}} Length: {{agenda?.length}}-->
 <ion-list>
 	<div *ngFor="let entry of agenda" class="entry-container">
-		<button *ngIf="entry.student" class="agenda-entry" ion-item (click)="entryTapped($event, entry)">
+		<!--class="agenda-entry"-->
+		<button *ngIf="entry.student" ion-item (click)="entryTapped($event, entry)">
 			<div [ngStyle]="{'padding-top': entry.marginTopBottom, 'padding-bottom': entry.marginTopBottom}">{{entry.student.name}}</div>
 			<ion-badge *ngIf="entry.student" item-right><!--{{entry.start.format('L')}} -->{{entry.startReadable}} - {{entry.endReadable}}</ion-badge>
 			<!--secondary-->

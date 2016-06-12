@@ -29,6 +29,7 @@ export const Freq = {
 
 // Stored in DB
 export interface Lesson {
+	$key?:string;
 	studentId?:string;
 	date:string; // Date.toJSON(), cf http://stackoverflow.com/questions/10286204/the-right-json-date-format
 	duration?:number; // in minutes

@@ -7,8 +7,8 @@ export abstract class StorageDao {
 	abstract findAll(collection:string):Observable<any>;
 	abstract findObject(collection:string):Observable<any>;
 	abstract pushToList(collection:string, entity:any):Promise<void>;
-	abstract updateInList(collection:string, key:string, entity:any):Promise<void>;
-	abstract removeInList(collection:string, key:string):Promise<void>;
+	abstract updateInList(collection:string, entity:any):Promise<void>;
+	abstract removeInList(collection:string, entity:any):Promise<void>;
 	abstract removeAllList(collection:string):Promise<void>;
 	abstract insertObject(collection:string, entity:any):Promise<void>;
 	abstract updateObject(collection:string, entity:any):Promise<void>;

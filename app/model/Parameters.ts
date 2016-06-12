@@ -1,3 +1,3 @@
 export interface Parameters {
-    defaultDuration:number;
+    defaultDuration?:number;
 }

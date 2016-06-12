@@ -16,7 +16,7 @@
 		}
 	},
 	"lesson": {
-		"edit": "Modify a lesson",
+		"edit": "Modify the lesson",
 		"add": "Add a lesson",
 		"date": "Date",
 		"duration": "Duration",
@@ -26,7 +26,27 @@
 		"repetition": "Repetition",
 		"repetitionEnd": "Until (included)",
 		"error": {
-			"insert": "An error occurred while creating the new lesson. Please try again later."
+			"insert": "An error occurred while creating the new lesson. Please try again later.",
+			"update": "An error occurred while updating the lesson. Please try again later.",
+			"remove": "An error occurred while removing the lesson. Please try again later."
+		}
+	},
+	"student": {
+		"title": "Students",
+		"add": "Add a student",
+		"edit": "Modify the student",
+		"name": "Name",
+		"name_colon": "Name:",
+		"price": "Price",
+		"price_colon": "Price:",
+		"deleteConfirm": {
+			"title": "Delete the student",
+			"message": "Please confirm the removal of this student."
+		},
+		"error": {
+			"insert": "An error occurred while creating the new student. Please try again later.",
+			"update": "An error occurred while updating the student. Please try again later.",
+			"remove": "An error occurred while removing the lesson. Please try again later."
 		}
 	},
 	"alert": {
@@ -44,9 +64,12 @@
 		"bimonthly": "Bimonthly"
 	},
 	"global": {
-		"backButton": "Back"
+		"backButton": "Back",
+		"error": {
+			"init": "An error occurred on this page. Please try again later."
+		}
 	},
 	"error": "An unknown issue occurred. You may close the application and try again.",
-	"money": "{{currency}} {{value}}",
-	"moneySymbol": "{{currency}}{{value}}"
+	"_money": "{{currency}} {{value}}",
+	"_moneySymbol": "{{currency}}{{value}}"
 }

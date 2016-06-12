@@ -1,0 +1,21 @@
+<ion-navbar *navbar>
+	<button menuToggle>
+		<ion-icon name="menu"></ion-icon>
+	</button>
+	<ion-title>{{"student.title" | translate}}</ion-title>
+	<ion-buttons end>
+		<button (click)="popAddList($event)">
+			<ion-icon name="add"></ion-icon>
+		</button>
+	</ion-buttons>
+</ion-navbar>
+
+
+<ion-content class="students">
+
+	<ion-list>
+		<button *ngFor="let student of students" ion-item (click)="entryTapped($event, student)">{{student.name}}</button>
+	</ion-list>
+
+
+</ion-content>

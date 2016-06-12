@@ -1,12 +1,13 @@
 import {Component, ViewChild} from "@angular/core";
-import {NavController, Slides} from "ionic-angular";
+import {NavController, Slides, Popover} from "ionic-angular";
 import {AgendaEntry} from "../../model/Lesson";
-import {LessonFormPage} from "../forms/lesson";
 import {AgendaList} from "./agenda-list";
 import {AgendaRange} from "../../model/AgendaRange";
 import {AgendaService} from "../../business/AgendaService";
 import {AgendaConfig} from "../../config/AgendaConfig";
+import {AddPopover} from "../forms/add-popover";
 import moment = require("moment");
+import {LessonFormPage} from "../forms/lesson";
 
 
 @Component({
@@ -95,8 +96,13 @@ export class AgendaPage {
 	// 	console.log("Did change");
 	// }
 
-	addEntry() {
-		this.nav.push(LessonFormPage);
+	// previous: open new lesson page
+	// addEntry() {
+	// 	this.nav.push(LessonFormPage);
+	// }
+
+	popAddList(event) {
+		this.nav.present(AddPopover.make(), {ev: event});
 	}
 
 }

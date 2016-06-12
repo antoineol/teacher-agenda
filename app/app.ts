@@ -13,6 +13,8 @@ moment.locale(Conf.langMoment);
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/toPromise';
+import 'rxjs/add/operator/share';
+import 'rxjs/add/operator/first';
 import 'rxjs/add/observable/combineLatest';
 import "rxjs/add/observable/of";
 import "rxjs/add/observable/from";
@@ -26,6 +28,7 @@ import {AgendaPage} from './pages/agenda/agenda';
 import {injectables, pipes} from "./injectables";
 import {TranslateService} from "ng2-translate/ng2-translate";
 import {ErrorService} from "./framework/ErrorService";
+import {StudentsPage} from "./pages/students/students";
 
 
 interface PageEntry {
@@ -53,7 +56,8 @@ class MyApp {
 
 			this.translate.getTranslation(Conf.lang).subscribe(() => {
 				this.pages = [
-					{title: this.translate.instant('agenda.title'), component: AgendaPage}
+					{title: this.translate.instant('agenda.title'), component: AgendaPage},
+					{title: this.translate.instant('student.title'), component: StudentsPage}
 				];
 
 				// Back button text: provide translations (only English by default with ionic)

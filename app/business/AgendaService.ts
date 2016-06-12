@@ -148,7 +148,7 @@ export class AgendaService {
 		// Ensure the variable normally set in extendAndFilterAgenda() are also set if the
 		// format method was called without the other method.
 		if (!extended) {
-			this.extendEntries(agenda, studentsArray, parameters);
+			agenda = this.extendEntries(agenda, studentsArray, parameters);
 		}
 
 		for (let entry of agenda) {
@@ -218,7 +218,7 @@ export class AgendaService {
 		start = start.startOf('day');
 		end = end.endOf('day');
 
-		this.extendEntries(agenda, studentsArray, parameters);
+		agenda = this.extendEntries(agenda, studentsArray, parameters);
 
 		// Prepare the array of weekdays displayed in the range
 		let tmpDate = start.clone();
@@ -287,9 +287,26 @@ export class AgendaService {
 		return agenda;
 	}
 
-	private extendEntries(agenda:AgendaEntry[], studentsArray:Student[], parameters:Parameters) {
-		let students = _.indexBy(studentsArray, "id");
+	private extendEntries(agenda:AgendaEntry[], studentsArray:Student[], parameters:Parameters):AgendaEntry[] {
+		let students = _.indexBy(studentsArray, "$key");
 		// prepare start/end/duration in entries
+		// return agenda.map((_entry:AgendaEntry) => {
+		// 	let entry = Object.assign({}, _entry);
+		// 	// Convert student foreign key to object
+		// 	if (_.isString(entry.studentId)) {
+		// 		entry.student = students[<any>entry.studentId];
+		// 	}
+		// 	// eventually add default duration
+		// 	entry.duration = entry.duration || parameters.defaultDuration;
+		// 	// add momentjs objects
+		// 	entry.start = moment(entry.date);
+		// 	entry.end = moment(entry.start).add(entry.duration, "minutes");
+		// 	if (entry.repetitionEnd) {
+		// 		entry.repetEnd = moment(entry.repetitionEnd).endOf('day');
+		// 	}
+		// 	// moment.duration()
+		// 	// agendaEntry.mDuration = moment.duration(agendaEntry.duration, 'm');
+		// });
 		for (let entry of agenda) {
 			// Convert student foreign key to object
 			if (_.isString(entry.studentId)) {
@@ -306,6 +323,7 @@ export class AgendaService {
 			// moment.duration()
 			// agendaEntry.mDuration = moment.duration(agendaEntry.duration, 'm');
 		}
+		return agenda;
 	}
 
 	private static compareAgendaEntriesByStartDate(a:AgendaEntry, b:AgendaEntry) {

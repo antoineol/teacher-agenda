@@ -14,6 +14,8 @@ import {MiscService} from "./business/MiscService";
 import {FirebaseStorageDao} from "./framework/dao/FirebaseStorageDao";
 import {StubStorageDao} from "./framework/dao/StubStorageDao";
 import {Conf} from "./config/Config";
+import {StudentFormService} from "./business/StudentFormService";
+import {StudentDao} from "./business/StudentDao";
 // import {TranslatePipe} from "ionic-angular/index"; // look at the translation facilities embedded in ionic2
 
 export const pipes:any[] = [
@@ -26,6 +28,7 @@ export const injectables:any[] = [
 	// Firebase Angular2 adapter
 	FIREBASE_PROVIDERS,
 	defaultFirebase('https://teacher-agenda-812ca.firebaseio.com'),//AuthProviders
+	// TODO test and replace by a better auth config
 	firebaseAuthConfig({
 		// provider: AuthProviders.Google,
 		// method: AuthMethods.Redirect
@@ -58,4 +61,6 @@ export const injectables:any[] = [
 	AgendaService,
 	LessonFormService,
 	MiscService,
+	StudentFormService,
+	StudentDao,
 ];

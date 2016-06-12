@@ -1,0 +1,28 @@
+<ion-navbar *navbar>
+	<button menuToggle>
+		<ion-icon name="menu"></ion-icon>
+	</button>
+	<ion-title>{{ (edit ? "student.edit" : "student.add") | translate }}</ion-title>
+</ion-navbar>
+
+
+<ion-content class="student-form">
+
+	<form (submit)="createStudent()">
+		<ion-list>
+			<ion-item>
+				<ion-label>{{"student.name" | translate}}</ion-label>
+				<ion-input type="text" [(ngModel)]="student.name" required></ion-input>
+			</ion-item>
+			<ion-item>
+				<ion-label>{{"student.price" | translate}}</ion-label>
+				<ion-input type="number" min="0" [(ngModel)]="student.price" required></ion-input>
+			</ion-item>
+		</ion-list>
+
+		<div padding>
+			<button block primary type="submit" [disabled]="updating">{{ (edit ? "lesson.validateEdit" : "lesson.validateAdd") | translate}}</button>
+		</div>
+	</form>
+
+</ion-content>
