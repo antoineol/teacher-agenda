@@ -1,73 +1,52 @@
-import {Injectable} from "@angular/core";
-import {Http, Response} from "@angular/http";
 import {Observable} from "rxjs/Observable";
-import {LocalStorageDao} from "./LocalStorageDao";
+import {Injectable} from "@angular/core";
 
-// @Injectable()
-// export class Cache {
-//
-// 	// Current implementation: in-memory cache. Can be moved to local storage or session storage.
-//
-// 	cache = new Map<string, any>();
-//
-// 	get(key:string):any {
-// 		return this.cache.get(key);
-// 	}
-//
-// 	set(key:string, value:any):void {
-// 		this.cache.set(key, value);
-// 	}
-// }
 
 @Injectable()
-export class StorageDao {
+export abstract class StorageDao {
+	abstract findAll(collection:string):Observable<any>;
+	abstract findObject(collection:string):Observable<any>;
+	abstract pushToList(collection:string, entity:any):Promise<void>;
+	abstract updateInList(collection:string, key:string, entity:any):Promise<void>;
+	abstract removeInList(collection:string, key:string):Promise<void>;
+	abstract removeAllList(collection:string):Promise<void>;
+	abstract insertObject(collection:string, entity:any):Promise<void>;
+	abstract updateObject(collection:string, entity:any):Promise<void>;
+	abstract removeObject(collection:string):Promise<void>;
 
-	private loadingObs = new Map<string, Observable<any>>();
 
-	constructor(private http:Http, private localStorage:LocalStorageDao/*, private cache:Cache*/) {
-	}
-
-	public find(cacheKey:string, url:string):Observable<any> {
-
-		return this.localStorage.find(cacheKey);
-
-		// The shared observable is already used as a memory cache.
-		// The use of cache can be re-enabled if persistent, like local storage.
-
-		// let cached = this.cache.get(key);
-		// console.log("cached", key, ":", cached);
-		// if (cached) {
-		// 	return Observable.of(cached);
-		// }
-
-		// let cachedObs:Observable<any> = this.loadingObs.get(cacheKey);
-		// // console.log(key, ":", cachedObs);
-		// if (cachedObs) {
-		// 	return cachedObs;
-		// }
-		// cachedObs = this.http.get(url).map((resp:Response) => {
-		// 	let parsed:any = resp.json();
-		// 	// Uncomment if the cache is finally used.
-		// 	// this.cache.set(cacheKey, parsed);
-		// 	return parsed;
-		// })/*.share()*/;
-		// cachedObs = Observable.from(cachedObs.toPromise());
-		// this.loadingObs.set(cacheKey, cachedObs);
-		// return cachedObs;
-	}
-
-	public insert(cacheKey:string, url:string, entity:any):Observable<void> {
-		// KO: always adding at the same key. Currently investigating other approaches. PouchDB seems good.
-		return this.localStorage.insert(cacheKey, entity);
-
-		// TODO implement once we have a persistent storage
-		// Mock: persistent inserts/updates not supported yet.
-		// return Observable.of(null);
-	}
-
-	public remove(cacheKey:string, url:string, entity:any):Observable<void> {
-		// TODO implement once we have a persistent storage
-		// Mock: persistent removes not supported yet.
-		return Observable.of(null);
-	}
+	// abstract insert(collection:string, entity:any):Observable<void>;
+	// abstract remove(collection:string, entity:any):Observable<void>;
 }
+// For some unknown reason, the following interface imported in injectables.ts is undefined. TS bug?
+// export interface StorageDao {
+// 	findAll(collection:string):Observable<any>;
+// 	insert(collection:string, entity:any):Observable<void>;
+// 	remove(collection:string, entity:any):Observable<void>;
+// }
+
+// @Injectable()
+// export class StorageDao {
+//
+// 	private loadingObs = new Map<string, Observable<any>>();
+//
+// 	constructor(private http:Http, private firebaseDao:FirebaseStorageDao, private stubStorage:StubStorageDao) {
+// 	}
+//
+// 	public findAll(collection:string):Observable<any> {
+// 		console.log('StorageDao findAll');
+//
+// 		// return this.firebaseDao.findAll(collection);
+// 		return this.stubStorage.findAll(collection);
+// 	}
+//
+// 	public insert(collection:string, entity:any):Observable<void> {
+// 		// KO: always adding at the same key. Currently investigating other approaches. PouchDB seems good.
+// 		// return this.localStorage.insert(cacheKey, entity);
+// 		return this.stubStorage.insert(collection, entity);
+// 	}
+//
+// 	public remove(collection:string, entity:any):Observable<void> {
+// 		return this.stubStorage.remove(collection, entity);
+// 	}
+// }

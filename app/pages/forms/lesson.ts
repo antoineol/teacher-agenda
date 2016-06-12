@@ -1,4 +1,5 @@
-import {Page, NavParams, NavController} from "ionic-angular";
+import {Component} from "@angular/core";
+import {NavParams, NavController} from "ionic-angular";
 import {Lesson, Freq, FreqChoice} from "../../model/Lesson";
 import {Utils} from "../../business/Utils";
 import {AgendaDao} from "../../business/AgendaDao";
@@ -10,7 +11,7 @@ import {AgendaService} from "../../business/AgendaService";
 // import moment = require("moment");
 
 
-@Page({
+@Component({
 	templateUrl: 'build/pages/forms/lesson.html'
 })
 export class LessonFormPage {

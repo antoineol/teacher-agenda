@@ -17,8 +17,8 @@
 	<button class="arrow arrow-left" (click)="slidePrev()" light clear><ion-icon name="arrow-dropleft"></ion-icon></button>
 
 	<!--{{rangesPreview()}}-->
-	<!--(willChange)="updateSlideRange($event)" (didChange)="updateSlideRangeEnd($event)"-->
-	<ion-slides #slider (willChange)="updateSlideRange($event)" [options]="slideOptions">
+	<!--(ionWillChange)="updateSlideRange($event)" (ionDidChange)="updateSlideRangeEnd($event)"-->
+	<ion-slides #slider (ionWillChange)="updateSlideRange($event)" [options]="slideOptions">
 
 		<ion-slide *ngFor="let range of ranges; let i = index">
 			<agenda-list [range]="range" [index]="i"></agenda-list>

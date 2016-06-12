@@ -9,18 +9,18 @@ import 'moment/locale/zh-cn';
 moment.locale(Conf.langMoment);
 
 // Starts by adding operators and methods to observables
+// import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/toPromise';
-// import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/observable/combineLatest';
 import "rxjs/add/observable/of";
 import "rxjs/add/observable/from";
 import "rxjs/add/observable/fromPromise";
 import "rxjs/add/observable/merge";
 
-import {ViewChild} from '@angular/core';
-import {App, IonicApp, Platform, Nav, Config} from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
+import {ionicBootstrap, Platform, Nav, Config} from 'ionic-angular';
 import {StatusBar} from 'ionic-native';
 import {AgendaPage} from './pages/agenda/agenda';
 import {injectables, pipes} from "./injectables";
@@ -33,11 +33,11 @@ interface PageEntry {
 	component:any;
 }
 
-@App({
+@Component({
 	templateUrl: 'build/app.html',
-	config: {}, // http://ionicframework.com/docs/v2/api/config/Config/
-	providers: injectables,
-	pipes: pipes
+	// config: {}, // http://ionicframework.com/docs/v2/api/config/Config/
+	// providers: injectables,
+	// pipes: pipes
 })
 class MyApp {
 	@ViewChild(Nav) nav: Nav;
@@ -45,7 +45,7 @@ class MyApp {
 	rootPage:any = AgendaPage;
 	pages:PageEntry[] = [];
 
-	constructor(/*private app:IonicApp, */private platform:Platform, private translate: TranslateService, private error:ErrorService, ionicConfig:Config) {
+	constructor(/*private app:App, */private platform:Platform, private translate: TranslateService, private error:ErrorService, ionicConfig:Config) {
 		try {
 			this.initializeApp();
 
@@ -90,3 +90,7 @@ class MyApp {
 		this.translate.getTranslation(Conf.defaultLang).subscribe();
 	}
 }
+
+ionicBootstrap(MyApp, injectables, {
+	// http://ionicframework.com/docs/v2/api/config/Config/
+});

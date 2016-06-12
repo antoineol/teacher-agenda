@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {Toast, NavController, IonicApp} from "ionic-angular";
+import {Toast, NavController, App} from "ionic-angular";
 import {TranslateService} from "ng2-translate/ng2-translate";
 
 
@@ -8,7 +8,7 @@ export class ErrorService {
 
 	// private nav:NavController;
 
-	constructor(private app: IonicApp, private translate:TranslateService) {
+	constructor(private app:App, private translate:TranslateService) {
 		// this.nav = app.getActiveNav();
 	}
 

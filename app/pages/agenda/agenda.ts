@@ -1,5 +1,5 @@
-import {ViewChild} from "@angular/core";
-import {Page, NavController, Slides} from "ionic-angular";
+import {Component, ViewChild} from "@angular/core";
+import {NavController, Slides} from "ionic-angular";
 import {AgendaEntry} from "../../model/Lesson";
 import {LessonFormPage} from "../forms/lesson";
 import {AgendaList} from "./agenda-list";
@@ -9,7 +9,7 @@ import {AgendaConfig} from "../../config/AgendaConfig";
 import moment = require("moment");
 
 
-@Page({
+@Component({
 	templateUrl: 'build/pages/agenda/agenda.html',
 	directives: [AgendaList]
 })

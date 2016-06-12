@@ -32,7 +32,7 @@ export class AgendaService {
 			let agenda:AgendaEntry[] = results[0];
 			let studentsArray:Student[] = results[1];
 			let parameters:Parameters = results[2];
-			// console.log("getFormattedAgenda callback", agenda);
+			console.log("getFormattedAgenda callback", agenda);
 
 			let filteredAgenda = this.extendAndFilterAgenda(agenda, start, end, studentsArray, parameters);
 			return this.formatForDisplay(filteredAgenda, parameters, studentsArray, true);

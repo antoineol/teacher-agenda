@@ -1,15 +1,20 @@
 import {provide, PLATFORM_PIPES} from "@angular/core";
 import {Http} from "@angular/http";
 import {TranslateService, TranslateLoader, TranslateStaticLoader, TranslatePipe} from "ng2-translate/ng2-translate";
-import {AgendaDao} from "./business/AgendaDao";
+import {
+	FIREBASE_PROVIDERS, defaultFirebase, firebaseAuthConfig, AuthProviders,
+	AuthMethods
+} from "angularfire2/angularfire2";
 import {AgendaService} from "./business/AgendaService";
 import {/*Cache, */StorageDao} from "./framework/dao/StorageDao";
+import {AgendaDao} from "./business/AgendaDao";
 import {ErrorService} from "./framework/ErrorService";
 import {LessonFormService} from "./business/LessonFormService";
 import {MiscService} from "./business/MiscService";
-import {LocalStorageDao} from "./framework/dao/LocalStorageDao";
+import {FirebaseStorageDao} from "./framework/dao/FirebaseStorageDao";
+import {StubStorageDao} from "./framework/dao/StubStorageDao";
+import {Conf} from "./config/Config";
 // import {TranslatePipe} from "ionic-angular/index"; // look at the translation facilities embedded in ionic2
-
 
 export const pipes:any[] = [
 	TranslatePipe
@@ -17,6 +22,19 @@ export const pipes:any[] = [
 
 export const injectables:any[] = [
 	// IONIC_DIRECTIVES,
+
+	// Firebase Angular2 adapter
+	FIREBASE_PROVIDERS,
+	defaultFirebase('https://teacher-agenda-812ca.firebaseio.com'),//AuthProviders
+	firebaseAuthConfig({
+		// provider: AuthProviders.Google,
+		// method: AuthMethods.Redirect
+		provider: AuthProviders.Password,
+		method: AuthMethods.Password,
+		remember: 'default',
+		scope: ['email']
+	}),
+
 	provide(TranslateLoader, {
 		useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'),
 		deps: [Http]
@@ -32,10 +50,12 @@ export const injectables:any[] = [
 
 	AgendaDao,
 	// Cache,
-	StorageDao,
-	LocalStorageDao,
+	// StorageDao,
+	// FirebaseStorageDao,
+	// StubStorageDao,
+	provide(StorageDao, {useClass: Conf.stub ? StubStorageDao : FirebaseStorageDao}),
 	ErrorService,
 	AgendaService,
 	LessonFormService,
-	MiscService
+	MiscService,
 ];

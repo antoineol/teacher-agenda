@@ -1,4 +1,5 @@
-import {Page, NavParams, NavController, Alert} from "ionic-angular";
+import {Component} from "@angular/core";
+import {NavParams, NavController, Alert} from "ionic-angular";
 import moment = require("moment");
 import {AgendaEntry, FreqChoice} from "../../model/Lesson";
 import {LessonFormService} from "../../business/LessonFormService";
@@ -10,7 +11,7 @@ import {Conf} from "../../config/Config";
 import {LessonFormPage} from "../forms/lesson";
 import {MiscService} from "../../business/MiscService";
 
-@Page({
+@Component({
 	templateUrl: 'build/pages/agenda/agenda-detail.html'
 })
 export class AgendaDetailPage {
@@ -33,7 +34,7 @@ export class AgendaDetailPage {
 
 		// if (entry.repetition) {
 		// 	this.miscService.getFrequencies().subscribe((freq:FreqChoice[]) => {
-		// 		let found = freq.find((elt:FreqChoice) => elt.id === entry.repetition);
+		// 		let found = freq.findAll((elt:FreqChoice) => elt.id === entry.repetition);
 		// 		this.repetition = found ? found.label : undefined;
 		// 	});
         //
