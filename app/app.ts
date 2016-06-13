@@ -31,6 +31,9 @@ import {ErrorService} from "./framework/ErrorService";
 import {StudentsPage} from "./pages/students/students";
 
 
+// TODO offline mode https://www.firebase.com/docs/android/guide/offline-capabilities.html
+// https://angularfire2.com/api/ to get Firebase obj: @Inject(FirebaseRef) ref:Firebase
+
 interface PageEntry {
 	title:string;
 	component:any;
