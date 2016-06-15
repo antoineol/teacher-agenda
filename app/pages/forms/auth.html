@@ -1,0 +1,17 @@
+<ion-navbar *navbar>
+	<button menuToggle>
+		<ion-icon name="menu"></ion-icon>
+	</button>
+	<ion-title>{{ (edit ? "lesson.edit" : "lesson.add") | translate }}</ion-title>
+</ion-navbar>
+
+
+<ion-content class="lesson-form">
+
+	<form (submit)="loginWithGithub()">
+		<button type="submit">
+			<ion-icon name="logo-github"></ion-icon>
+		</button>
+	</form>
+
+</ion-content>

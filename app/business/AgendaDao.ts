@@ -15,13 +15,14 @@ const COLLECTION_PARAMETERS = "parameters";
 @Injectable()
 export class AgendaDao {
 
-	private agendaUpdates = new ReplaySubject<AgendaEntry[]>(1);
+	// private agendaUpdates = new ReplaySubject<AgendaEntry[]>(1);
 
 	constructor(private dao:StorageDao) {
 	}
 
 	latestAgenda():Observable<AgendaEntry[]> {
-		return Observable.merge(this.findAgenda(), this.agendaUpdates);
+		// return Observable.merge(this.findAgenda(), this.agendaUpdates);
+		return this.findAgenda();
 	}
 
 	private findAgenda():Observable<AgendaEntry[]> {

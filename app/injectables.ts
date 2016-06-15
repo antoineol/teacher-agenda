@@ -16,6 +16,7 @@ import {StubStorageDao} from "./framework/dao/StubStorageDao";
 import {Conf} from "./config/Config";
 import {StudentFormService} from "./business/StudentFormService";
 import {StudentDao} from "./business/StudentDao";
+import {AuthService} from "./framework/AuthService";
 // import {TranslatePipe} from "ionic-angular/index"; // look at the translation facilities embedded in ionic2
 
 export const pipes:any[] = [
@@ -32,10 +33,13 @@ export const injectables:any[] = [
 	firebaseAuthConfig({
 		// provider: AuthProviders.Google,
 		// method: AuthMethods.Redirect
-		provider: AuthProviders.Password,
-		method: AuthMethods.Password,
-		remember: 'default',
-		scope: ['email']
+		provider: AuthProviders.Github,
+		method: AuthMethods.Popup,
+		// remember: 'default',
+		// scope: ['email']
+
+		// If authenticated with same email, for different providers, they may be linked:
+		// https://firebase.google.com/docs/auth/web/github-auth#popup-mode
 	}),
 
 	provide(TranslateLoader, {
@@ -63,4 +67,5 @@ export const injectables:any[] = [
 	MiscService,
 	StudentFormService,
 	StudentDao,
+	AuthService,
 ];

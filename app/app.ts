@@ -22,16 +22,20 @@ import "rxjs/add/observable/fromPromise";
 import "rxjs/add/observable/merge";
 
 import {Component, ViewChild} from '@angular/core';
-import {ionicBootstrap, Platform, Nav, Config} from 'ionic-angular';
+import {ionicBootstrap, Platform, Nav, Config, App, NavController} from 'ionic-angular';
 import {StatusBar} from 'ionic-native';
 import {AgendaPage} from './pages/agenda/agenda';
 import {injectables, pipes} from "./injectables";
 import {TranslateService} from "ng2-translate/ng2-translate";
 import {ErrorService} from "./framework/ErrorService";
 import {StudentsPage} from "./pages/students/students";
+import {FirebaseAuth} from "angularfire2/angularfire2";
+import {AuthFormPage} from "./pages/forms/auth";
+import {AuthService} from "./framework/AuthService";
 
 
 // TODO offline mode https://www.firebase.com/docs/android/guide/offline-capabilities.html
+// https://www.firebase.com/docs/web/guide/offline-capabilities.html
 // https://angularfire2.com/api/ to get Firebase obj: @Inject(FirebaseRef) ref:Firebase
 
 interface PageEntry {
@@ -46,12 +50,12 @@ interface PageEntry {
 	// pipes: pipes
 })
 class MyApp {
-	@ViewChild(Nav) nav: Nav;
+	@ViewChild(Nav) nav:Nav;
 
 	rootPage:any = AgendaPage;
 	pages:PageEntry[] = [];
 
-	constructor(/*private app:App, */private platform:Platform, private translate: TranslateService, private error:ErrorService, ionicConfig:Config) {
+	constructor(/*private app:App, */private platform:Platform, private translate: TranslateService, private error:ErrorService, ionicConfig:Config, private auth:AuthService) {
 		try {
 			this.initializeApp();
 
@@ -78,6 +82,13 @@ class MyApp {
 			// Okay, so the platform is ready and our plugins are available.
 			// Here you can do any higher level native things you might need.
 			StatusBar.styleDefault();
+		});
+	}
+
+	ngAfterViewInit() {
+		this.auth.init(/*this.nav*/);
+		this.auth._showAuthEmitter().subscribe(() => {
+			AuthFormPage.show(this.nav);
 		});
 	}
 

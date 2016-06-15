@@ -49,6 +49,10 @@
 			"remove": "Une erreur est survenue pendant la suppression de l'étudiant. Veuillez réessayer plus tard."
 		}
 	},
+	"auth": {
+		"title": "Connexion",
+		"accessDenied": "Accès refusé. Veuillez vous reconnecter et réessayer."
+	},
 	"alert": {
 		"cancel": "Annuler",
 		"done": "Choisir",

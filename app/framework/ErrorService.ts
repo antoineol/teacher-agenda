@@ -1,6 +1,7 @@
 import {Injectable} from "@angular/core";
 import {Toast, NavController, App} from "ionic-angular";
 import {TranslateService} from "ng2-translate/ng2-translate";
+import {AuthService} from "./AuthService";
 
 
 @Injectable()
@@ -8,7 +9,7 @@ export class ErrorService {
 
 	// private nav:NavController;
 
-	constructor(private app:App, private translate:TranslateService) {
+	constructor(private app:App, private translate:TranslateService, private auth:AuthService) {
 		// this.nav = app.getActiveNav();
 	}
 
@@ -17,8 +18,18 @@ export class ErrorService {
 	 * @param friendlyErrorMessageKey
 	 * @returns {function(any)}
      */
-	handler(friendlyErrorMessageKey:string) {
-		return (error:any) => {
+	handler(friendlyErrorMessageKey:string):(error:any)=>void {
+		return (error:any):void => {
+			if (error && error.code === 'PERMISSION_DENIED') {
+				// If authentication issue with firebase: error.code === 'PERMISSION_DENIED'
+				this.translate.get('auth.accessDenied').subscribe((message:string) => {
+					this.toast(message);
+				});
+				// this.reauth();
+				this.auth.ensureAuth();
+				return;
+			}
+
 			// Can send the error to a tool like Crittercism here
 			if (error && typeof error === 'object') {
 				console.error(error.stack || error);
@@ -32,7 +43,7 @@ export class ErrorService {
 		}
 	}
 
-	private toast(message:string) {
+	private toast(message:string):void {
 		let nav:NavController = this.app.getActiveNav();
 		let toast:Toast = Toast.create({
 			message: message,
@@ -40,5 +51,9 @@ export class ErrorService {
 		});
 		nav.present(toast);
 	}
+	// private reauth():void {
+	// 	let nav:NavController = this.app.getActiveNav();
+	// 	this.auth.authenticate(nav);
+	// }
 
 }

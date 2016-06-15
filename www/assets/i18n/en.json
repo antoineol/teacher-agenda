@@ -49,6 +49,10 @@
 			"remove": "An error occurred while removing the lesson. Please try again later."
 		}
 	},
+	"auth": {
+		"title": "Sign in",
+		"accessDenied": "Access denied. Please reauthenticate and retry."
+	},
 	"alert": {
 		"cancel": "Cancel",
 		"done": "Done",
