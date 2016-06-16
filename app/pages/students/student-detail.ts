@@ -7,19 +7,25 @@ import {Conf} from "../../config/Config";
 import {TranslateService} from "ng2-translate/ng2-translate";
 import {StudentDao} from "../../business/StudentDao";
 import {ErrorService} from "../../framework/ErrorService";
+import {AgendaDao} from "../../business/AgendaDao";
 
 @Component({
 	templateUrl: 'build/pages/students/student-detail.html'
 })
 export class StudentDetailPage {
-	
+
 	private student:Student;
 	private removePopup:Observable<Alert>;
-	
-	constructor(navParams:NavParams, private nav:NavController, translate:TranslateService, studentDao:StudentDao, private error:ErrorService) {
+
+	constructor(navParams:NavParams, private nav:NavController, translate:TranslateService, studentDao:StudentDao, private error:ErrorService, private agendaDao:AgendaDao) {
 		let errKey = "global.error.init";
 		try {
 			this.student = navParams.get('student');
+
+			agendaDao.findStudent(this.student.$key).subscribe((student:Student) => {
+				this.student = student;
+				console.log("New student:", student);
+			}, error.handler("global.error.init"));
 
 			this.removePopup = translate.getTranslation(Conf.lang).map(() => {
 				let confirm = Alert.create({

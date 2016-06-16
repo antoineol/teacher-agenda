@@ -6,6 +6,7 @@ import {Injectable} from "@angular/core";
 export abstract class StorageDao {
 	abstract findAll(collection:string):Observable<any>;
 	abstract findObject(collection:string):Observable<any>;
+	abstract findByKey(collection:string, key:string):Observable<any>;
 	abstract pushToList(collection:string, entity:any):Promise<void>;
 	abstract updateInList(collection:string, entity:any):Promise<void>;
 	abstract removeInList(collection:string, entity:any):Promise<void>;

@@ -32,7 +32,7 @@ export class AgendaService {
 			let agenda:AgendaEntry[] = results[0];
 			let studentsArray:Student[] = results[1];
 			let parameters:Parameters = results[2];
-			console.log("getFormattedAgenda callback", agenda);
+			// console.log("getFormattedAgenda callback", agenda);
 			// agenda.subscribe((result:any) => {
 			// 	console.log("Agenda result:", result);
 			// }, (err:any) => {
@@ -40,7 +40,7 @@ export class AgendaService {
 			// })
 
 			let filteredAgenda = this.extendAndFilterAgenda(agenda, start, end, studentsArray, parameters);
-			console.log("filteredAgenda", filteredAgenda);
+			// console.log("filteredAgenda", filteredAgenda);
 			return this.formatForDisplay(filteredAgenda, parameters, studentsArray, true);
 		});
 	}
@@ -175,7 +175,7 @@ export class AgendaService {
 				entry.dateReadable = moment(entry.date).format('L');
 			}
 			if (entry.student) {
-				entry.priceReadable = Utils.formatCurrency(entry.student.price);
+				entry.priceReadable = Utils.formatCurrency(entry.price ? entry.price : entry.student.price);
 			}
 
 			if (entry.repetition) {

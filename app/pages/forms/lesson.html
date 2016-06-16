@@ -24,9 +24,13 @@
 			</ion-item>
 			<ion-item>
 				<ion-label>{{"lesson.student" | translate}}</ion-label>
-				<ion-select [(ngModel)]="lesson.studentId" okText="{{'alert.validate' | translate}}" cancelText="{{'alert.cancel' | translate}}">
-					<ion-option *ngFor="let student of students" [value]="student.$key">{{student.name}}</ion-option>
+				<ion-select [(ngModel)]="studentChoice" okText="{{'alert.validate' | translate}}" cancelText="{{'alert.cancel' | translate}}" required>
+					<ion-option *ngFor="let student of students" [value]="student">{{student.name}}</ion-option>
 				</ion-select>
+			</ion-item>
+			<ion-item>
+				<ion-label>{{"student.price" | translate}}</ion-label>
+				<ion-input type="number" min="0" [(ngModel)]="lesson.price" required></ion-input>
 			</ion-item>
 			<ion-item>
 				<ion-label>{{"lesson.repetition" | translate}}</ion-label>

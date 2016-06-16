@@ -1,6 +1,6 @@
 import {Component} from "@angular/core";
 import {NavParams, NavController} from "ionic-angular";
-import {Lesson, Freq, FreqChoice} from "../../model/Lesson";
+import {Lesson, Freq, FreqChoice, AgendaEntry} from "../../model/Lesson";
 import {Utils} from "../../business/Utils";
 import {AgendaDao} from "../../business/AgendaDao";
 import {Student} from "../../model/Student";
@@ -15,14 +15,25 @@ import {AgendaService} from "../../business/AgendaService";
 	templateUrl: 'build/pages/forms/lesson.html'
 })
 export class LessonFormPage {
+
 	edit:boolean;
 	updating = false;
 
 	lesson:Lesson = {
-		studentId: null,
+		// studentId: null,
 		date: Utils.now.format(),
 		repetition: Freq.NONE
 	};
+	private _studentChoice:Student;
+	get studentChoice():Student {
+		return this._studentChoice;
+	}
+	set studentChoice(student:Student) {
+		if (student && (!this.lesson.price || (this._studentChoice && this.lesson.price === this._studentChoice.price))) {
+			this.lesson.price = student.price;
+		}
+		this._studentChoice = student;
+	}
 
 	students:Student[] = [];
 	freq:FreqChoice[] = [];
@@ -30,23 +41,30 @@ export class LessonFormPage {
 	constructor(private nav:NavController, private navParams:NavParams, private agendaService:AgendaService, private agendaDao:AgendaDao, private error:ErrorService, private lessonService:LessonFormService, miscService:MiscService) {
 		let errKey = "global.error.init";
 		try {
-			let initLesson = navParams.get('lesson');
-			this.edit = !!initLesson;
+			let agendaEntry:AgendaEntry = navParams.get('agendaEntry');
+			this.edit = !!agendaEntry;
 
 			if (this.edit) {
+				this.studentChoice = agendaEntry.student; // set first not to override eventual custom price
 				this.lesson = {
-					$key: initLesson.$key,
-					studentId: initLesson.studentId,
-					date: initLesson.date,
-					duration: initLesson.duration,
-					repetition: initLesson.repetition,
-					repetitionEnd: initLesson.repetitionEnd,
+					$key: agendaEntry.$key,
+					studentId: agendaEntry.studentId,
+					price: agendaEntry.price,
+					date: agendaEntry.date,
+					duration: agendaEntry.duration,
+					repetition: agendaEntry.repetition,
+					repetitionEnd: agendaEntry.repetitionEnd,
 				};
 			}
 			// this.lesson = initLesson || this.lesson;
 			lessonService.prepareLessonForForm(this.lesson, navParams.get('studentId'));
 
-			agendaDao.findStudents().subscribe((students:Student[]) => this.students = students, this.error.handler(errKey));
+			agendaDao.findStudents().subscribe((students:Student[]) => {
+				if (agendaEntry) {
+					this.studentChoice = students.find((s:Student) => s.$key === agendaEntry.student.$key);
+				}
+				this.students = students;
+			}, this.error.handler(errKey));
 			miscService.getFrequencies().subscribe((freq:FreqChoice[]) => this.freq = freq, this.error.handler(errKey));
 		} catch(err) {
 			this.error.handler(errKey)(err);
@@ -61,7 +79,7 @@ export class LessonFormPage {
 			// if (this.edit) {
 			// 	this.agendaService.formatEntry(this.lesson).subscribe();
 			// }
-			this.lessonService.submitLesson(this.lesson, this.edit).subscribe(() => {
+			this.lessonService.submitLesson(this.lesson, this._studentChoice, this.edit).subscribe(() => {
 				this.updating = false;
 				this.nav.pop();
 			}, (err) => {

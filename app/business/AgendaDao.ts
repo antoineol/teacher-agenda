@@ -33,6 +33,10 @@ export class AgendaDao {
 		return this.dao.findAll(COLLECTION_STUDENTS).map((students:Student[]) => students ? students : []);
 	}
 
+	findStudent(key:string):Observable<Student> {
+		return this.dao.findByKey(COLLECTION_STUDENTS, key)
+	}
+
 	findParameters():Observable<Parameters> {
 		return this.dao.findObject(COLLECTION_PARAMETERS)
 			.filter((params:Parameters) => {

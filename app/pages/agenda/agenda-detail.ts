@@ -31,7 +31,7 @@ export class AgendaDetailPage {
 			// If it causes sync issues, we can update this component to subscribe to the storage instead.
 			lessonService.updateLessonEmitter.subscribe((lesson:Lesson) => {
 				this.entry = lesson;
-				console.log("New entry:", this.entry);
+				// console.log("New entry:", this.entry);
 			});
 
 			this.removePopup = this.translate.getTranslation(Conf.lang).map(() => {
@@ -66,6 +66,6 @@ export class AgendaDetailPage {
 	}
 
 	edit() {
-		this.nav.push(LessonFormPage, {lesson: this.entry});
+		this.nav.push(LessonFormPage, {agendaEntry: this.entry});
 	}
 }

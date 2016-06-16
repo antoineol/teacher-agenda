@@ -7,6 +7,7 @@ import {Conf} from "../config/Config";
 import {TranslateService} from "ng2-translate/ng2-translate";
 import {Utils} from "./Utils";
 import {AgendaService} from "./AgendaService";
+import {Student} from "../model/Student";
 
 @Injectable()
 export class LessonFormService {
@@ -17,7 +18,7 @@ export class LessonFormService {
 	}
 
 
-	submitLesson(lesson:Lesson, edit?:boolean):Observable<void> {
+	submitLesson(lesson:Lesson, student:Student, edit?:boolean):Observable<void> {
 		return this.agendaDao.findParameters().mergeMap((params:Parameters) => {
 
 			// Restore a copy for the insert case if any side effect.
@@ -27,6 +28,9 @@ export class LessonFormService {
 
 			// {studentId: "482b4f74-ba0d-4b10-acf2-69ffff8f0c4f", date: "2016-05-22", repetition: 0, duration: 45}
 			// Remove useless information from the JSON we are going to persist (default, empty...)
+			if (student) {
+				lesson.studentId = student.$key;
+			}
 			if (!lesson.studentId) {
 				delete lesson.studentId;
 			}

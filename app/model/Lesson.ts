@@ -31,6 +31,7 @@ export const Freq = {
 export interface Lesson {
 	$key?:string;
 	studentId?:string;
+	price?: number;
 	date:string; // Date.toJSON(), cf http://stackoverflow.com/questions/10286204/the-right-json-date-format
 	duration?:number; // in minutes
 	repetition?:number; // Freq.*

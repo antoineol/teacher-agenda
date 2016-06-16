@@ -37,15 +37,19 @@ export class StubStorageDao implements StorageDao {
 		return this.findJson(collection);
 	}
 
+	findByKey(collection:string, key:string):Observable<any> {
+		return this.findJson(collection);
+	}
+
 	pushToList(collection:string, entity:any):Promise<void> {
 		return Promise.resolve(null);
 	}
 
-	updateInList(collection:string, key:string, entity:any):Promise<void> {
+	updateInList(collection:string, entity:any):Promise<void> {
 		return Promise.resolve(null);
 	}
 
-	removeInList(collection:string, key:string):Promise<void> {
+	removeInList(collection:string, entity:any):Promise<void> {
 		return Promise.resolve(null);
 	}
 

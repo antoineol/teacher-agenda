@@ -1,7 +1,9 @@
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs/Observable";
 import {
-	AngularFire, FirebaseListObservable, FirebaseObjectObservable,
+	AngularFire,
+	FirebaseListObservable,
+	FirebaseObjectObservable,
 	FirebaseAuthState
 } from "angularfire2/angularfire2";
 import {StorageDao} from "./StorageDao";
@@ -44,6 +46,15 @@ export class FirebaseStorageDao implements StorageDao {
 	findObject(collection:string):Observable<any> {
 		return this.authObs().mergeMap((user:FirebaseAuthState) => {
 			return this.getObjectBinding(user, collection);
+		});
+	}
+
+	findByKey(collection:string, key:string):Observable<any> {
+		return this.authObs().mergeMap((user:FirebaseAuthState) => {
+			return this.getObjectBinding(user, collection + '/' + key).map((obj:any) => {
+				obj.$key = key;
+				return obj;
+			});
 		});
 	}
 
