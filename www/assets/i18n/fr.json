@@ -52,7 +52,8 @@
 	"auth": {
 		"title": "Connexion",
 		"accessDenied": "Accès refusé. Veuillez vous reconnecter et réessayer.",
-		"logout": "Se déconnecter"
+		"logout": "Se déconnecter",
+		"github": "Se connecter avec github"
 	},
 	"alert": {
 		"cancel": "Annuler",

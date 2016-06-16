@@ -4,6 +4,7 @@ var gulp = require('gulp'),
     runSequence = require('run-sequence'),
     argv = process.argv;
 
+var isRelease = argv.indexOf('--release') > -1;
 
 /**
  * Ionic hooks
@@ -48,7 +49,15 @@ gulp.task('build', ['clean'], function(done){
   runSequence(
     ['sass', 'html', 'fonts', 'scripts'],
     function(){
-      buildBrowserify().on('end', done);
+      buildBrowserify({
+		  minify: true,
+		  uglifyOptions: {
+			  mangle: false
+		  },
+		  browserifyOptions: {
+			  debug: false/*!isRelease*/
+		  }
+	  }).on('end', done);
     }
   );
 });

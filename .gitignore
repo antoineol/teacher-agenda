@@ -12,3 +12,4 @@ plugins/
 /typings
 !/typings/main.d.ts
 !/typings/globals/swiper
+firebase-debug.log

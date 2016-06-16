@@ -52,7 +52,8 @@
 	"auth": {
 		"title": "Sign in",
 		"accessDenied": "Access denied. Please reauthenticate and retry.",
-		"logout": "Log out"
+		"logout": "Log out",
+		"github": "Sign in with github"
 	},
 	"alert": {
 		"cancel": "Cancel",

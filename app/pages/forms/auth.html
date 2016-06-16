@@ -1,13 +1,16 @@
 <ion-navbar *navbar>
 	<ion-title>{{ "auth.title" | translate }}</ion-title>
+	<ion-buttons end>
+		<ion-spinner *ngIf="authenticating"></ion-spinner>
+	</ion-buttons>
 </ion-navbar>
 
 
 <ion-content class="lesson-form">
 
 	<form (submit)="loginWithGithub()">
-		<button type="submit">
-			<ion-icon name="logo-github"></ion-icon>
+		<button block type="submit" [disabled]="authenticating">
+			<ion-icon name="logo-github"></ion-icon>{{'auth.github' | translate}}
 		</button>
 	</form>
 

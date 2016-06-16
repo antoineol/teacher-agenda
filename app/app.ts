@@ -85,6 +85,21 @@ class MyApp {
 		});
 	}
 
+	// private loaded:boolean;
+	// onPageDidEnter() {
+	// 	if (!this.loaded) {
+	// 		this.loaded = true;
+	// 		this.authService._showAuthEmitter().subscribe((show:boolean) => {
+	// 			console.log("Emit show auth:", show);
+	// 			if (show) {
+	// 				AuthFormPage.show(this.nav);
+	// 			}
+	// 		});
+	// 	}
+	// 	// setTimeout(() => {
+	// 	// }, 500);
+	// }
+
 	// ngAfterViewInit() {
 	// 	// this.authService.init(/*this.nav*/);
 	// 	setTimeout(() => {

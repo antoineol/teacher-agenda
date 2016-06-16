@@ -15,7 +15,7 @@ import {Deferred} from "promise-defer";
 export class AuthService {
 
 	private authDeferred:Deferred<FirebaseAuthState>;
-	private popAuth = new ReplaySubject<void>(1);
+	private popAuth = new ReplaySubject<boolean>(1);
 
 	constructor(/*private app:App, */private auth: FirebaseAuth) {
 		// subscribe to the auth object to check for the login status
@@ -57,12 +57,18 @@ export class AuthService {
 		this.auth.logout();
 	}
 
-	_showAuthEmitter():Observable<void> {
+	_showAuthEmitter():Observable<boolean> {
 		return this.popAuth;
 	}
 
-	_completeAuth():void {
-		this.authDeferred.resolve();
+	_completeAuth(user:FirebaseAuthState):void {
+		if (!this.authDeferred) {
+			console.warn("Calling _completeAuth(), but the deferred object is falsy: it seems the authentication was already completed. The application should avoid to request twice the authentication on the same time.");
+			console.warn("User:", user);
+			return;
+		}
+		this.authDeferred.resolve(user);
+		this.popAuth.next(false);
 		this.authDeferred = null;
 	}
 
@@ -71,7 +77,7 @@ export class AuthService {
 			return this.authDeferred.promise;
 		}
 		this.authDeferred = defer<FirebaseAuthState>();
-		this.popAuth.next(null);
+		this.popAuth.next(true);
 		return this.authDeferred.promise;
 	}
 }

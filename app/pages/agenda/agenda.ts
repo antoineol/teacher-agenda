@@ -50,8 +50,10 @@ export class AgendaPage {
 	onPageDidEnter() {
 		if (!this.loaded) {
 			this.loaded = true;
-			this.authService._showAuthEmitter().subscribe(() => {
-				AuthFormPage.show(this.nav);
+			this.authService._showAuthEmitter().subscribe((show:boolean) => {
+				if (show) {
+					AuthFormPage.show(this.nav);
+				}
 			});
 		}
 		// setTimeout(() => {
