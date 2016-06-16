@@ -17,10 +17,12 @@ import {Conf} from "./config/Config";
 import {StudentFormService} from "./business/StudentFormService";
 import {StudentDao} from "./business/StudentDao";
 import {AuthService} from "./framework/AuthService";
+import {CurrencyPipe} from "./framework/pipes/CurrencyPipe";
 // import {TranslatePipe} from "ionic-angular/index"; // look at the translation facilities embedded in ionic2
 
 export const pipes:any[] = [
-	TranslatePipe
+	TranslatePipe,
+	CurrencyPipe
 ];
 
 export const injectables:any[] = [

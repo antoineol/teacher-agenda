@@ -11,8 +11,8 @@
 
 <ion-content padding class="student">
 
-	<p><em>{{"student.name_colon" | translate}}</em> {{student.name}}</p>
-	<p><em>{{"student.price_colon" | translate}}</em> {{student.price}}</p>
+	<!--<p><em>{{"student.name_colon" | translate}}</em> {{student.name}}</p>-->
+	<p><em>{{"student.price_colon" | translate}}</em> {{student.price | currency}}</p>
 	<div padding>
 		<button block secondary (click)="edit()">{{"student.edit" | translate}}</button>
 	</div>
