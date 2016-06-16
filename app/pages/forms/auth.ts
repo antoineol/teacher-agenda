@@ -1,15 +1,8 @@
 import {Component} from "@angular/core";
-import {NavParams, NavController, Modal, ViewController} from "ionic-angular";
-import {Lesson, Freq, FreqChoice} from "../../model/Lesson";
-import {Utils} from "../../business/Utils";
-import {AgendaDao} from "../../business/AgendaDao";
-import {Student} from "../../model/Student";
+import {NavController, Modal, ViewController} from "ionic-angular";
 import {ErrorService} from "../../framework/ErrorService";
-import {LessonFormService} from "../../business/LessonFormService";
-import {MiscService} from "../../business/MiscService";
-import {AgendaService} from "../../business/AgendaService";
 import {AuthService} from "../../framework/AuthService";
-import {FirebaseAuth} from "angularfire2/angularfire2";
+import {FirebaseAuth, AuthProviders, AuthMethods} from "angularfire2/angularfire2";
 // import moment = require("moment");
 
 
@@ -20,7 +13,7 @@ export class AuthFormPage {
 
 	static show(nav:NavController):void {
 		let loginPage = Modal.create(AuthFormPage);
-		console.log("Show modal");
+		// console.log("Show modal");
 		nav.present(loginPage);
 	}
 
@@ -29,16 +22,20 @@ export class AuthFormPage {
 	}
 
 	private loginWithGithub():void {
-		console.log("Log in with github");
-		this.auth.login().then((result:any) => {
-			console.log("result of auth with github:", result);
+		// console.log("Log in with github");
+		this.auth.login({
+			provider: AuthProviders.Github,
+			method: AuthMethods.Popup,
+			// method: AuthMethods.Redirect,
+		}).then((result:any) => {
+			// console.log("result of auth with github:", result);
 			this.authService._completeAuth();
 			this.dismiss();
 		}, this.error.handler);
 	}
 
 	private dismiss() {
-		console.log("Dismiss modal");
+		// console.log("Dismiss modal");
 		this.viewCtrl.dismiss();
 	}
 

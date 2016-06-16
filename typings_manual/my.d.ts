@@ -13,7 +13,7 @@ declare module 'promise-defer' {
 		promise:Promise<T>;
 		resolve:(value?:any)=>void;
 		reject:(error:any)=>void;
-		Deferred:Deferred;
+		Deferred:Deferred<T>;
 	}
 	export default function defer<T>(PromiseClass?:any):Deferred<T>;
 	// function defer<T>(PromiseClass?:any):Deferred<T>;

@@ -25,7 +25,7 @@ export class AgendaService {
 
 	getFormattedAgenda(start:Moment, end:Moment):Observable<AgendaEntry[]> {
 		return Observable.combineLatest/*forkJoin*/([
-			this.agendaDao.latestAgenda(),
+			this.agendaDao.findAgenda(),
 			this.agendaDao.findStudents(),
 			this.agendaDao.findParameters()
 		]).map((results:any[]) => {
@@ -33,13 +33,14 @@ export class AgendaService {
 			let studentsArray:Student[] = results[1];
 			let parameters:Parameters = results[2];
 			console.log("getFormattedAgenda callback", agenda);
-			agenda.subscribe((result:any) => {
-				console.log("Agenda result:", result);
-			}, (err:any) => {
-				console.error("Agenda result error:", err.stack || err);
-			})
+			// agenda.subscribe((result:any) => {
+			// 	console.log("Agenda result:", result);
+			// }, (err:any) => {
+			// 	console.error("Agenda result error:", err.stack || err);
+			// })
 
 			let filteredAgenda = this.extendAndFilterAgenda(agenda, start, end, studentsArray, parameters);
+			console.log("filteredAgenda", filteredAgenda);
 			return this.formatForDisplay(filteredAgenda, parameters, studentsArray, true);
 		});
 	}

@@ -51,7 +51,8 @@
 	},
 	"auth": {
 		"title": "Connexion",
-		"accessDenied": "Accès refusé. Veuillez vous reconnecter et réessayer."
+		"accessDenied": "Accès refusé. Veuillez vous reconnecter et réessayer.",
+		"logout": "Se déconnecter"
 	},
 	"alert": {
 		"cancel": "Annuler",

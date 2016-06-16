@@ -1,6 +1,9 @@
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs/Observable";
-import {AngularFire, FirebaseListObservable, FirebaseObjectObservable} from "angularfire2/angularfire2";
+import {
+	AngularFire, FirebaseListObservable, FirebaseObjectObservable,
+	FirebaseAuthState
+} from "angularfire2/angularfire2";
 import {StorageDao} from "./StorageDao";
 import {AuthService} from "../AuthService";
 
@@ -33,77 +36,66 @@ export class FirebaseStorageDao implements StorageDao {
 	// http://stackoverflow.com/questions/34507731/authenticate-mobile-application-with-wechat
 
 	findAll(collection:string):Observable<any> {
-		return this.authObs().map(() => {
-			console.log("find all");
-			let obs = this.getListBinding(collection).share();
-			obs.subscribe((result:any) => {
-				console.log("In firebase DAO:", result);
-			}, (err:any) => {
-				console.log("In firebase DAO error:", err.stack || err);
-			});
-			return obs;
-			// return this.getListBinding(collection)/*.map((val:any) => {
-			// 	console.log("Val:", val);
-			// 	return val;
-			// })*/;
+		return this.authObs().mergeMap((user:FirebaseAuthState) => {
+			return this.getListBinding(user, collection);
 		});
 	}
 
 	findObject(collection:string):Observable<any> {
-		return this.authObs().map(() => {
-			return this.getObjectBinding(collection);
+		return this.authObs().mergeMap((user:FirebaseAuthState) => {
+			return this.getObjectBinding(user, collection);
 		});
 	}
 
 	pushToList(collection:string, entity:any):Promise<void> {
-		return this.auth().then(() => {
+		return this.auth().then((user:FirebaseAuthState) => {
 			this.checkFirebaseEntity(entity);
-			return <Promise<void>>/*FirebaseWithPromise<void>*/this.getListBinding(collection).push(entity);
+			return <Promise<void>>/*FirebaseWithPromise<void>*/this.getListBinding(user, collection).push(entity);
 		});
 	}
 
 	updateInList(collection:string, entity:any):Promise<void> {
-		return this.auth().then(() => {
+		return this.auth().then((user:FirebaseAuthState) => {
 			this.checkUpdateFirebaseEntity(entity);
 			// console.log("Update collection", collection, ":", entity.$key, entity);
 			// TODO dirty but there is no clear/simple way yet to update the whole object in once.
 			// https://github.com/angular/angularfire2/issues/190
 			let updateEntity = Object.assign({}, entity);
 			delete updateEntity.$key;
-			return this.getListBinding(collection).update(entity, updateEntity);
+			return this.getListBinding(user, collection).update(entity, updateEntity);
 		});
 	}
 
 	removeInList(collection:string, entity:any):Promise<void> {
-		return this.auth().then(() => {
+		return this.auth().then((user:FirebaseAuthState) => {
 			this.checkUpdateFirebaseEntity(entity);
-			return this.getListBinding(collection).remove(entity.$key);
+			return this.getListBinding(user, collection).remove(entity.$key);
 		});
 	}
 
 	removeAllList(collection:string):Promise<void> {
-		return this.auth().then(() => {
-			return this.getListBinding(collection).remove();
+		return this.auth().then((user:FirebaseAuthState) => {
+			return this.getListBinding(user, collection).remove();
 		});
 	}
 
 	insertObject(collection:string, entity:any):Promise<void> {
-		return this.auth().then(() => {
+		return this.auth().then((user:FirebaseAuthState) => {
 			this.checkFirebaseEntity(entity);
-			return this.getObjectBinding(collection).set(entity);
+			return this.getObjectBinding(user, collection).set(entity);
 		});
 	}
 
 	updateObject(collection:string, entity:any):Promise<void> {
-		return this.auth().then(() => {
+		return this.auth().then((user:FirebaseAuthState) => {
 			this.checkFirebaseEntity(entity);
-			return this.getObjectBinding(collection).update(entity);
+			return this.getObjectBinding(user, collection).update(entity);
 		});
 	}
 
 	removeObject(collection:string):Promise<void> {
-		return this.auth().then(() => {
-			return this.getObjectBinding(collection).remove();
+		return this.auth().then((user:FirebaseAuthState) => {
+			return this.getObjectBinding(user, collection).remove();
 		});
 	}
 
@@ -126,11 +118,11 @@ export class FirebaseStorageDao implements StorageDao {
 		}
 	}
 
-	private getListBinding(collection:string):FirebaseListObservable<any> {
+	private getListBinding(user:FirebaseAuthState, collection:string):FirebaseListObservable<any> {
 		// return Observable.fromPromise(this.auth.ensureAuth()).map(() => {
 			let binding:FirebaseListObservable<any> = <FirebaseListObservable<any>>this.bindings.get(collection);
 			if (!binding) {
-				binding = this.af.database.list('/' + collection);
+				binding = this.af.database.list('/users/' + user.uid + '/' + collection);
 				this.bindings.set(collection, binding);
 			}
 			return binding;
@@ -143,22 +135,22 @@ export class FirebaseStorageDao implements StorageDao {
 		// return binding;
 	}
 
-	private getObjectBinding(collection:string):FirebaseObjectObservable<any> {
+	private getObjectBinding(user:FirebaseAuthState, collection:string):FirebaseObjectObservable<any> {
 		// return Observable.fromPromise(this.auth.ensureAuth()).map(() => {
 			let binding:FirebaseObjectObservable<any> = <FirebaseObjectObservable<any>>this.bindings.get(collection);
 			if (!binding) {
-				binding = this.af.database.object('/' + collection);
+				binding = this.af.database.object('/users/' + user.uid + '/' + collection);
 				this.bindings.set(collection, binding);
 			}
 			return binding;
 		// });
 	}
 
-	private authObs():Observable<void> {
+	private authObs():Observable<FirebaseAuthState> {
 		return Observable.fromPromise(this.authService.ensureAuth());
 	}
 
-	private auth():Promise<void> {
+	private auth():Promise<FirebaseAuthState> {
 		return this.authService.ensureAuth();
 	}
 }

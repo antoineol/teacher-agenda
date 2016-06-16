@@ -13,6 +13,6 @@ export class AgendaRange {
 	}
 	static fromDate(date:string) {
 		let m = moment(date);
-		return {start: m.startOf('day'), end: m.endOf('day')};
+		return {start: m.clone().startOf('day'), end: m.clone().endOf('day')};
 	}
 }

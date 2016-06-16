@@ -22,10 +22,9 @@ export class ErrorService {
 		return (error:any):void => {
 			if (error && error.code === 'PERMISSION_DENIED') {
 				// If authentication issue with firebase: error.code === 'PERMISSION_DENIED'
-				this.translate.get('auth.accessDenied').subscribe((message:string) => {
-					this.toast(message);
-				});
-				// this.reauth();
+				// this.translate.get('auth.accessDenied').subscribe((message:string) => {
+				// 	this.toast(message);
+				// });
 				this.auth.ensureAuth();
 				return;
 			}

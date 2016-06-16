@@ -51,7 +51,8 @@
 	},
 	"auth": {
 		"title": "Sign in",
-		"accessDenied": "Access denied. Please reauthenticate and retry."
+		"accessDenied": "Access denied. Please reauthenticate and retry.",
+		"logout": "Log out"
 	},
 	"alert": {
 		"cancel": "Cancel",

@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {FirebaseAuth} from "angularfire2/angularfire2";
+import {FirebaseAuth, FirebaseAuthState} from "angularfire2/angularfire2";
 import {Nav, App, NavController} from "ionic-angular/index";
 import {AuthFormPage} from "../pages/forms/auth";
 // import {Deferred} from "promise-defer";
@@ -14,31 +14,26 @@ import {Deferred} from "promise-defer";
 @Injectable()
 export class AuthService {
 
-	private authInfo: any;
-	private authDeferred:Deferred<void>;
+	private authDeferred:Deferred<FirebaseAuthState>;
 	private popAuth = new ReplaySubject<void>(1);
 
 	constructor(/*private app:App, */private auth: FirebaseAuth) {
-	}
-
-	// TODO continue from here to log in with github
-	init(/*nav:Nav*/):void {
 		// subscribe to the auth object to check for the login status
 		// of the user, if logged in, save some user information and
 		// execute the firebase query...
 		// .. otherwise
 		// show the login modal page
-		this.auth.subscribe((data) => {
-			console.log("in auth subscribe", data);
-			if (data) {
-				this.authInfo = data;
-			} else {
-				this.authInfo = null;
-				// this.authenticate(nav);
-				// this.nav.push(AgendaDetailPage, {entry: entry});
+
+		this.auth.subscribe((authInfo:FirebaseAuthState) => {
+			if (!authInfo) {
+				// console.log("Logged out.");
+				this.requestAuth();
 			}
 		});
 	}
+
+	// init(/*nav:Nav*/):void {
+	// }
 
 	// authenticate(nav:NavController):void {
 	// 	let nav2:NavController = this.app.getActiveNav();
@@ -47,25 +42,19 @@ export class AuthService {
 	// 	nav.push(AuthFormPage);
 	// }
 
-	ensureAuth():Promise<void> {
-		if (this.authInfo) {
-			return Promise.resolve(this.authInfo);
-		}
-		if (this.authDeferred) {
-			return this.authDeferred.promise;
-		}
+	ensureAuth():Promise<FirebaseAuthState> {
+		return this.auth.first().toPromise().then((authInfo:FirebaseAuthState) => {
+			// console.log("in auth subscribe", authInfo);
+			if (authInfo) {
+				return Promise.resolve(authInfo);
+			}
+			return this.requestAuth();
+		});
+	}
 
-		this.authDeferred = defer();
-		this.popAuth.next(null);
-		return this.authDeferred.promise;
-
-
-
-		// let nav:NavController = this.app.getActiveNav();
-		// console.log("Active:", nav.getActive()); // null :(
-		// console.log("AuthFormPage:", AuthFormPage);
-		// console.log("Is AuthFormPage:", (nav.getActive() == AuthFormPage)); // comparison refused
-		// return Promise.resolve();
+	logout():void {
+		// console.log("Logout");
+		this.auth.logout();
 	}
 
 	_showAuthEmitter():Observable<void> {
@@ -75,5 +64,14 @@ export class AuthService {
 	_completeAuth():void {
 		this.authDeferred.resolve();
 		this.authDeferred = null;
+	}
+
+	private requestAuth():Promise<FirebaseAuthState> {
+		if (this.authDeferred) {
+			return this.authDeferred.promise;
+		}
+		this.authDeferred = defer<FirebaseAuthState>();
+		this.popAuth.next(null);
+		return this.authDeferred.promise;
 	}
 }

@@ -8,6 +8,8 @@ import {AgendaConfig} from "../../config/AgendaConfig";
 import {AddPopover} from "../forms/add-popover";
 import moment = require("moment");
 import {LessonFormPage} from "../forms/lesson";
+import {AuthFormPage} from "../forms/auth";
+import {AuthService} from "../../framework/AuthService";
 
 
 @Component({
@@ -39,15 +41,27 @@ export class AgendaPage {
 
 	@ViewChild('slider') slider:Slides;
 
-	constructor(private nav:NavController, private agendaService:AgendaService) {
+	constructor(private nav:NavController, private agendaService:AgendaService, private authService:AuthService) {
 		// console.log("agenda constructor");
 		this.ranges = agendaService.initRanges();
 	}
 
-	// ngAfterViewInit() {
+	private loaded:boolean;
+	onPageDidEnter() {
+		if (!this.loaded) {
+			this.loaded = true;
+			this.authService._showAuthEmitter().subscribe(() => {
+				AuthFormPage.show(this.nav);
+			});
+		}
+		// setTimeout(() => {
+		// }, 500);
+	}
+
+	ngAfterViewInit() {
 		// let swiper = this.slider.getSlider();
 	// 	console.log("Slider:", this.slider);
-	// }
+	}
 
 	// rangesPreview():string {
 	// 	return this.ranges.map((range:AgendaRange) => range.start.format('L')).join(' ');

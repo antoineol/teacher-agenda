@@ -20,12 +20,12 @@ export class AgendaDao {
 	constructor(private dao:StorageDao) {
 	}
 
-	latestAgenda():Observable<AgendaEntry[]> {
-		// return Observable.merge(this.findAgenda(), this.agendaUpdates);
-		return this.findAgenda();
-	}
+	// latestAgenda():Observable<AgendaEntry[]> {
+	// 	// return Observable.merge(this.findAgenda(), this.agendaUpdates);
+	// 	return this.findAgenda();
+	// }
 
-	private findAgenda():Observable<AgendaEntry[]> {
+	findAgenda():Observable<AgendaEntry[]> {
 		return this.dao.findAll(COLLECTION_AGENDA).map((agenda:AgendaEntry[]) => agenda ? agenda : []);
 	}
 

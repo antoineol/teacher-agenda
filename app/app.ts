@@ -55,7 +55,7 @@ class MyApp {
 	rootPage:any = AgendaPage;
 	pages:PageEntry[] = [];
 
-	constructor(/*private app:App, */private platform:Platform, private translate: TranslateService, private error:ErrorService, ionicConfig:Config, private auth:AuthService) {
+	constructor(/*private app:App, */private platform:Platform, private translate: TranslateService, private error:ErrorService, ionicConfig:Config, private authService:AuthService) {
 		try {
 			this.initializeApp();
 
@@ -85,12 +85,14 @@ class MyApp {
 		});
 	}
 
-	ngAfterViewInit() {
-		this.auth.init(/*this.nav*/);
-		this.auth._showAuthEmitter().subscribe(() => {
-			AuthFormPage.show(this.nav);
-		});
-	}
+	// ngAfterViewInit() {
+	// 	// this.authService.init(/*this.nav*/);
+	// 	setTimeout(() => {
+	// 		this.authService._showAuthEmitter().subscribe(() => {
+	// 			AuthFormPage.show(this.nav);
+	// 		});
+	// 	}, 500);
+	// }
 
 	openPage(page:PageEntry) {
 		// Reset the content nav to have just this page
@@ -106,6 +108,10 @@ class MyApp {
 		// a translation is missing in the current language, and it tries to fallback to the default language.
 		// https://github.com/ocombe/ng2-translate/issues/46
 		this.translate.getTranslation(Conf.defaultLang).subscribe();
+	}
+
+	logout() {
+		this.authService.logout();
 	}
 }
 

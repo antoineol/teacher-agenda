@@ -28,7 +28,8 @@ export const injectables:any[] = [
 
 	// Firebase Angular2 adapter
 	FIREBASE_PROVIDERS,
-	defaultFirebase('https://teacher-agenda-812ca.firebaseio.com'),//AuthProviders
+	// defaultFirebase('https://teacher-agenda-812ca.firebaseio.com'),
+	defaultFirebase('https://crackling-heat-2871.firebaseio.com'),
 	// TODO test and replace by a better auth config
 	firebaseAuthConfig({
 		// provider: AuthProviders.Google,
