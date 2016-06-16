@@ -22,21 +22,23 @@ import "rxjs/add/observable/fromPromise";
 import "rxjs/add/observable/merge";
 
 import {Component, ViewChild} from '@angular/core';
-import {ionicBootstrap, Platform, Nav, Config, App, NavController} from 'ionic-angular';
+import {ionicBootstrap, Platform, Nav, Config} from 'ionic-angular';
 import {StatusBar} from 'ionic-native';
 import {AgendaPage} from './pages/agenda/agenda';
-import {injectables, pipes} from "./injectables";
+import {injectables} from "./injectables";
 import {TranslateService} from "ng2-translate/ng2-translate";
 import {ErrorService} from "./framework/ErrorService";
 import {StudentsPage} from "./pages/students/students";
-import {FirebaseAuth} from "angularfire2/angularfire2";
-import {AuthFormPage} from "./pages/forms/auth";
 import {AuthService} from "./framework/AuthService";
 
 
 // TODO offline mode https://www.firebase.com/docs/android/guide/offline-capabilities.html
 // https://www.firebase.com/docs/web/guide/offline-capabilities.html
 // https://angularfire2.com/api/ to get Firebase obj: @Inject(FirebaseRef) ref:Firebase
+
+// HTML5 offline: Service Worker
+// https://developer.mozilla.org/fr/docs/Web/API/Service_Worker_API/Using_Service_Workers
+// Deprecated but usable: AppCache (with manifest)
 
 interface PageEntry {
 	title:string;
