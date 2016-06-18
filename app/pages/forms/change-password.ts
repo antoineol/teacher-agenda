@@ -32,6 +32,10 @@ export class ChangePasswordPage {
 
 	private changePassword(credentials:FirebaseChangePasswordCredentials):void {
 		this.loading = true;
+
+		console.error("Form validated! It should have checked first if the confirm password is okay");
+		return;
+
 		this.authService.changePassword(credentials).then(() => {
 			this.loading = false;
 			this._dismiss();
@@ -53,6 +57,7 @@ export function matchingPasswords(passwordKey: string, confirmPasswordKey: strin
 	return (group: ControlGroup): {[key: string]: any} => {
 		let password = group.controls[passwordKey];
 		let confirmPassword = group.controls[confirmPasswordKey];
+		console.log("Matching password:", password, confirmPassword);
 
 		if (password.value !== confirmPassword.value) {
 			return {
