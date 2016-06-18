@@ -1,5 +1,15 @@
 <ion-navbar *navbar>
-	<ion-title>{{ "auth.title" | translate }}</ion-title>
+
+	<ion-segment [(ngModel)]="signUpMode">
+		<ion-segment-button [value]="false">
+			{{ "auth.signin" | translate }}
+		</ion-segment-button>
+		<ion-segment-button [value]="true">
+			{{ "auth.signup" | translate }}
+		</ion-segment-button>
+	</ion-segment>
+
+	<!--<ion-title>{{ "auth.title" | translate }}</ion-title>-->
 	<ion-buttons end>
 		<ion-spinner *ngIf="authenticating"></ion-spinner>
 	</ion-buttons>
@@ -8,8 +18,27 @@
 
 <ion-content class="lesson-form">
 
-	<form (submit)="loginWithGithub()">
-		<button block type="submit" [disabled]="authenticating">
+	<form #loginCreds="ngForm" (submit)="loginWithEmail(loginCreds.value)">
+		<ion-list>
+			<ion-item>
+				<ion-label>{{ "auth.email" | translate }}</ion-label>
+				<ion-input type="email" required ngControl="email"></ion-input>
+			</ion-item>
+			<ion-item>
+				<ion-label *ngIf="!signUpMode">{{ "auth.password" | translate }}</ion-label>
+				<ion-input *ngIf="!signUpMode" type="password" required ngControl="password"></ion-input>
+			</ion-item>
+			<!--<ion-row>-->
+				<!--<ion-col>-->
+					<button block secondary type="submit" [disabled]="authenticating">{{ (signUpMode ? "auth.signup" : "auth.signin") | translate }}</button>
+				<!--</ion-col>-->
+				<!--<ion-col width-50><button block primary type="submit" (click)="signup()" [disabled]="authenticating">Sign up</button></ion-col>-->
+			<!--</ion-row>-->
+		</ion-list>
+	</form>
+	<form class="center" (submit)="loginWithGithub()">
+		<h2>{{'auth.withProvider' | translate}}</h2>
+		<button type="submit" [disabled]="authenticating" provider>
 			<ion-icon name="logo-github"></ion-icon>{{'auth.github' | translate}}
 		</button>
 	</form>

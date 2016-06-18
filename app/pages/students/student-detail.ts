@@ -2,7 +2,7 @@ import {Component} from "@angular/core";
 import {NavParams, NavController, Alert} from "ionic-angular/index";
 import {Student} from "../../model/Student";
 import {StudentFormPage} from "../forms/student";
-import {Observable} from "rxjs/Rx";
+import {Observable} from "rxjs/Observable";
 import {Conf} from "../../config/Config";
 import {TranslateService} from "ng2-translate/ng2-translate";
 import {StudentDao} from "../../business/StudentDao";

@@ -2,6 +2,8 @@
 
 ## TODO
 
+(press) ionic event
+
 - persist in local storage + env switch to use mocks when useful
 - Add students
 - handle the case when the price changes from a date for a given student

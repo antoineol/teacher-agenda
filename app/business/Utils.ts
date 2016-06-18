@@ -2,6 +2,8 @@ import moment = require("moment");
 import {Conf} from "../config/Config";
 
 
+const possibleChars = ['abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!?_-'];
+
 export class Utils {
 	// static uuid():string {
 	// 	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -30,5 +32,13 @@ export class Utils {
 	// n is mainly intended to be a string, but it should work with any type.
 	static isNumeric(n:any) {
 		return !isNaN(parseFloat(n)) && isFinite(n);
+	}
+
+	static randomPassword():string {
+		let password = '';
+		for (let i = 0; i < 16; i += 1) {
+			password += possibleChars[Math.floor(Math.random() * possibleChars.length)];
+		}
+		return password;
 	}
 }

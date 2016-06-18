@@ -6,8 +6,7 @@ import {ErrorService} from "../../framework/ErrorService";
 import {TranslateService} from "ng2-translate/ng2-translate";
 import {Conf} from "../../config/Config";
 import {LessonFormPage} from "../forms/lesson";
-import {MiscService} from "../../business/MiscService";
-import {Observable} from "rxjs/Rx";
+import {Observable} from "rxjs/Observable";
 import moment = require("moment");
 import {LessonFormService} from "../../business/LessonFormService";
 

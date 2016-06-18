@@ -91,10 +91,10 @@ class MyApp {
 	// onPageDidEnter() {
 	// 	if (!this.loaded) {
 	// 		this.loaded = true;
-	// 		this.authService._showAuthEmitter().subscribe((show:boolean) => {
-	// 			console.log("Emit show auth:", show);
-	// 			if (show) {
-	// 				AuthFormPage.show(this.nav);
+	// 		this.authService._showAuthEmitter().subscribe((_show:boolean) => {
+	// 			console.log("Emit _show auth:", _show);
+	// 			if (_show) {
+	// 				AuthFormPage._show(this.nav);
 	// 			}
 	// 		});
 	// 	}
@@ -106,14 +106,14 @@ class MyApp {
 	// 	// this.authService.init(/*this.nav*/);
 	// 	setTimeout(() => {
 	// 		this.authService._showAuthEmitter().subscribe(() => {
-	// 			AuthFormPage.show(this.nav);
+	// 			AuthFormPage._show(this.nav);
 	// 		});
 	// 	}, 500);
 	// }
 
 	openPage(page:PageEntry) {
 		// Reset the content nav to have just this page
-		// we wouldn't want the back button to show in this scenario
+		// we wouldn't want the back button to _show in this scenario
 		this.nav.setRoot(page.component);
 	}
 

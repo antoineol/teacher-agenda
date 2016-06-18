@@ -50,10 +50,20 @@
 		}
 	},
 	"auth": {
-		"title": "Connexion",
+		"signin": "Connexion",
+		"signup": "Créer un compte",
 		"accessDenied": "Accès refusé. Veuillez vous reconnecter et réessayer.",
 		"logout": "Se déconnecter",
-		"github": "Se connecter avec github"
+		"withProvider": "Ou connectez-vous avec:",
+		"github": "Github",
+		"email": "Email",
+		"password": "Password",
+		"checkEmailSent": "Un email a été envoyé avec un mot de passe temporaire. Veuillez le saisir, ainsi que votre nouveau mot de passe.",
+		"changePassword": "Changement de mot de passe",
+		"oldPassword": "Ancien mot de passe",
+		"newPassword": "Nouveau mot de passe",
+		"confirmPassword": "Confirmez le mot de passe",
+		"differentPasswords": "Les mots de passe ne correspondent pas"
 	},
 	"alert": {
 		"cancel": "Annuler",

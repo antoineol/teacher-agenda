@@ -1,7 +1,6 @@
 import {Injectable} from "@angular/core";
-import {Toast, NavController, App} from "ionic-angular";
-import {TranslateService} from "ng2-translate/ng2-translate";
 import {AuthService} from "./AuthService";
+import {Toaster} from "./Toaster";
 
 
 @Injectable()
@@ -9,7 +8,7 @@ export class ErrorService {
 
 	// private nav:NavController;
 
-	constructor(private app:App, private translate:TranslateService, private auth:AuthService) {
+	constructor(/*private app:App, *//*private translate:TranslateService, */private auth:AuthService, private toaster:Toaster) {
 		// this.nav = app.getActiveNav();
 	}
 
@@ -36,23 +35,26 @@ export class ErrorService {
 				console.error(error);
 			}
 
-			this.translate.get(friendlyErrorMessageKey).subscribe((message:string) => {
-				this.toast(message);
-			});
+			if (!friendlyErrorMessageKey) {
+				friendlyErrorMessageKey = 'error';
+			}
+			// Firebase error codes:
+			// https://www.firebase.com/docs/java-api/javadoc/com/firebase/client/FirebaseError.html
+			// https://www.firebase.com/docs/web/guide/user-auth.html
+			this.toaster.toast(friendlyErrorMessageKey);
+			// this.translate.get(friendlyErrorMessageKey).subscribe((message:string) => {
+			// 	this.toaster.toast(message);
+			// });
 		}
 	}
 
-	private toast(message:string):void {
-		let nav:NavController = this.app.getActiveNav();
-		let toast:Toast = Toast.create({
-			message: message,
-			duration: message.length * 100 + 2000
-		});
-		nav.present(toast);
-	}
-	// private reauth():void {
+	// private toast(message:string):void {
 	// 	let nav:NavController = this.app.getActiveNav();
-	// 	this.auth.authenticate(nav);
+	// 	let toast:Toast = Toast.create({
+	// 		message: message,
+	// 		duration: message.length * 100 + 2000
+	// 	});
+	// 	nav.present(toast);
 	// }
 
 }

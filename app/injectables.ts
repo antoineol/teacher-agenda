@@ -18,6 +18,7 @@ import {StudentFormService} from "./business/StudentFormService";
 import {StudentDao} from "./business/StudentDao";
 import {AuthService} from "./framework/AuthService";
 import {CurrencyPipe} from "./framework/pipes/CurrencyPipe";
+import {Toaster} from "./framework/Toaster";
 // import {TranslatePipe} from "ionic-angular/index"; // look at the translation facilities embedded in ionic2
 
 export const pipes:any[] = [
@@ -34,11 +35,8 @@ export const injectables:any[] = [
 	defaultFirebase('https://crackling-heat-2871.firebaseio.com'),
 	// TODO test and replace by a better auth config
 	firebaseAuthConfig({
-		// provider: AuthProviders.Google,
-		// method: AuthMethods.Redirect
-		provider: AuthProviders.Github,
-		method: AuthMethods.Popup,
-		// remember: 'default',
+		provider: AuthProviders.Password,
+		method: AuthMethods.Password
 		// scope: ['email']
 
 		// If authenticated with same email, for different providers, they may be linked:
@@ -71,4 +69,5 @@ export const injectables:any[] = [
 	StudentFormService,
 	StudentDao,
 	AuthService,
+	Toaster,
 ];

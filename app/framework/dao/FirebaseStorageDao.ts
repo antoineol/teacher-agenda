@@ -22,6 +22,7 @@ export class FirebaseStorageDao implements StorageDao {
 	// Firebase with Angular2: angularfire2 once updated to firebase 3
 	// https://github.com/aaronksaunders/ionic2-angularfire-sample
 	// http://stackoverflow.com/a/36537871
+	// - Other alternative in China: Kumulos
 
 
 	// We use sql storage internally to ensure it is persisted, since localStorage may me cleaned
@@ -36,6 +37,7 @@ export class FirebaseStorageDao implements StorageDao {
 	// TODO login with wechat
 	// http://stackoverflow.com/questions/32629147/wechat-api-is-unable-to-set-app-icon
 	// http://stackoverflow.com/questions/34507731/authenticate-mobile-application-with-wechat
+	// Need backend with callback URL to complete OAuth2: http://stackoverflow.com/a/29155818/4717408
 
 	findAll(collection:string):Observable<any> {
 		return this.authObs().mergeMap((user:FirebaseAuthState) => {

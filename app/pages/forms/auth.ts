@@ -2,8 +2,8 @@ import {Component} from "@angular/core";
 import {NavController, Modal, ViewController} from "ionic-angular";
 import {ErrorService} from "../../framework/ErrorService";
 import {AuthService} from "../../framework/AuthService";
-import {FirebaseAuth, AuthProviders, AuthMethods, FirebaseAuthState} from "angularfire2/angularfire2";
 import {AuthConfiguration} from "angularfire2/es6/providers/auth_backend";
+import {Toaster} from "../../framework/Toaster";
 // import moment = require("moment");
 
 
@@ -13,41 +13,59 @@ import {AuthConfiguration} from "angularfire2/es6/providers/auth_backend";
 export class AuthFormPage {
 
 	authenticating:boolean;
+	private signUpMode = false;
 
-	static show(nav:NavController):void {
+	static _show(nav:NavController):void {
 		let loginPage = Modal.create(AuthFormPage);
-		// console.log("Show modal");
 		nav.present(loginPage);
 	}
 
-	constructor(/*private nav:NavController, */private authService:AuthService, private viewCtrl:ViewController,
-				private auth: FirebaseAuth, private error:ErrorService) {
+	constructor(private authService:AuthService, private viewCtrl:ViewController,
+				private error:ErrorService, private toaster:Toaster) {
 	}
 
 	private loginWithGithub():void {
-		this.login({
-			provider: AuthProviders.Github,
-			method: AuthMethods.Popup,
-			// method: AuthMethods.Redirect,
-		});
+		this.login(AuthService.METHOD_GITHUB);
 	}
 
-	private login(options?:AuthConfiguration) {
-		// console.log("Log in with github");
+	private loginWithEmail(credentials:FirebaseCredentials):void {
+		if (this.signUpMode) {
+			// console.log("Sign up with email:", credentials);
+			this.signUp(credentials);
+		} else {
+			// console.log("Login with email:", credentials);
+			this.login(AuthService.METHOD_PASSWORD, credentials);
+		}
+	}
+
+	// private signup():void {
+	// 	this.signUp = true;
+	// }
+
+	private signUp(credentials:FirebaseCredentials):void {
 		this.authenticating = true;
-		this.auth.login(options).then((user:FirebaseAuthState) => {
-			// console.log("result of auth with github:", result);
+		this.authService.signup(credentials).then(() => {
 			this.authenticating = false;
-			this.authService._completeAuth(user);
-			this.dismiss();
+			this.toaster.toast('auth.checkEmailSent');
 		}, (err:any) => {
 			this.authenticating = false;
-			this.error.handler(err);
+			this.error.handler(err.code)(err);
 		});
 	}
 
-	private dismiss() {
-		// console.log("Dismiss modal");
+	private login(options?:AuthConfiguration, credentials?:FirebaseCredentials):void {
+		this.authenticating = true;
+		this.authService.login(options, credentials).then(() => {
+			this.authenticating = false;
+			this._dismiss();
+		}, (err:any) => {
+			this.authenticating = false;
+			this.error.handler(err.code)(err);
+		});
+	}
+
+	// Call me only after a successful authentication.
+	private _dismiss():void {
 		this.viewCtrl.dismiss();
 	}
 
