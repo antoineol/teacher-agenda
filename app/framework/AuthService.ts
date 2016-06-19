@@ -2,7 +2,6 @@ import {Injectable, Inject} from "@angular/core";
 import {
 	FirebaseAuth,
 	FirebaseAuthState,
-	Firebase,
 	FirebaseRef,
 	AuthProviders,
 	AuthMethods,
@@ -14,7 +13,7 @@ import {AuthConfiguration} from "angularfire2/es6/providers/auth_backend";
 import {Utils} from "../business/Utils";
 // import {Deferred} from "promise-defer";
 import defer = require("promise-defer");
-import {FirebaseSdkAuthBackend} from "angularfire2/es6/providers/firebase_sdk_auth_backend";
+// import {FirebaseSdkAuthBackend} from "angularfire2/es6/providers/firebase_sdk_auth_backend";
 // import Deferred = require("promise-defer");
 // import defer = require("promise-defer");
 // import Deferred = require("promise-defer");
@@ -37,15 +36,15 @@ export class AuthService {
 	private authDeferred:Deferred<FirebaseAuthState>;
 	popAuth = new ReplaySubject<boolean>(1);
 	popChangePwd = new ReplaySubject<FirebaseAuthDataPassword>(1);
-	private fbAuth:firebase.auth.Auth;
+	// private fbAuth:firebase.auth.Auth;
 
-	constructor(private auth: FirebaseAuth, @Inject(FirebaseRef) private ref:Firebase, private af:AngularFire) {
+	constructor(private auth: FirebaseAuth, @Inject(FirebaseRef) private ref:Firebase/*, private af:AngularFire*/) {
 		// subscribe to the auth object to check for the login status
 		// of the user, if logged in, save some user information and
 		// execute the firebase query...
 		// .. otherwise
 		// _show the login modal page
-		this.fbAuth = (<any>af.auth)._authBackend._fbAuth;
+		// this.fbAuth = (<any>af.auth)._authBackend._fbAuth;
 
 		// console.log("Firebase ref:", ref);
 		// console.log("Firebase af:", af);
@@ -77,9 +76,9 @@ export class AuthService {
 	// https://github.com/angular/angularfire2/issues/220#issuecomment-225317731
 
 	resetPasswordFirebase(credentials:FirebaseResetPasswordCredentials):Promise<void> {
-		return this.fbAuth.sendPasswordResetEmail(credentials.email);
+		// return this.fbAuth.sendPasswordResetEmail(credentials.email);
 		return new Promise<void>((resolve, reject) => {
-			this.ref.resetPassword(credentials, error => {
+			this.ref.resetPassword(credentials, (error:any) => {
 				if (error) {
 					reject(error);
 				} else {
@@ -91,7 +90,7 @@ export class AuthService {
 
 	changePasswordFirebase(credentials:FirebaseChangePasswordCredentials):Promise<void> {
 		return new Promise<void>((resolve, reject) => {
-			this.ref.changePassword(credentials, error => {
+			this.ref.changePassword(credentials, (error:any) => {
 				if (error) {
 					reject(error);
 				} else {
@@ -103,7 +102,7 @@ export class AuthService {
 
 	changeEmailFirebase(credentials:FirebaseChangeEmailCredentials):Promise<void> {
 		return new Promise<void>((resolve, reject) => {
-			this.ref.changeEmail(credentials, error => {
+			this.ref.changeEmail(credentials, (error:any) => {
 				if (error) {
 					reject(error);
 				} else {

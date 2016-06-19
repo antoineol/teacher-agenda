@@ -118,7 +118,7 @@ export class AgendaPage {
 	// 	this.nav.push(LessonFormPage);
 	// }
 
-	popAddList(event) {
+	popAddList(event:Event) {
 		this.nav.present(AddPopover.make(), {ev: event});
 	}
 

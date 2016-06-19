@@ -24,11 +24,11 @@ export class StudentsPage {
 		}
 	}
 
-	popAddList(event) {
+	popAddList(event:Event) {
 		this.nav.present(AddPopover.make(), {ev: event});
 	}
 
-	entryTapped(event:any, student:Student) {
+	entryTapped(event:Event, student:Student) {
 		this.nav.push(StudentDetailPage, {student: student});
 	}
 

@@ -70,7 +70,7 @@ export class StubStorageDao implements StorageDao {
 	}
 
 
-	private findJson(collection):Observable<any> {
+	private findJson(collection:string):Observable<any> {
 		// console.log('StubStorageDao findAll');
 		let url = 'stub/' + collection + '.json';
 
