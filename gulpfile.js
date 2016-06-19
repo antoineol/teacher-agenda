@@ -4,6 +4,7 @@ var gulp = require('gulp'),
     runSequence = require('run-sequence'),
     argv = process.argv;
 var path = require('path');
+var appcache = require('gulp-appcache');
 
 var isRelease = argv.indexOf('--release') > -1;
 
@@ -83,6 +84,18 @@ gulp.task('clean', function(){
 gulp.task('icons', function() {
 	return gulp.src('resources/**/*')
 		.pipe(gulp.dest('www/resources'));
+});
+gulp.task('cache', function() {
+	gulp.src(['www/**/*'])
+		.pipe(appcache({
+			// relativePath: '/resources/build',
+			// hash: true,
+			// preferOnline: true,
+			// network: ['http://*', 'https://*', '*'],
+			filename: 'my.appcache',
+			exclude: ['stub', 'my.appcache', 'index.html']
+		}))
+		.pipe(gulp.dest('www'));
 });
 
 
