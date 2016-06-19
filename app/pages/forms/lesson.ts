@@ -8,6 +8,7 @@ import {ErrorService} from "../../framework/ErrorService";
 import {LessonFormService} from "../../business/LessonFormService";
 import {MiscService} from "../../business/MiscService";
 import {AgendaService} from "../../business/AgendaService";
+import {Conf} from "../../config/Config";
 // import moment = require("moment");
 
 
@@ -22,7 +23,7 @@ export class LessonFormPage {
 	lesson:Lesson = {
 		// studentId: null,
 		date: Utils.now.format(),
-		repetition: Freq.NONE
+		repetition: Conf.defaultLessonFrequency
 	};
 	private _studentChoice:Student;
 	get studentChoice():Student {
@@ -46,7 +47,7 @@ export class LessonFormPage {
 
 			if (this.edit) {
 				this.studentChoice = agendaEntry.student; // set first not to override eventual custom price
-				this.lesson = {
+				this.lesson = Utils.toLesson(agendaEntry)/*{
 					$key: agendaEntry.$key,
 					studentId: agendaEntry.studentId,
 					price: agendaEntry.price,
@@ -54,7 +55,7 @@ export class LessonFormPage {
 					duration: agendaEntry.duration,
 					repetition: agendaEntry.repetition,
 					repetitionEnd: agendaEntry.repetitionEnd,
-				};
+				}*/;
 			}
 			// this.lesson = initLesson || this.lesson;
 			lessonService.prepareLessonForForm(this.lesson, navParams.get('studentId'));

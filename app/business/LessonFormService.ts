@@ -1,5 +1,5 @@
 import {Injectable, EventEmitter} from "@angular/core";
-import {Lesson, FreqChoice, Freq} from "../model/Lesson";
+import {Lesson, FreqChoice, Freq, AgendaEntry} from "../model/Lesson";
 import {Observable} from "rxjs/Observable";
 import {Parameters} from "../model/Parameters";
 import {AgendaDao} from "./AgendaDao";
@@ -86,5 +86,13 @@ export class LessonFormService {
 			// If the lesson is created from a student view, we default to this student
 			lesson.studentId = studentId;
 		}
+	}
+
+	cancelLesson(entry:AgendaEntry) {
+		let lesson:Lesson = Utils.toLesson(entry);
+		if (!lesson.cancellations) {
+			lesson.cancellations = [];
+		}
+		console.log("Cancel lesson:", lesson);
 	}
 }

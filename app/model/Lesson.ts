@@ -36,6 +36,7 @@ export interface Lesson {
 	duration?:number; // in minutes
 	repetition?:number; // Freq.*
 	repetitionEnd?:string; // Date.toJSON()
+	cancellations?:string[]; // array of Date.toJSON()
 	// discount for this lesson = variation of price to take into account in the total
 }
 

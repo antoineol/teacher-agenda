@@ -22,7 +22,7 @@ export class AgendaDetailPage {
 	// private repetition:string;
 	// private price:string;
 
-	constructor(private nav:NavController, navParams:NavParams, private agendaDao:AgendaDao, private error:ErrorService, private translate:TranslateService, lessonService:LessonFormService) {
+	constructor(private nav:NavController, navParams:NavParams, private agendaDao:AgendaDao, private error:ErrorService, private translate:TranslateService, private lessonService:LessonFormService) {
 		let errKey = "global.error.init";
 		try {
 			this.entry = navParams.get('entry');
@@ -62,6 +62,10 @@ export class AgendaDetailPage {
 		this.removePopup.first().subscribe((confirm:Alert) => {
 			this.nav.present(confirm);
 		});
+	}
+
+	cancel() {
+		this.lessonService.cancelLesson(this.entry);
 	}
 
 	edit() {

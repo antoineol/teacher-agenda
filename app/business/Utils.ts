@@ -1,6 +1,7 @@
 import moment = require("moment");
 import {Conf} from "../config/Config";
 import {IntlPolyfill} from "../framework/polyfills/IntlPolyfill";
+import {AgendaEntry, Lesson} from "../model/Lesson";
 
 
 const possibleChars = ['abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!?_-'];
@@ -44,5 +45,17 @@ export class Utils {
 			password += possibleChars[Math.floor(Math.random() * possibleChars.length)];
 		}
 		return password;
+	}
+
+	static toLesson(entry:AgendaEntry):Lesson {
+		return {
+			$key: entry.$key,
+			studentId: entry.studentId,
+			price: entry.price,
+			date: entry.date,
+			duration: entry.duration,
+			repetition: entry.repetition,
+			repetitionEnd: entry.repetitionEnd,
+		};
 	}
 }
