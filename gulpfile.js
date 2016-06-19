@@ -47,21 +47,23 @@ gulp.task('watch', ['clean'], function(done){
   );
 });
 
-gulp.task('build', ['clean', 'icons'], function(done){
-  runSequence(
-    ['sass', 'html', 'fonts', 'scripts'],
-    function(){
-      buildBrowserify({
-		  minify: true,
-		  uglifyOptions: {
-			  mangle: false
-		  },
-		  browserifyOptions: {
-			  debug: false/*!isRelease*/
-		  }
-	  }).on('end', done);
-    }
-  );
+gulp.task('build', ['clean', 'icons'], function (done) {
+	runSequence(
+		'clean',
+		['sass', 'html', 'fonts', 'scripts', 'icons'],
+		'cache',
+		function () {
+			buildBrowserify({
+				minify: true,
+				uglifyOptions: {
+					mangle: false
+				},
+				browserifyOptions: {
+					debug: false/*!isRelease*/
+				}
+			}).on('end', done);
+		}
+	);
 });
 gulp.task('sass', function() {
 	return buildSass({sassOptions: {
@@ -92,6 +94,7 @@ gulp.task('cache', function() {
 			// hash: true,
 			// preferOnline: true,
 			// network: ['http://*', 'https://*', '*'],
+			timestamp: true,
 			filename: 'my.appcache',
 			exclude: ['stub', 'my.appcache', 'index.html']
 		}))
