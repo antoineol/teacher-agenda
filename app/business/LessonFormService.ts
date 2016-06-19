@@ -94,5 +94,9 @@ export class LessonFormService {
 			lesson.cancellations = [];
 		}
 		console.log("Cancel lesson:", lesson);
+		// TODO continue from here: take the date, change to match this repetition's date and push to the array
+		// as cancelled date.
+		// Then, when formatting the agenda entries, add an info: whether a repetition was cancelled, by checking this array.
+		// Then display it on the UI
 	}
 }

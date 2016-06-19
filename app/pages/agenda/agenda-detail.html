@@ -17,9 +17,9 @@
 	<p>{{"agenda.from" | translate}} {{entry.dateReadable}}</p>
 	<p *ngIf="entry.repetition">{{entry.repetitionReadable}} <span *ngIf="entry.repetEnd">{{"agenda.until" | translate}} {{entry.repetEndReadable}} {{"agenda.included" | translate}}</span></p>
 
-	<!--<div padding>
+	<div padding>
 		<button block danger (click)="cancel()">{{"agenda.cancelLesson" | translate}}</button>
-	</div>-->
+	</div>
 	<div padding>
 		<button block secondary (click)="edit()">{{"agenda.edit" | translate}}</button>
 	</div>
