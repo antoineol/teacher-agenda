@@ -17,6 +17,10 @@
 		height: 100%;
 		margin: 0;
 		z-index: 2;
+
+		&.button-icon-only ion-icon {
+			padding: 0;
+		}
 	}
 	.arrow-right {
 		right: 0;
