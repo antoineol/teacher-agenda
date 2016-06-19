@@ -255,20 +255,8 @@ export class AgendaService {
 			}
 			switch (entry.repetition) {
 				case Freq.DAILY:
-					entry.start.date(start.date());
-					entry.start.month(start.month());
-					entry.start.year(start.year());
-					entry.end.date(start.date());
-					entry.end.month(start.month());
-					entry.end.year(start.year());
 					return true;
 				case Freq.WEEKLY:
-					entry.start.week(start.week());
-					entry.start.month(start.month());
-					entry.start.year(start.year());
-					entry.end.week(start.week());
-					entry.end.month(start.month());
-					entry.end.year(start.year());
 					return weekDays.indexOf(entry.start.day()) !== -1;
 				// case Freq.BIWEEKLY:
 				// 	return weekDays.indexOf(entry.start.day()) !== -1
@@ -276,10 +264,6 @@ export class AgendaService {
 				// 		|| entry.start.diff(start, 'w') % 2 === 0
 				// 		|| entry.start.diff(end, 'w') % 2 === 0);
 				case Freq.MONTHLY:
-					entry.start.month(start.month());
-					entry.start.year(start.year());
-					entry.end.month(start.month());
-					entry.end.year(start.year());
 					return monthDates.indexOf(entry.start.date()) !== -1;
 
 				// TODO implement other frequencies
@@ -303,6 +287,15 @@ export class AgendaService {
 
 			// return false;
 			// return entry.end.isAfter(start) && entry.start.isBefore(end);
+		});
+		// Update start dates to match the displayed day
+		agenda.forEach((entry: AgendaEntry) => {
+			entry.start.date(start.date());
+			entry.start.month(start.month());
+			entry.start.year(start.year());
+			entry.end.date(start.date());
+			entry.end.month(start.month());
+			entry.end.year(start.year());
 		});
 		// Sort by start date
 		agenda.sort(AgendaService.compareAgendaEntriesByStartDate);
