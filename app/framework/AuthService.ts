@@ -53,7 +53,7 @@ export class AuthService {
 		// console.log("Firebase fbAuth:", authBackend._fbAuth.sendPasswordResetEmail);
 
 		this.auth.subscribe((authInfo:FirebaseAuthState) => {
-			console.log("authInfo:", authInfo);
+			// console.log("authInfo:", authInfo);
 			if (!authInfo) {
 				this.requestAuth();
 			} else if (authInfo.password && authInfo.password.isTemporaryPassword) {

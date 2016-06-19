@@ -40,7 +40,7 @@ export class AgendaList {
 			if (this.subscription) {
 				this.subscription.unsubscribe();
 			}
-			console.log("Loading agenda list for start:", range.start.format('L'), "end:", range.end.format('L'), "index:", this.index);
+			// console.log("Loading agenda list for start:", range.start.format('L'), "end:", range.end.format('L'), "index:", this.index);
 			this.subscription = this.agendaService.getFormattedAgenda(range.start, range.end).subscribe((agenda:AgendaEntry[]) => {
 				// console.log("Agenda from", range.start.format('L'), 'to', range.end.format('L'), 'index:', this.index, agenda.map((e:AgendaEntry) => moment(e.date).format('L') + ' ' + e.startReadable));
 				this.agenda = agenda;

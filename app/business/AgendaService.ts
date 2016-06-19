@@ -32,7 +32,7 @@ export class AgendaService {
 			let agenda:AgendaEntry[] = results[0];
 			let studentsArray:Student[] = results[1];
 			let parameters:Parameters = results[2];
-			// console.log("getFormattedAgenda callback", agenda);
+			console.log("getFormattedAgenda callback", agenda);
 			// agenda.subscribe((result:any) => {
 			// 	console.log("Agenda result:", result);
 			// }, (err:any) => {
@@ -255,15 +255,31 @@ export class AgendaService {
 			}
 			switch (entry.repetition) {
 				case Freq.DAILY:
+					entry.start.date(start.date());
+					entry.start.month(start.month());
+					entry.start.year(start.year());
+					entry.end.date(start.date());
+					entry.end.month(start.month());
+					entry.end.year(start.year());
 					return true;
 				case Freq.WEEKLY:
+					entry.start.week(start.week());
+					entry.start.month(start.month());
+					entry.start.year(start.year());
+					entry.end.week(start.week());
+					entry.end.month(start.month());
+					entry.end.year(start.year());
 					return weekDays.indexOf(entry.start.day()) !== -1;
-				case Freq.BIWEEKLY:
-					return weekDays.indexOf(entry.start.day()) !== -1
-						&& (moreThan2weeks
-						|| entry.start.diff(start, 'w') % 2 === 0
-						|| entry.start.diff(end, 'w') % 2 === 0);
+				// case Freq.BIWEEKLY:
+				// 	return weekDays.indexOf(entry.start.day()) !== -1
+				// 		&& (moreThan2weeks
+				// 		|| entry.start.diff(start, 'w') % 2 === 0
+				// 		|| entry.start.diff(end, 'w') % 2 === 0);
 				case Freq.MONTHLY:
+					entry.start.month(start.month());
+					entry.start.year(start.year());
+					entry.end.month(start.month());
+					entry.end.year(start.year());
 					return monthDates.indexOf(entry.start.date()) !== -1;
 
 				// TODO implement other frequencies

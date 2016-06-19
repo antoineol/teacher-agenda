@@ -32,6 +32,9 @@ import {StudentsPage} from "./pages/students/students";
 import {AuthService} from "./framework/AuthService";
 
 
+// TODO display loader while caching. See event listeners:
+// https://jonathanstark.com/blog/debugging-html-5-offline-application-cache?filename=2009/09/27/debugging-html-5-offline-application-cache/
+
 // TODO offline mode https://www.firebase.com/docs/android/guide/offline-capabilities.html
 // https://www.firebase.com/docs/web/guide/offline-capabilities.html
 // https://angularfire2.com/api/ to get Firebase obj: @Inject(FirebaseRef) ref:Firebase
