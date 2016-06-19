@@ -4,6 +4,7 @@ import {ErrorService} from "../../framework/ErrorService";
 import {AuthService} from "../../framework/AuthService";
 import {AuthConfiguration} from "angularfire2/es6/providers/auth_backend";
 import {Toaster} from "../../framework/Toaster";
+import {AuthMethods} from "angularfire2/angularfire2";
 // import moment = require("moment");
 
 
@@ -72,10 +73,17 @@ export class AuthFormPage {
 
 	private login(options?:AuthConfiguration, credentials?:FirebaseCredentials):void {
 		this.loading = true;
-		this.authService.login(options, credentials).then(() => {
+		this.authService.login(options, credentials).catch((err:any) => {
+			if (err.code === 'TRANSPORT_UNAVAILABLE') {
+				options.method = AuthMethods.Redirect;
+				return this.authService.login(options, credentials);
+			} else {
+				return Promise.reject(err);
+			}
+		}).then(() => {
 			this.loading = false;
 			this._dismiss();
-		}, (err:any) => {
+		}).catch((err:any) => {
 			this.loading = false;
 			this.error.handler(err.code)(err);
 		});
