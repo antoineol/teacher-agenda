@@ -18,7 +18,8 @@ export class StudentsPage {
 	constructor(private nav:NavController, private studentDao:StudentDao, private error:ErrorService) {
 		let errKey = "global.error.init";
 		try {
-			studentDao.findStudents().subscribe((students:Student[]) => this.students = students, this.error.handler(errKey));
+			studentDao.findStudents().subscribe((students:Student[]) => this.students = students,
+				(err:any) => this.error.handler(err.code || errKey)(err));
 		} catch(err) {
 			this.error.handler(errKey)(err);
 		}

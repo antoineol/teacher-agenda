@@ -25,7 +25,7 @@ export class StudentDetailPage {
 			agendaDao.findStudent(this.student.$key).subscribe((student:Student) => {
 				this.student = student;
 				console.log("New student:", student);
-			}, error.handler("global.error.init"));
+			}, (err:any) => error.handler(err.code || "global.error.init")(err));
 
 			this.removePopup = translate.getTranslation(Conf.lang).map(() => {
 				let confirm = Alert.create({
@@ -40,7 +40,7 @@ export class StudentDetailPage {
 									confirm.dismiss().then(() => {
 										this.nav.pop();
 									});
-								}, error.handler("student.error.remove"));
+								}, (err:any) => error.handler(err.code || "student.error.remove")(err));
 							}
 						}
 					]

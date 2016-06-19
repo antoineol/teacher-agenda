@@ -64,8 +64,9 @@ export class LessonFormPage {
 					this.studentChoice = students.find((s:Student) => s.$key === agendaEntry.student.$key);
 				}
 				this.students = students;
-			}, this.error.handler(errKey));
-			miscService.getFrequencies().subscribe((freq:FreqChoice[]) => this.freq = freq, this.error.handler(errKey));
+			}, (err:any) => this.error.handler(err.code || errKey)(err));
+			miscService.getFrequencies().subscribe((freq:FreqChoice[]) => this.freq = freq,
+				(err:any) => this.error.handler(err.code || errKey)(err));
 		} catch(err) {
 			this.error.handler(errKey)(err);
 		}
@@ -84,7 +85,7 @@ export class LessonFormPage {
 				this.nav.pop();
 			}, (err) => {
 				this.updating = false;
-				this.error.handler(errKey)(err)
+				this.error.handler(err.code || errKey)(err)
 			});
 		} catch (err) {
 			this.updating = false;

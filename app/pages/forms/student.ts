@@ -42,7 +42,7 @@ export class StudentFormPage {
 				this.nav.pop();
 			}, (err) => {
 				this.updating = false;
-				this.error.handler(errKey)(err)
+				this.error.handler(err.code || errKey)(err)
 			});
 		} catch (err) {
 			this.updating = false;

@@ -46,7 +46,7 @@ export class AgendaDetailPage {
 									confirm.dismiss().then(() => {
 										this.nav.pop();
 									});
-								}, this.error.handler("lesson.error.remove"));
+								}, (err:any) => this.error.handler(err.code || "lesson.error.remove")(err));
 							}
 						}
 					]
