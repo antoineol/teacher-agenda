@@ -1,20 +1,21 @@
 import {Injectable, Inject} from "@angular/core";
 import {
-	FirebaseAuth, FirebaseAuthState, Firebase, FirebaseRef, AuthProviders,
-	AuthMethods
-} from "angularfire2/angularfire2";
-import {Nav, App, NavController} from "ionic-angular/index";
-import {AuthFormPage} from "../pages/forms/auth";
-// import {Deferred} from "promise-defer";
-import defer = require("promise-defer");
-// import Deferred = require("promise-defer");
-import {Observable} from "rxjs/Observable";
+	FirebaseAuth,
+	FirebaseAuthState,
+	Firebase,
+	FirebaseRef,
+	AuthProviders,
+	AuthMethods,
+	AngularFire,
+} from "angularfire2";
 import {ReplaySubject} from "rxjs/ReplaySubject";
 import {Deferred} from "promise-defer";
 import {AuthConfiguration} from "angularfire2/es6/providers/auth_backend";
 import {Utils} from "../business/Utils";
-import {AgendaDao} from "../business/AgendaDao";
-import {Parameters} from "../model/Parameters";
+// import {Deferred} from "promise-defer";
+import defer = require("promise-defer");
+import {FirebaseSdkAuthBackend} from "angularfire2/es6/providers/firebase_sdk_auth_backend";
+// import Deferred = require("promise-defer");
 // import defer = require("promise-defer");
 // import Deferred = require("promise-defer");
 // import Deferred = require("promise-defer");
@@ -35,21 +36,29 @@ export class AuthService {
 
 	private authDeferred:Deferred<FirebaseAuthState>;
 	popAuth = new ReplaySubject<boolean>(1);
-	popChangePwd = new ReplaySubject<boolean>(1);
+	popChangePwd = new ReplaySubject<FirebaseAuthDataPassword>(1);
+	private fbAuth:firebase.auth.Auth;
 
-	constructor(private auth: FirebaseAuth, @Inject(FirebaseRef) private ref:Firebase) {
+	constructor(private auth: FirebaseAuth, @Inject(FirebaseRef) private ref:Firebase, private af:AngularFire) {
 		// subscribe to the auth object to check for the login status
 		// of the user, if logged in, save some user information and
 		// execute the firebase query...
 		// .. otherwise
 		// _show the login modal page
+		this.fbAuth = (<any>af.auth)._authBackend._fbAuth;
+
+		// console.log("Firebase ref:", ref);
+		// console.log("Firebase af:", af);
+		// let authBackend:FirebaseSdkAuthBackend = (<any>af.auth)._authBackend;
+		// console.log("Firebase authBackend:", authBackend);//_fbAuth
+		// console.log("Firebase fbAuth:", authBackend._fbAuth.sendPasswordResetEmail);
 
 		this.auth.subscribe((authInfo:FirebaseAuthState) => {
+			console.log("authInfo:", authInfo);
 			if (!authInfo) {
-				// console.log("Logged out.");
 				this.requestAuth();
 			} else if (authInfo.password && authInfo.password.isTemporaryPassword) {
-				this.requestPwdChange();
+				this.requestPwdChange(authInfo.password);
 			}
 		});
 	}
@@ -68,6 +77,7 @@ export class AuthService {
 	// https://github.com/angular/angularfire2/issues/220#issuecomment-225317731
 
 	resetPasswordFirebase(credentials:FirebaseResetPasswordCredentials):Promise<void> {
+		return this.fbAuth.sendPasswordResetEmail(credentials.email);
 		return new Promise<void>((resolve, reject) => {
 			this.ref.resetPassword(credentials, error => {
 				if (error) {
@@ -144,8 +154,12 @@ export class AuthService {
 		})
 	}
 
-	changePassword(credentials:FirebaseChangePasswordCredentials) {
+	changePassword(credentials:FirebaseChangePasswordCredentials):Promise<void> {
 		// TODO continue from here
+		return this.changePasswordFirebase(credentials).then(() => {
+			this.popChangePwd.next(null);
+			this.modalShown = false;
+		})
 	}
 
 	private requestAuth():Promise<FirebaseAuthState> {
@@ -158,11 +172,11 @@ export class AuthService {
 	}
 
 	private modalShown:boolean;
-	private requestPwdChange():Promise<void> {
+	private requestPwdChange(password:FirebaseAuthDataPassword):Promise<void> {
 		if (this.modalShown) {
 			return;
 		}
 		this.modalShown = true;
-		this.popChangePwd.next(true);
+		this.popChangePwd.next(password);
 	}
 }

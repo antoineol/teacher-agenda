@@ -4,7 +4,7 @@ import {TranslateService, TranslateLoader, TranslateStaticLoader, TranslatePipe}
 import {
 	FIREBASE_PROVIDERS, defaultFirebase, firebaseAuthConfig, AuthProviders,
 	AuthMethods
-} from "angularfire2/angularfire2";
+} from "angularfire2";
 import {AgendaService} from "./business/AgendaService";
 import {/*Cache, */StorageDao} from "./framework/dao/StorageDao";
 import {AgendaDao} from "./business/AgendaDao";
@@ -31,8 +31,13 @@ export const injectables:any[] = [
 
 	// Firebase Angular2 adapter
 	FIREBASE_PROVIDERS,
-	// defaultFirebase('https://teacher-agenda-812ca.firebaseio.com'),
-	defaultFirebase('https://crackling-heat-2871.firebaseio.com'),
+	defaultFirebase("https://crackling-heat-2871.firebaseio.com"),
+	// defaultFirebase({
+	// 	apiKey: "AIzaSyA0gBTBwU7x2m6dQVOormHdf8UnifI7Tu4",
+	// 	authDomain: "crackling-heat-2871.firebaseapp.com",
+	// 	databaseURL: "https://crackling-heat-2871.firebaseio.com", // "https://teacher-agenda-812ca.firebaseio.com"
+	// 	storageBucket: "crackling-heat-2871.appspot.com",
+	// }),
 	// TODO test and replace by a better auth config
 	firebaseAuthConfig({
 		provider: AuthProviders.Password,

@@ -3,6 +3,7 @@ var gulp = require('gulp'),
     del = require('del'),
     runSequence = require('run-sequence'),
     argv = process.argv;
+var path = require('path');
 
 var isRelease = argv.indexOf('--release') > -1;
 
@@ -45,7 +46,7 @@ gulp.task('watch', ['clean'], function(done){
   );
 });
 
-gulp.task('build', ['clean'], function(done){
+gulp.task('build', ['clean', 'icons'], function(done){
   runSequence(
     ['sass', 'html', 'fonts', 'scripts'],
     function(){
@@ -61,10 +62,62 @@ gulp.task('build', ['clean'], function(done){
     }
   );
 });
-gulp.task('sass', buildSass);
+gulp.task('sass', function() {
+	return buildSass({sassOptions: {
+		includePaths: [
+			'node_modules/ionic-angular',
+			'node_modules/ionicons/dist/scss'
+		],
+		importer: npmModule
+	}});
+});
 gulp.task('html', copyHTML);
 gulp.task('fonts', copyFonts);
 gulp.task('scripts', copyScripts);
 gulp.task('clean', function(){
   return del('www/build');
 });
+
+
+
+gulp.task('icons', function() {
+	return gulp.src('resources/**/*')
+		.pipe(gulp.dest('www/resources'));
+});
+
+
+// Inspired by http://stackoverflow.com/a/29924381/4717408
+var aliases = {};
+/**
+ * Will look for .scss|sass files inside the node_modules folder
+ */
+function npmModule(url, file, done) {
+	if (url.charAt(0) !== '~') {
+		return done({file: url});
+	}
+	url = url.substring(1);
+	// check if the path was already found and cached
+	if (aliases[url]) {
+		return done({file: aliases[url]});
+	}
+
+	// look for modules installed through npm
+	try {
+		var newPath = path.relative(path.dirname(file), resolveNpmSass(url));
+		aliases[url] = newPath; // cache this request
+		return done({file: newPath});
+	} catch (e) {
+		console.warn("Import from node_modules failed, probably not found:", url, " - in file:", file);
+		// if your module could not be found, just return the original url
+		aliases[url] = url;
+		return done({file: url});
+	}
+}
+
+function resolveNpmSass(url) {
+	try {
+		return require.resolve(url);
+	} catch(e) {
+		return require.resolve(url + '.scss');
+	}
+}

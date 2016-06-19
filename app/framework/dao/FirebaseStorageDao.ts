@@ -27,7 +27,7 @@ export class FirebaseStorageDao implements StorageDao {
 
 	// We use sql storage internally to ensure it is persisted, since localStorage may me cleaned
 	// by the OS, the user...
-	constructor(private af: AngularFire/*, public auth: FirebaseAuth*/, private authService:AuthService) {
+	constructor(private af:AngularFire/*, public auth: FirebaseAuth*/, private authService:AuthService) {
 	}
 	ngOnInit() {
 		// https://github.com/aaronksaunders/ionic2-angularfire-sample/blob/master/app/pages/home/home.ts#L45

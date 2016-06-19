@@ -47,14 +47,16 @@ export class AgendaPage {
 	}
 
 	onPageDidEnter() {
+		console.log("Agenda onPageDidEnter");
 		this.authService.popAuth.subscribe((show:boolean) => {
+			console.log("Agenda received popAuth:", show);
 			if (show) {
 				AuthFormPage._show(this.nav);
 			}
 		});
-		this.authService.popChangePwd.subscribe((show:boolean) => {
-			if (show) {
-				ChangePasswordPage._show(this.nav);
+		this.authService.popChangePwd.subscribe((password:FirebaseAuthDataPassword) => {
+			if (password) {
+				ChangePasswordPage._show(this.nav, password);
 			}
 		});
 	}

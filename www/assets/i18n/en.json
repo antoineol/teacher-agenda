@@ -58,12 +58,17 @@
 		"github": "Github",
 		"email": "Email",
 		"password": "Password",
+		"forgot": "Forgot",
+		"forgotFull": "You forgot your password?",
+		"resetPassword": "Reset password",
 		"checkEmailSent": "An email was sent with a temporary password. Please enter it as well as your new password.",
 		"changePassword": "Password change",
+		"validateChange": "Change password",
 		"oldPassword": "Old password",
 		"newPassword": "New password",
 		"confirmPassword": "Confirm password",
-		"differentPasswords": "Passwords don't match"
+		"differentPasswords": "Passwords don't match",
+		"resendPassword": "Re-send the password"
 	},
 	"alert": {
 		"cancel": "Cancel",

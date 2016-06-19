@@ -12,12 +12,15 @@ import {Toaster} from "../../framework/Toaster";
 })
 export class AuthFormPage {
 
-	authenticating:boolean;
-	private signUpMode = false;
+	loading:boolean;
+	private signUpMode:string = '';
 
 	static _show(nav:NavController):void {
 		let loginPage = Modal.create(AuthFormPage);
+		// Workaround: https://github.com/driftyco/ionic/issues/6933#issuecomment-226508870
+		//(<any>loginPage).fireOtherLifecycles = false;
 		nav.present(loginPage);
+		console.log("AuthFormPage present");
 	}
 
 	constructor(private authService:AuthService, private viewCtrl:ViewController,
@@ -29,7 +32,7 @@ export class AuthFormPage {
 	}
 
 	private loginWithEmail(credentials:FirebaseCredentials):void {
-		if (this.signUpMode) {
+		if (this.signUpMode === 'signup') {
 			// console.log("Sign up with email:", credentials);
 			this.signUp(credentials);
 		} else {
@@ -43,23 +46,37 @@ export class AuthFormPage {
 	// }
 
 	private signUp(credentials:FirebaseCredentials):void {
-		this.authenticating = true;
+		this.loading = true;
 		this.authService.signup(credentials).then(() => {
-			this.authenticating = false;
+			this.loading = false;
 			this.toaster.toast('auth.checkEmailSent');
+			this.signUpMode = '';
 		}, (err:any) => {
-			this.authenticating = false;
+			this.loading = false;
 			this.error.handler(err.code)(err);
 		});
 	}
 
+	private resetPassword(credentials:FirebaseResetPasswordCredentials):void {
+		this.loading = true;
+		this.authService.resetPasswordFirebase(credentials).then(() => {
+			this.loading = false;
+			this.toaster.toast('auth.checkEmailSent');
+			this.signUpMode = '';
+		}, (err:any) => {
+			this.loading = false;
+			this.error.handler(err.code)(err);
+		});
+	}
+
+
 	private login(options?:AuthConfiguration, credentials?:FirebaseCredentials):void {
-		this.authenticating = true;
+		this.loading = true;
 		this.authService.login(options, credentials).then(() => {
-			this.authenticating = false;
+			this.loading = false;
 			this._dismiss();
 		}, (err:any) => {
-			this.authenticating = false;
+			this.loading = false;
 			this.error.handler(err.code)(err);
 		});
 	}

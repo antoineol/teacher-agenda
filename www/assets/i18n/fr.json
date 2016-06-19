@@ -58,12 +58,17 @@
 		"github": "Github",
 		"email": "Email",
 		"password": "Password",
+		"forgot": "Oubli",
+		"forgotFull": "Mot de passe oublié ?",
+		"resetPassword": "Réinitialiser le mot de passe",
 		"checkEmailSent": "Un email a été envoyé avec un mot de passe temporaire. Veuillez le saisir, ainsi que votre nouveau mot de passe.",
-		"changePassword": "Changement de mot de passe",
+		"changePassword": "Changement de MDP",
+		"validateChange": "Changer le mot de passe",
 		"oldPassword": "Ancien mot de passe",
 		"newPassword": "Nouveau mot de passe",
 		"confirmPassword": "Confirmez le mot de passe",
-		"differentPasswords": "Les mots de passe ne correspondent pas"
+		"differentPasswords": "Les mots de passe ne correspondent pas",
+		"resendPassword": "Renvoyer le mot de passe"
 	},
 	"alert": {
 		"cancel": "Annuler",
