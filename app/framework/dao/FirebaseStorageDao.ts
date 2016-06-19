@@ -41,19 +41,19 @@ export class FirebaseStorageDao implements StorageDao {
 
 	findAll(collection:string):Observable<any> {
 		return this.authObs().mergeMap((user:FirebaseAuthState) => {
-			return this.getListBinding(user, collection);
+			return this.getListBinding(collection, user);
 		});
 	}
 
 	findObject(collection:string):Observable<any> {
 		return this.authObs().mergeMap((user:FirebaseAuthState) => {
-			return this.getObjectBinding(user, collection);
+			return this.getObjectBinding(collection, user);
 		});
 	}
 
 	findByKey(collection:string, key:string):Observable<any> {
 		return this.authObs().mergeMap((user:FirebaseAuthState) => {
-			return this.getObjectBinding(user, collection + '/' + key).map((obj:any) => {
+			return this.getObjectBinding(collection + '/' + key, user).map((obj:any) => {
 				obj.$key = key;
 				return obj;
 			});
@@ -63,8 +63,13 @@ export class FirebaseStorageDao implements StorageDao {
 	pushToList(collection:string, entity:any):Promise<void> {
 		return this.auth().then((user:FirebaseAuthState) => {
 			this.checkFirebaseEntity(entity);
-			return <Promise<void>>/*FirebaseWithPromise<void>*/this.getListBinding(user, collection).push(entity);
+			return <Promise<void>>/*FirebaseWithPromise<void>*/this.getListBinding(collection, user).push(entity);
 		});
+	}
+
+	pushToListGlobal(collection:string, entity:any):Promise<void> {
+		this.checkFirebaseEntity(entity);
+		return <Promise<void>>this.getListBinding(collection).push(entity);
 	}
 
 	updateInList(collection:string, entity:any):Promise<void> {
@@ -75,40 +80,40 @@ export class FirebaseStorageDao implements StorageDao {
 			// https://github.com/angular/angularfire2/issues/190
 			let updateEntity = Object.assign({}, entity);
 			delete updateEntity.$key;
-			return this.getListBinding(user, collection).update(entity, updateEntity);
+			return this.getListBinding(collection, user).update(entity, updateEntity);
 		});
 	}
 
 	removeInList(collection:string, entity:any):Promise<void> {
 		return this.auth().then((user:FirebaseAuthState) => {
 			this.checkUpdateFirebaseEntity(entity);
-			return this.getListBinding(user, collection).remove(entity.$key);
+			return this.getListBinding(collection, user).remove(entity.$key);
 		});
 	}
 
 	removeAllList(collection:string):Promise<void> {
 		return this.auth().then((user:FirebaseAuthState) => {
-			return this.getListBinding(user, collection).remove();
+			return this.getListBinding(collection, user).remove();
 		});
 	}
 
 	insertObject(collection:string, entity:any):Promise<void> {
 		return this.auth().then((user:FirebaseAuthState) => {
 			this.checkFirebaseEntity(entity);
-			return this.getObjectBinding(user, collection).set(entity);
+			return this.getObjectBinding(collection, user).set(entity);
 		});
 	}
 
 	updateObject(collection:string, entity:any):Promise<void> {
 		return this.auth().then((user:FirebaseAuthState) => {
 			this.checkFirebaseEntity(entity);
-			return this.getObjectBinding(user, collection).update(entity);
+			return this.getObjectBinding(collection, user).update(entity);
 		});
 	}
 
 	removeObject(collection:string):Promise<void> {
 		return this.auth().then((user:FirebaseAuthState) => {
-			return this.getObjectBinding(user, collection).remove();
+			return this.getObjectBinding(collection, user).remove();
 		});
 	}
 
@@ -131,11 +136,12 @@ export class FirebaseStorageDao implements StorageDao {
 		}
 	}
 
-	private getListBinding(user:FirebaseAuthState, collection:string):FirebaseListObservable<any> {
+	private getListBinding(collection:string, user?:FirebaseAuthState):FirebaseListObservable<any> {
 		// return Observable.fromPromise(this.auth.ensureAuth()).map(() => {
 			let binding:FirebaseListObservable<any> = <FirebaseListObservable<any>>this.bindings.get(collection);
 			if (!binding) {
-				binding = this.af.database.list('/users/' + user.uid + '/' + collection);
+				let path = user ? '/users/' + user.uid + '/' + collection : '/' + collection;
+				binding = this.af.database.list(path);
 				this.bindings.set(collection, binding);
 			}
 			return binding;
@@ -148,11 +154,12 @@ export class FirebaseStorageDao implements StorageDao {
 		// return binding;
 	}
 
-	private getObjectBinding(user:FirebaseAuthState, collection:string):FirebaseObjectObservable<any> {
+	private getObjectBinding(collection:string, user?:FirebaseAuthState):FirebaseObjectObservable<any> {
 		// return Observable.fromPromise(this.auth.ensureAuth()).map(() => {
 			let binding:FirebaseObjectObservable<any> = <FirebaseObjectObservable<any>>this.bindings.get(collection);
 			if (!binding) {
-				binding = this.af.database.object('/users/' + user.uid + '/' + collection);
+				let path = user ? '/users/' + user.uid + '/' + collection : '/' + collection;
+				binding = this.af.database.object(path);
 				this.bindings.set(collection, binding);
 			}
 			return binding;

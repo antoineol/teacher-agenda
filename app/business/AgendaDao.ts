@@ -4,8 +4,6 @@ import {AgendaEntry} from "../model/Lesson";
 import {Student} from "../model/Student";
 import {Parameters} from "../model/Parameters";
 import {StorageDao} from "../framework/dao/StorageDao";
-import {ReplaySubject} from "rxjs/ReplaySubject";
-import {Conf} from "../config/Config";
 import {AgendaConfig} from "../config/AgendaConfig";
 
 const COLLECTION_AGENDA = "agenda";

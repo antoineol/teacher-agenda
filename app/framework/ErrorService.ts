@@ -1,6 +1,7 @@
 import {Injectable} from "@angular/core";
 import {AuthService} from "./AuthService";
 import {Toaster} from "./Toaster";
+import {ErrorDao} from "./ErrorDao";
 
 
 @Injectable()
@@ -8,7 +9,7 @@ export class ErrorService {
 
 	// private nav:NavController;
 
-	constructor(/*private app:App, *//*private translate:TranslateService, */private auth:AuthService, private toaster:Toaster) {
+	constructor(/*private app:App, *//*private translate:TranslateService, */private auth:AuthService, private toaster:Toaster, private errorDao:ErrorDao) {
 		// this.nav = app.getActiveNav();
 	}
 
@@ -34,6 +35,10 @@ export class ErrorService {
 			} else {
 				console.error(error);
 			}
+			this.errorDao.addError({
+				errorMessage: error.message || error.toString(),
+				errorStack: error.stack
+			});
 
 			if (!friendlyErrorMessageKey) {
 				friendlyErrorMessageKey = 'error';
