@@ -78,7 +78,7 @@ gulp.task('html', copyHTML);
 gulp.task('fonts', copyFonts);
 gulp.task('scripts', copyScripts);
 gulp.task('clean', function(){
-  return del('www/build');
+  return del(['www/build', 'www/my.appcache']);
 });
 
 

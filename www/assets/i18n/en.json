@@ -105,7 +105,7 @@
 	"INVALID_PASSWORD": "The specified user account password is incorrect.",
 	"INVALID_PROVIDER": "The requested authentication provider does not exist.",
 	"INVALID_TOKEN": "The specified authentication token is invalid. This can occur when the token is malformed, expired, or the Firebase app secret that was used to generate it has been revoked.",
-	"LIMITS_EXCEEDED": "Limited exceeded.",
+	"LIMITS_EXCEEDED": "Limits exceeded.",
 	"MAX_RETRIES": "The transaction had too many retries.",
 	"NETWORK_ERROR": "The operation could not be performed due to a network error.",
 	"OPERATION_FAILED": "The server indicated that this operation failed.",
