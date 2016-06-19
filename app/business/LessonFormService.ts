@@ -26,6 +26,10 @@ export class LessonFormService {
 			// and propagate automatically the changes in the app.
 			// lesson = Object.assign({}, lesson);
 
+			if (typeof lesson.price === 'string') {
+				lesson.price = +lesson.price; // convert to number
+			}
+
 			// {studentId: "482b4f74-ba0d-4b10-acf2-69ffff8f0c4f", date: "2016-05-22", repetition: 0, duration: 45}
 			// Remove useless information from the JSON we are going to persist (default, empty...)
 			if (student) {

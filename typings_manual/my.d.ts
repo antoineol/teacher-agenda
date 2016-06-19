@@ -19,3 +19,6 @@ declare module 'promise-defer' {
 	// function defer<T>(PromiseClass?:any):Deferred<T>;
 	// export = defer;
 }
+
+// Add window.Intl to let typescript recognize it. It is standard, but maybe too recent.
+interface Window { Intl: any; }

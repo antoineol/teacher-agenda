@@ -1,8 +1,12 @@
 import moment = require("moment");
 import {Conf} from "../config/Config";
+import {IntlPolyfill} from "../framework/polyfills/IntlPolyfill";
 
 
 const possibleChars = ['abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!?_-'];
+
+// Apply polyfills
+const Intl = window.Intl = window.Intl || IntlPolyfill;
 
 export class Utils {
 	// static uuid():string {

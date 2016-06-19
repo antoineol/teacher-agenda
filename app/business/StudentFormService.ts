@@ -9,6 +9,9 @@ export class StudentFormService {
 	}
 
 	submitStudent(student:Student, edit?:boolean):Promise<void> {
+		if (typeof student.price === 'string') {
+			student.price = +student.price; // convert to number
+		}
 		if (edit) {
 			// console.log("Update student:", student);
 			return this.studentDao.updateStudent(student);
