@@ -9,6 +9,7 @@ import {LessonFormService} from "../../business/LessonFormService";
 import {MiscService} from "../../business/MiscService";
 import {AgendaService} from "../../business/AgendaService";
 import {Conf} from "../../config/Config";
+import {ControlGroup} from "@angular/common";
 // import moment = require("moment");
 
 
@@ -17,8 +18,9 @@ import {Conf} from "../../config/Config";
 })
 export class LessonFormPage {
 
-	edit:boolean;
-	updating = false;
+	private edit:boolean;
+	private updating = false;
+	// private lessonForm:ControlGroup;
 
 	lesson:Lesson = {
 		// studentId: null,

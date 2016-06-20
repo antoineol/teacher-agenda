@@ -8,11 +8,11 @@
 
 <ion-content class="lesson-form">
 
-	<form (submit)="createLesson()">
+	<form #lessonForm="ngForm" (submit)="createLesson()">
 		<ion-list>
 			<ion-item>
 				<ion-label>{{"lesson.date" | translate}}</ion-label>
-				<ion-input type="datetime-local" [(ngModel)]="lesson.date" required></ion-input>
+				<ion-input type="datetime-local" [(ngModel)]="lesson.date" required ngControl="date"></ion-input>
 			</ion-item>
 			<!--<ion-item>
 				<ion-label>{{"lesson.date" | translate}} <em>ion-datetime</em></ion-label>
@@ -20,32 +20,32 @@
 			</ion-item>-->
 			<ion-item>
 				<ion-label>{{"lesson.duration" | translate}}</ion-label>
-				<ion-input type="number" [(ngModel)]="lesson.duration"></ion-input>
+				<ion-input type="number" [(ngModel)]="lesson.duration" ngControl="duration"></ion-input>
 			</ion-item>
 			<ion-item>
 				<ion-label>{{"lesson.student" | translate}}</ion-label>
-				<ion-select [(ngModel)]="studentChoice" okText="{{'alert.validate' | translate}}" cancelText="{{'alert.cancel' | translate}}" required>
+				<ion-select [(ngModel)]="studentChoice" ngControl="studentChoice" okText="{{'alert.validate' | translate}}" cancelText="{{'alert.cancel' | translate}}" required>
 					<ion-option *ngFor="let student of students" [value]="student">{{student.name}}</ion-option>
 				</ion-select>
 			</ion-item>
 			<ion-item>
 				<ion-label>{{"student.price" | translate}}</ion-label>
-				<ion-input type="number" min="0" [(ngModel)]="lesson.price" required></ion-input>
+				<ion-input type="number" min="0" [(ngModel)]="lesson.price" ngControl="price" required></ion-input>
 			</ion-item>
 			<ion-item>
 				<ion-label>{{"lesson.repetition" | translate}}</ion-label>
-				<ion-select [(ngModel)]="lesson.repetition">
+				<ion-select [(ngModel)]="lesson.repetition" ngControl="repetition">
 					<ion-option *ngFor="let f of freq" [value]="f.id">{{f.label}}</ion-option>
 				</ion-select>
 			</ion-item>
 			<ion-item *ngIf="lesson.repetition">
 				<ion-label>{{"lesson.repetitionEnd" | translate}}</ion-label>
-				<ion-input type="date" [(ngModel)]="lesson.repetitionEnd"></ion-input>
+				<ion-input type="date" [(ngModel)]="lesson.repetitionEnd" ngControl="repetitionEnd"></ion-input>
 			</ion-item>
 		</ion-list>
 
 		<div padding>
-			<button block primary type="submit" [disabled]="updating">{{ (edit ? "lesson.validateEdit" : "lesson.validateAdd") | translate}}</button>
+			<button block primary type="submit" [disabled]="updating || !lessonForm.valid">{{ (edit ? "lesson.validateEdit" : "lesson.validateAdd") | translate}}</button>
 		</div>
 	</form>
 

@@ -10,9 +10,9 @@ import {Toaster} from "../../framework/Toaster";
 })
 export class ChangePasswordPage {
 
-	password:FirebaseAuthDataPassword;
-	loading:boolean;
-	changePasswordForm:ControlGroup;
+	private password:FirebaseAuthDataPassword;
+	private loading:boolean;
+	private changePasswordForm:ControlGroup;
 
 
 	static _show(nav:NavController, password:FirebaseAuthDataPassword):void {
