@@ -1,7 +1,8 @@
 import {Component, ViewChild} from "@angular/core";
 import {ViewController, NavController, Popover, App, NavParams} from "ionic-angular/index";
-import {LessonFormPage} from "./lesson";
-import {StudentFormPage} from "./student";
+import {LessonFormPage} from "../forms/lesson";
+import {StudentFormPage} from "../forms/student";
+import {PayFormPage} from "../forms/pay";
 
 
 @Component({
@@ -9,6 +10,7 @@ import {StudentFormPage} from "./student";
     <ion-list>
       <button ion-item (click)="addLesson()">{{"lesson.add" | translate}}</button>
       <button ion-item (click)="addStudent()">{{"student.add" | translate}}</button>
+      <button ion-item (click)="addPayment()">{{"pay.add" | translate}}</button>
     </ion-list>
   `
 })
@@ -38,6 +40,12 @@ export class AddPopover {
 
 	addStudent() {
 		this.nav.push(StudentFormPage).then(() => {
+			this.viewCtrl.dismiss();
+		});
+	}
+
+	addPayment() {
+		this.nav.push(PayFormPage).then(() => {
 			this.viewCtrl.dismiss();
 		});
 	}

@@ -9,7 +9,7 @@ import {AuthMethods} from "angularfire2/angularfire2";
 
 
 @Component({
-	templateUrl: 'build/pages/forms/auth.html'
+	templateUrl: 'build/pages/pop/auth.html'
 })
 export class AuthFormPage {
 

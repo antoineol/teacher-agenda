@@ -5,21 +5,22 @@ import {Student} from "../../model/Student";
 import {ErrorService} from "../../framework/ErrorService";
 import {AgendaService} from "../../business/AgendaService";
 import {StudentFormService} from "../../business/StudentFormService";
-import {Utils} from "../../business/Utils";
-import {AgendaConfig} from "../../config/AgendaConfig";
 
 
 @Component({
 	templateUrl: 'build/pages/forms/student.html'
 })
 export class StudentFormPage {
-	edit:boolean;
-	loading = false;
+	private edit:boolean;
+	private loading = false;
 
-	student:Student = {
+	private student:Student = {
 		name: null,
 		price: null,
-		startBilling: AgendaConfig.defaultStartBillingDate
+		paidUntil: null,
+		paymentHistory: [],
+		// paid: 0,
+		// startBilling: AgendaConfig.defaultStartBillingDate
 	};
 
 	constructor(private nav:NavController, private navParams:NavParams, private agendaService:AgendaService, private agendaDao:AgendaDao, private error:ErrorService, private studentService:StudentFormService) {
@@ -30,7 +31,10 @@ export class StudentFormPage {
 				$key: initStudent.$key,
 				name: initStudent.name,
 				price: initStudent.price,
-				startBilling: Utils.truncateDate(initStudent.startBilling)
+				paidUntil: initStudent.paidUntil,
+				paymentHistory: initStudent.paymentHistory,
+				// paid: initStudent.paid,
+				// startBilling: Utils.truncateDate(initStudent.startBilling)
 			};
 		}
 	}

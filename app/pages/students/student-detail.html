@@ -13,9 +13,18 @@
 
 	<!--<p><em>{{"student.name_colon" | translate}}</em> {{student.name}}</p>-->
 	<p><em>{{"student.price_colon" | translate}}</em> {{student.price | currency}}</p>
-	<p><em>{{"student.startBilling_colon" | translate}}</em> {{student.startBillingReadable}}</p>
+	<!--<p><em>{{"student.startBilling_colon" | translate}}</em> {{student.startBillingReadable}}</p>-->
+	<!--<p><em>{{"student.paid_colon" | translate}}</em> {{student.paid | currency}}</p>-->
+	<p><em>{{"student.paidUntil_colon" | translate}}</em> {{student.paidUntilReadable}}</p>
+
+	<div padding>
+		<button block primary (click)="addPayment()">{{"pay.title" | translate}}</button>
+	</div>
 	<div padding>
 		<button block secondary (click)="edit()">{{"student.edit" | translate}}</button>
+	</div>
+	<div padding>
+		<button block secondary (click)="checkPayment()">{{"pay.checkPayment" | translate}}</button>
 	</div>
 
 </ion-content>

@@ -85,7 +85,7 @@ export class LessonFormPage {
 			// }
 			this.lessonService.submitLesson(this.lesson, this._studentChoice, this.edit).subscribe(() => {
 				this.nav.pop().then(() => this.loading = false, () => this.loading = false);
-			}, (err) => {
+			}, (err:any) => {
 				this.loading = false;
 				this.error.handler(err.code || errKey)(err)
 			});

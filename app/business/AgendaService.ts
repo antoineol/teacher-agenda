@@ -33,12 +33,6 @@ export class AgendaService {
 			let studentsArray:Student[] = results[1];
 			let parameters:Parameters = results[2];
 			// console.log("getFormattedAgenda callback", agenda);
-			// agenda.subscribe((result:any) => {
-			// 	console.log("Agenda result:", result);
-			// }, (err:any) => {
-			// 	console.error("Agenda result error:", err.stack || err);
-			// })
-
 			let filteredAgenda = this.extendAndFilterAgenda(agenda, start, end, studentsArray, parameters);
 			// console.log("filteredAgenda", filteredAgenda);
 			return this.formatForDisplay(filteredAgenda, parameters, studentsArray, true);
@@ -158,7 +152,7 @@ export class AgendaService {
 		// Ensure the variable normally set in extendAndFilterAgenda() are also set if the
 		// format method was called without the other method.
 		if (!alreadyExtended) {
-			agenda = this.extendEntries(agenda, studentsArray, parameters);
+			agenda = this.extendEntries(agenda, studentsArray, parameters, start);
 			agenda.forEach((entry:AgendaEntry) => {
 				this.extendEntryAfterFiltering(entry, start);
 			})
@@ -231,7 +225,7 @@ export class AgendaService {
 		start = start.startOf('day');
 		end = end.endOf('day');
 
-		agenda = this.extendEntries(agenda, studentsArray, parameters);
+		agenda = this.extendEntries(agenda, studentsArray, parameters, start);
 
 		// Prepare the array of weekdays displayed in the range
 		let tmpDate = start.clone();
@@ -316,7 +310,7 @@ export class AgendaService {
 		return entry;
 	}
 
-	private extendEntries(agenda:AgendaEntry[], studentsArray:Student[], parameters:Parameters):AgendaEntry[] {
+	private extendEntries(agenda:AgendaEntry[], studentsArray:Student[], parameters:Parameters, rangeStart:Moment):AgendaEntry[] {
 		let students = _.indexBy(studentsArray, "$key");
 		// prepare start/end/duration in entries
 		// return agenda.map((_entry:AgendaEntry) => {
@@ -336,6 +330,8 @@ export class AgendaService {
 		// 	// moment.duration()
 		// 	// agendaEntry.mDuration = moment.duration(agendaEntry.duration, 'm');
 		// });
+
+		// let agendaPerStudentId:{[studentId:string]:AgendaEntry} = {};
 		for (let entry of agenda) {
 			// Convert student foreign key to object
 			if (_.isString(entry.studentId)) {
@@ -351,6 +347,26 @@ export class AgendaService {
 			}
 			// moment.duration()
 			// agendaEntry.mDuration = moment.duration(agendaEntry.duration, 'm');
+
+
+			// agendaPerStudentId[entry.studentId] = entry;
+            //
+			// let nbLessons:number;
+			// switch (entry.repetition) {
+			// 	case Freq.DAILY:
+			// 		nbLessons = entry.start.diff(rangeStart, 'days') + 1;
+			// 		break;
+			// 	case Freq.WEEKLY:
+			// 		nbLessons = entry.start.diff(rangeStart, 'weeks') + 1;
+			// 		break;
+			// 	case Freq.MONTHLY:
+			// 		nbLessons = entry.start.diff(rangeStart, 'months') + 1;
+			// 		break;
+			// 	default:
+			// 		nbLessons = 1;
+			// 		break;
+			// }
+			// entry.toPay = entry.student.paid - nbLessons * entry.price;
 		}
 		return agenda;
 	}

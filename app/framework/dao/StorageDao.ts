@@ -1,10 +1,11 @@
 import {Observable} from "rxjs/Observable";
 import {Injectable} from "@angular/core";
+import {Query} from "angularfire2/es6/utils/query_observable";
 
 
 @Injectable()
 export abstract class StorageDao {
-	abstract findAll(collection:string):Observable<any>;
+	abstract findAll(collection:string, query?:Query):Observable<any>;
 	abstract findObject(collection:string):Observable<any>;
 	abstract findByKey(collection:string, key:string):Observable<any>;
 	abstract pushToList(collection:string, entity:any):Promise<void>;

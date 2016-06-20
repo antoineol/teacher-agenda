@@ -2,8 +2,19 @@ export interface Student {
 	$key?:string;
     name:string;
     price: number;
-	startBilling:string; // Date.toJSON()
+	paymentHistory:PaymentDetail[];
+	paidUntil:string;
 
-	// To display
+	// Display
+	paidUntilReadable?:string;
+
+	// To remove
+	startBilling?:string; // Date.toJSON()
+	paid?:number;
 	startBillingReadable?:string;
+}
+
+export interface PaymentDetail {
+	date:string;
+	amount:number;
 }

@@ -10,6 +10,10 @@
 @import "../pages/agenda/agenda";
 @import "../pages/agenda/agenda-list";
 @import "../pages/forms/lesson";
-@import "../pages/forms/add-popover";
-@import "../pages/forms/auth";
+@import "../pages/pop/add-popover";
+@import "../pages/pop/auth";
 @import "../pages/forms/change-password";
+
+.right {
+	text-align: right;
+}

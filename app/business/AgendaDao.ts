@@ -5,10 +5,11 @@ import {Student} from "../model/Student";
 import {Parameters} from "../model/Parameters";
 import {StorageDao} from "../framework/dao/StorageDao";
 import {AgendaConfig} from "../config/AgendaConfig";
+import {Query} from "angularfire2/es6/utils/query_observable";
 
-const COLLECTION_AGENDA = "agenda";
-const COLLECTION_STUDENTS = "students";
-const COLLECTION_PARAMETERS = "parameters";
+export const COLLECTION_AGENDA = "agenda";
+export const COLLECTION_STUDENTS = "students";
+export const COLLECTION_PARAMETERS = "parameters";
 
 @Injectable()
 export class AgendaDao {
@@ -16,8 +17,8 @@ export class AgendaDao {
 	constructor(private dao:StorageDao) {
 	}
 
-	findAgenda():Observable<AgendaEntry[]> {
-		return this.dao.findAll(COLLECTION_AGENDA)
+	findAgenda(query?:Query):Observable<AgendaEntry[]> {
+		return this.dao.findAll(COLLECTION_AGENDA, query)
 			.map((agenda:AgendaEntry[]) => agenda ? agenda : [])
 			.filter((agenda:AgendaEntry[]) => {
 				let entriesToUpdate:AgendaEntry[] = [];
@@ -65,9 +66,20 @@ export class AgendaDao {
 						student.price = +student.price; // convert to number
 						modified = true;
 					}
-					if (!student.startBilling) {
-						// student.startBilling = Utils.now.clone().startOf('day').format();
-						student.startBilling = AgendaConfig.defaultStartBillingDate;
+					// if (!student.startBilling) {
+					// 	student.startBilling = AgendaConfig.defaultStartBillingDate;
+					// 	modified = true;
+					// }
+					if (student.startBilling != null) {
+						delete student.startBilling;
+						modified = true;
+					}
+					// if (typeof student.paid !== 'number') {
+					// 	student.paid = 0;
+					// 	modified = true;
+					// }
+					if (student.paid != null) {
+						delete student.paid;
 						modified = true;
 					}
 					if (modified) {

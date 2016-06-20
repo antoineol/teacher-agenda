@@ -44,8 +44,13 @@
 		"name_colon": "Nom :",
 		"price": "Prix",
 		"price_colon": "Prix :",
-		"startBilling": "1er paiement",
-		"startBilling_colon": "1er paiement :",
+		"paidUntil_colon": "Payé jusqu'au :",
+		"toremove": {
+			"paid": "Payé",
+			"paid_colon": "Payé :",
+			"startBilling": "1er paiement",
+			"startBilling_colon": "1er paiement :"
+		},
 		"deleteConfirm": {
 			"title": "Supprimer l'étudiant",
 			"message": "Veuillez confirmer la suppression de cet étudiant."
@@ -55,6 +60,13 @@
 			"update": "Une erreur est survenue pendant la mise à jour de l'étudiant. Veuillez réessayer plus tard.",
 			"remove": "Une erreur est survenue pendant la suppression de l'étudiant. Veuillez réessayer plus tard."
 		}
+	},
+	"pay": {
+		"title": "Ajouter un paiement",
+		"add": "Ajouter un paiement",
+		"amount": "Montant (RMB)",
+		"date": "Date",
+		"checkPayment": "Vérifier les paiements dus"
 	},
 	"auth": {
 		"signin": "Connexion",

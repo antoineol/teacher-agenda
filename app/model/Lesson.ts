@@ -42,6 +42,7 @@ export interface Lesson {
 	repetition?:number; // Freq.*
 	repetitionEnd?:string; // Date.toJSON()
 	cancellations?:string[]; // array of Date.toJSON()
+	toPay?:number; // To pay for this lesson, >= 0
 	// discount for this lesson = variation of price to take into account in the total
 }
 

@@ -12,6 +12,9 @@ export class StudentFormService {
 		if (typeof student.price === 'string') {
 			student.price = +student.price; // convert to number
 		}
+		// if (typeof student.paid === 'string') {
+		// 	student.paid = +student.paid; // convert to number
+		// }
 		if (edit) {
 			// console.log("Update student:", student);
 			return this.studentDao.updateStudent(student);

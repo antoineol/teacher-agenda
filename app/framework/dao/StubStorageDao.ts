@@ -3,6 +3,7 @@ import {Http, Response} from "@angular/http";
 import {Observable} from "rxjs/Observable";
 import {FirebaseStorageDao} from "./FirebaseStorageDao";
 import {StorageDao} from "./StorageDao";
+import {Query} from "angularfire2/es6/utils/query_observable";
 
 // @Injectable()
 // export class Cache {
@@ -29,7 +30,7 @@ export class StubStorageDao implements StorageDao {
 	constructor(private http:Http/*, private cache:Cache*/) {
 	}
 
-	public findAll(collection:string):Observable<any> {
+	public findAll(collection:string, query?:Query):Observable<any> {
 		return this.findJson(collection);
 	}
 

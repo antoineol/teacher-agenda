@@ -9,11 +9,14 @@ import {StudentDao} from "../../business/StudentDao";
 import {ErrorService} from "../../framework/ErrorService";
 import {AgendaDao} from "../../business/AgendaDao";
 import moment = require("moment");
+import {PayFormPage} from "../forms/pay";
+import {PaymentService} from "../../business/PaymentService";
 
 @Component({
 	templateUrl: 'build/pages/students/student-detail.html'
 })
 export class StudentDetailPage {
+	private loading = false;
 
 	private _student:Student;
 	get student():Student {
@@ -24,7 +27,7 @@ export class StudentDetailPage {
 	}
 	private removePopup:Observable<Alert>;
 
-	constructor(navParams:NavParams, private nav:NavController, translate:TranslateService, studentDao:StudentDao, private error:ErrorService, private agendaDao:AgendaDao) {
+	constructor(navParams:NavParams, private nav:NavController, translate:TranslateService, studentDao:StudentDao, private error:ErrorService, private agendaDao:AgendaDao, private paymentService:PaymentService) {
 		let errKey = "global.error.init";
 		try {
 			this.student = navParams.get('student');
@@ -58,6 +61,10 @@ export class StudentDetailPage {
 		}
 	}
 
+	addPayment() {
+		this.nav.push(PayFormPage, {student: this.student});
+	}
+
 	edit() {
 		this.nav.push(StudentFormPage, {student: this.student});
 	}
@@ -68,8 +75,22 @@ export class StudentDetailPage {
 		});
 	}
 
+	checkPayment() {
+		let errKey = "global.error.init";
+		this.loading = true;
+		this.paymentService.checkPayment(this.student).then(() => {
+			this.loading = false;
+			// this.nav.pop().then(() => this.loading = false, () => this.loading = false);
+		}, (err:any) => {
+			this.loading = false;
+			this.error.handler(err.code || errKey)(err)
+		});
+	}
+
 	private static formatStudent(student:Student):Student {
-		student.startBillingReadable = moment(student.startBilling).format('L');
+		// student.startBillingReadable = moment(student.startBilling).format('L');
+		// console.log("format student.paidUntil:", student.paidUntil);
+		student.paidUntilReadable = student.paidUntil ? moment(student.paidUntil).format('L') : '-';
 		return student;
 	}
 

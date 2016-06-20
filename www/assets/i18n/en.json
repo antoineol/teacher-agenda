@@ -44,8 +44,13 @@
 		"name_colon": "Name:",
 		"price": "Price",
 		"price_colon": "Price:",
-		"startBilling": "1st payment",
-		"startBilling_colon": "1st payment:",
+		"paidUntil_colon": "Paid until:",
+		"toremove": {
+			"paid": "Paid",
+			"paid_colon": "Paid:",
+			"startBilling": "1st payment",
+			"startBilling_colon": "1st payment:"
+		},
 		"deleteConfirm": {
 			"title": "Delete the student",
 			"message": "Please confirm the removal of this student."
@@ -55,6 +60,13 @@
 			"update": "An error occurred while updating the student. Please try again later.",
 			"remove": "An error occurred while removing the lesson. Please try again later."
 		}
+	},
+	"pay": {
+		"title": "Add a payment",
+		"add": "Add a payment",
+		"amount": "Amount (RMB)",
+		"date": "Date",
+		"checkPayment": "Check due payment"
 	},
 	"auth": {
 		"signin": "Sign in",

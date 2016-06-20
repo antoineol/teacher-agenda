@@ -20,6 +20,8 @@ import {AuthService} from "./framework/AuthService";
 import {CurrencyPipe} from "./framework/pipes/CurrencyPipe";
 import {Toaster} from "./framework/Toaster";
 import {ErrorDao} from "./framework/ErrorDao";
+import {PaymentService} from "./business/PaymentService";
+import {PaymentDao} from "./business/PaymentDao";
 // import {TranslatePipe} from "ionic-angular/index"; // look at the translation facilities embedded in ionic2
 
 export const pipes:any[] = [
@@ -77,4 +79,6 @@ export const injectables:any[] = [
 	AuthService,
 	Toaster,
 	ErrorDao,
+	PaymentService,
+	PaymentDao,
 ];

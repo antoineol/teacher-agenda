@@ -8,6 +8,7 @@ import {
 } from "angularfire2/angularfire2";
 import {StorageDao} from "./StorageDao";
 import {AuthService} from "../AuthService";
+import {Query} from "angularfire2/es6/utils/query_observable";
 
 
 @Injectable()
@@ -39,9 +40,9 @@ export class FirebaseStorageDao implements StorageDao {
 	// http://stackoverflow.com/questions/34507731/authenticate-mobile-application-with-wechat
 	// Need backend with callback URL to complete OAuth2: http://stackoverflow.com/a/29155818/4717408
 
-	findAll(collection:string):Observable<any> {
+	findAll(collection:string, query?:Query):Observable<any> {
 		return this.authObs().mergeMap((user:FirebaseAuthState) => {
-			return this.getListBinding(collection, user);
+			return this.getListBinding(collection, user, query);
 		});
 	}
 
@@ -149,12 +150,12 @@ export class FirebaseStorageDao implements StorageDao {
 		}
 	}
 
-	private getListBinding(collection:string, user?:FirebaseAuthState):FirebaseListObservable<any> {
+	private getListBinding(collection:string, user?:FirebaseAuthState, query?:Query):FirebaseListObservable<any> {
 		// return Observable.fromPromise(this.auth.ensureAuth()).map(() => {
 			let binding:FirebaseListObservable<any> = <FirebaseListObservable<any>>this.bindings.get(collection);
 			if (!binding) {
 				let path = user ? '/users/' + user.uid + '/' + collection : '/' + collection;
-				binding = this.af.database.list(path);
+				binding = this.af.database.list(path, query);
 				this.bindings.set(collection, binding);
 			}
 			return binding;

@@ -1,6 +1,6 @@
 import {Component} from "@angular/core";
 import {NavController} from "ionic-angular";
-import {AddPopover} from "../forms/add-popover";
+import {AddPopover} from "../pop/add-popover";
 import {Student} from "../../model/Student";
 import {StudentDao} from "../../business/StudentDao";
 import {StudentDetailPage} from "./student-detail";
