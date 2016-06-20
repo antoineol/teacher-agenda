@@ -29,9 +29,17 @@ export class AgendaDao {
 			.filter((agenda:AgendaEntry[]) => {
 				let entriesToUpdate:AgendaEntry[] = [];
 				for (let entry of agenda) {
+					let modified:boolean = false;
 					// TODO Intercept: if entries are found with incorrect data, they are fixed and updated on-the-fly.
-					if (entry.repetition === Freq.NONE) {
+					if (!entry.date) {
+						entry.date = new Date().toJSON();
+						modified = true;
+					}
+					if (entry.repetition === Freq.NONE || !entry.repetition) {
 						entry.repetition = Freq.WEEKLY;
+						modified = true;
+					}
+					if (modified) {
 						entriesToUpdate.push(entry);
 					}
 				}
