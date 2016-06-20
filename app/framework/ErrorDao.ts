@@ -10,7 +10,14 @@ export class ErrorDao {
 	constructor(private dao:StorageDao) {
 	}
 
-	addError(error:ErrorModel):Promise<void> {
-		return this.dao.pushToListGlobal(COLLECTION_ERRORS, error);
+	addError(error:any, friendlyErrorMessageKey:string):Promise<void> {
+
+		let errModel:ErrorModel = {
+			errorMessage: error.message || error.toString(),
+			errorStack: error.stack,
+			errorKey: friendlyErrorMessageKey,
+			date: new Date().toJSON()
+		};
+		return this.dao.pushToListGlobal(COLLECTION_ERRORS, errModel);
 	}
 }

@@ -35,10 +35,7 @@ export class ErrorService {
 			} else {
 				console.error(error);
 			}
-			this.errorDao.addError({
-				errorMessage: error.message || error.toString(),
-				errorStack: error.stack
-			});
+			this.errorDao.addError(error, friendlyErrorMessageKey);
 
 			if (!friendlyErrorMessageKey) {
 				friendlyErrorMessageKey = 'error';
