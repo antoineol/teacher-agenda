@@ -63,13 +63,13 @@ export class FirebaseStorageDao implements StorageDao {
 	pushToList(collection:string, entity:any):Promise<void> {
 		return this.auth().then((user:FirebaseAuthState) => {
 			this.checkFirebaseEntity(entity);
-			return <Promise<void>>/*FirebaseWithPromise<void>*/this.getListBinding(collection, user).push(entity);
+			return /*<Promise<void>>*/this.getListBinding(collection, user).push(entity);
 		});
 	}
-
+ 
 	pushToListGlobal(collection:string, entity:any):Promise<void> {
 		this.checkFirebaseEntity(entity);
-		return <Promise<void>>this.getListBinding(collection).push(entity);
+		return /*<Promise<void>>*/this.getListBinding(collection).push(entity);
 	}
 
 	updateInList(collection:string, entity:any):Promise<void> {
@@ -84,9 +84,16 @@ export class FirebaseStorageDao implements StorageDao {
 		});
 	}
 
-	updateList(collection:string, entities:any):Promise<void> {
+	updateList(collection:string, entities:any[]):Promise<void> {
 		return this.auth().then((user:FirebaseAuthState) => {
-			return this.getListBinding('', user).update(collection, entities);
+			let update:any = {};
+			for (let entry of entities) {
+				let k = entry.$key;
+				let e = Object.assign({}, entry);
+				delete e.$key;
+				update[k] = e;
+			}
+			return this.getListBinding('', user).update(collection, update);
 		});
 	}
 

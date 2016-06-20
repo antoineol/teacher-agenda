@@ -2,7 +2,7 @@
 <ion-list>
 	<div *ngFor="let entry of agenda" class="entry-container">
 		<!--class="agenda-entry"-->
-		<button *ngIf="entry.start" ion-item (click)="entryTapped($event, entry)">
+		<button *ngIf="entry.start" ion-item (click)="entryTapped($event, entry)" [ngClass]="{'cancelled': entry.cancelled}">
 			<div [ngStyle]="{'padding-top': entry.marginTopBottom, 'padding-bottom': entry.marginTopBottom}" [ngClass]="{'no-student': !entry.student}">{{entry?.student?.name || ("agenda.noStudent" | translate)}}</div>
 			<ion-badge *ngIf="entry.student" item-right><!--{{entry.start.format('L')}} -->{{entry.startReadable}} - {{entry.endReadable}}</ion-badge>
 			<!--secondary-->

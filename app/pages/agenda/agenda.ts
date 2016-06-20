@@ -49,7 +49,7 @@ export class AgendaPage {
 	onPageDidEnter() {
 		// console.log("Agenda onPageDidEnter");
 		this.authService.popAuth.subscribe((show:boolean) => {
-			console.log("Agenda received popAuth:", show);
+			// console.log("Agenda received popAuth:", show);
 			if (show) {
 				AuthFormPage._show(this.nav);
 			}

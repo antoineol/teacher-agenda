@@ -21,7 +21,7 @@ export class AuthFormPage {
 		// Workaround: https://github.com/driftyco/ionic/issues/6933#issuecomment-226508870
 		//(<any>loginPage).fireOtherLifecycles = false;
 		nav.present(loginPage);
-		console.log("AuthFormPage present");
+		// console.log("AuthFormPage present");
 	}
 
 	constructor(private authService:AuthService, private viewCtrl:ViewController,

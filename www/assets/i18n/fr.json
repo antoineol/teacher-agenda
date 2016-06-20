@@ -6,7 +6,8 @@
 		},
 		"price_colon": "Prix :",
 		"remove": "Supprimer",
-		"cancelLesson": "Annuler cette leçon",
+		"cancelLesson": "Annuler ce cours",
+		"holdLesson": "Maintenir ce cours",
 		"edit": "Modifier la série",
 		"from": "Depuis le",
 		"until": "jusqu'au",
@@ -30,7 +31,9 @@
 		"error": {
 			"insert": "Une erreur est survenue pendant la création du nouveau cours. Veuillez réessayer plus tard.",
 			"update": "Une erreur est survenue pendant la mise à jour du cours. Veuillez réessayer plus tard.",
-			"remove": "Une erreur est survenue pendant la suppression du cours. Veuillez réessayer plus tard."
+			"remove": "Une erreur est survenue pendant la suppression du cours. Veuillez réessayer plus tard.",
+			"alreadyCancelled": "Le cours a déjà été annulé, il ne peut pas être à nouveau annulé. Veuillez vérifier auprès de l'auteur de l'application pourquoi ce problème survient.",
+			"notCancelled": "Le cours n'a pas été annulé, il ne peut pas être restauré. Veuillez vérifier auprès de l'auteur de l'application pourquoi ce problème survient."
 		}
 	},
 	"student": {
@@ -41,6 +44,8 @@
 		"name_colon": "Nom :",
 		"price": "Prix",
 		"price_colon": "Prix :",
+		"startBilling": "1er paiement",
+		"startBilling_colon": "1er paiement :",
 		"deleteConfirm": {
 			"title": "Supprimer l'étudiant",
 			"message": "Veuillez confirmer la suppression de cet étudiant."

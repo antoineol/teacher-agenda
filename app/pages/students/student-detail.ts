@@ -8,13 +8,20 @@ import {TranslateService} from "ng2-translate/ng2-translate";
 import {StudentDao} from "../../business/StudentDao";
 import {ErrorService} from "../../framework/ErrorService";
 import {AgendaDao} from "../../business/AgendaDao";
+import moment = require("moment");
 
 @Component({
 	templateUrl: 'build/pages/students/student-detail.html'
 })
 export class StudentDetailPage {
 
-	private student:Student;
+	private _student:Student;
+	get student():Student {
+		return this._student;
+	}
+	set student(value:Student) {
+		this._student = StudentDetailPage.formatStudent(value);
+	}
 	private removePopup:Observable<Alert>;
 
 	constructor(navParams:NavParams, private nav:NavController, translate:TranslateService, studentDao:StudentDao, private error:ErrorService, private agendaDao:AgendaDao) {
@@ -24,7 +31,6 @@ export class StudentDetailPage {
 
 			agendaDao.findStudent(this.student.$key).subscribe((student:Student) => {
 				this.student = student;
-				console.log("New student:", student);
 			}, (err:any) => error.handler(err.code || "global.error.init")(err));
 
 			this.removePopup = translate.getTranslation(Conf.lang).map(() => {
@@ -60,6 +66,11 @@ export class StudentDetailPage {
 		this.removePopup.first().subscribe((confirm:Alert) => {
 			this.nav.present(confirm);
 		});
+	}
+
+	private static formatStudent(student:Student):Student {
+		student.startBillingReadable = moment(student.startBilling).format('L');
+		return student;
 	}
 
 }

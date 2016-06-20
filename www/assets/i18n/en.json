@@ -7,6 +7,7 @@
 		"price_colon": "Price:",
 		"remove": "Remove",
 		"cancelLesson": "Cancel this lesson",
+		"holdLesson": "Hold this lesson",
 		"edit": "Modify the series",
 		"from": "From",
 		"until": "until",
@@ -30,7 +31,9 @@
 		"error": {
 			"insert": "An error occurred while creating the new lesson. Please try again later.",
 			"update": "An error occurred while updating the lesson. Please try again later.",
-			"remove": "An error occurred while removing the lesson. Please try again later."
+			"remove": "An error occurred while removing the lesson. Please try again later.",
+			"alreadyCancelled": "The lesson was already cancelled, it cannot be cancelled again. Please check with the application author why this is happening.",
+			"notCancelled": "The lesson was not cancelled, it cannot be restored. Please check with the application author why this is happening."
 		}
 	},
 	"student": {
@@ -41,6 +44,8 @@
 		"name_colon": "Name:",
 		"price": "Price",
 		"price_colon": "Price:",
+		"startBilling": "1st payment",
+		"startBilling_colon": "1st payment:",
 		"deleteConfirm": {
 			"title": "Delete the student",
 			"message": "Please confirm the removal of this student."

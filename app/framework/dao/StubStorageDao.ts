@@ -53,7 +53,7 @@ export class StubStorageDao implements StorageDao {
 		return Promise.resolve(null);
 	}
 
-	updateList(collection:string, entity:any):Promise<void> {
+	updateList(collection:string, entities:any[]):Promise<void> {
 		return Promise.resolve(null);
 	}
 

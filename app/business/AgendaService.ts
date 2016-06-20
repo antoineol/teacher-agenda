@@ -32,7 +32,7 @@ export class AgendaService {
 			let agenda:AgendaEntry[] = results[0];
 			let studentsArray:Student[] = results[1];
 			let parameters:Parameters = results[2];
-			console.log("getFormattedAgenda callback", agenda);
+			// console.log("getFormattedAgenda callback", agenda);
 			// agenda.subscribe((result:any) => {
 			// 	console.log("Agenda result:", result);
 			// }, (err:any) => {
@@ -43,6 +43,10 @@ export class AgendaService {
 			// console.log("filteredAgenda", filteredAgenda);
 			return this.formatForDisplay(filteredAgenda, parameters, studentsArray, true);
 		});
+	}
+
+	getFormattedEntry(key:string, start:Moment):Observable<AgendaEntry> {
+		return this.agendaDao.findAgendaEntry(key).mergeMap((entry:AgendaEntry) => this.formatEntry(entry, start));
 	}
 
 
@@ -133,7 +137,7 @@ export class AgendaService {
 	// Presentation layer
 	// Only call if you need to manually apply for formatting transformation. It is already included
 	// in the utils like getFormattedAgenda().
-	formatEntry(entry:AgendaEntry):Observable<AgendaEntry[]> {
+	formatEntry(entry:AgendaEntry, start:Moment):Observable<AgendaEntry> {
 
 		return Observable.combineLatest([
 			this.agendaDao.findStudents(),
@@ -142,19 +146,22 @@ export class AgendaService {
 			let studentsArray:Student[] = results[0];
 			let parameters:Parameters = results[1];
 
-			return this.formatForDisplay([entry], parameters, studentsArray);
+			return this.formatForDisplay([entry], parameters, studentsArray, false, start)[0];
 		});
 
 		// return this.agendaDao.findParameters().map((parameters:Parameters) => {
 		// 	return this.formatForDisplay([entry], parameters);
 		// })
 	}
-	private formatForDisplay(agenda:AgendaEntry[], parameters:Parameters, studentsArray:Student[], extended:boolean = false):AgendaEntry[] {
+	private formatForDisplay(agenda:AgendaEntry[], parameters:Parameters, studentsArray:Student[], alreadyExtended:boolean, start?:Moment):AgendaEntry[] {
 
 		// Ensure the variable normally set in extendAndFilterAgenda() are also set if the
 		// format method was called without the other method.
-		if (!extended) {
+		if (!alreadyExtended) {
 			agenda = this.extendEntries(agenda, studentsArray, parameters);
+			agenda.forEach((entry:AgendaEntry) => {
+				this.extendEntryAfterFiltering(entry, start);
+			})
 		}
 
 		for (let entry of agenda) {
@@ -290,16 +297,23 @@ export class AgendaService {
 		});
 		// Update start dates to match the displayed day
 		agenda.forEach((entry: AgendaEntry) => {
-			entry.start.date(start.date());
-			entry.start.month(start.month());
-			entry.start.year(start.year());
-			entry.end.date(start.date());
-			entry.end.month(start.month());
-			entry.end.year(start.year());
+			this.extendEntryAfterFiltering(entry, start);
 		});
 		// Sort by start date
 		agenda.sort(AgendaService.compareAgendaEntriesByStartDate);
 		return agenda;
+	}
+
+	private extendEntryAfterFiltering(entry:AgendaEntry, rangeStart:Moment):AgendaEntry {
+		entry.start.date(rangeStart.date());
+		entry.start.month(rangeStart.month());
+		entry.start.year(rangeStart.year());
+		entry.end.date(rangeStart.date());
+		entry.end.month(rangeStart.month());
+		entry.end.year(rangeStart.year());
+		entry.cancelled = Utils.entryCancelled(entry);
+		// console.log("entry cancelled:", entry);
+		return entry;
 	}
 
 	private extendEntries(agenda:AgendaEntry[], studentsArray:Student[], parameters:Parameters):AgendaEntry[] {

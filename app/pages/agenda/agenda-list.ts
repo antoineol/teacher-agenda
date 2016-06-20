@@ -54,6 +54,6 @@ export class AgendaList {
 	}
 
 	entryTapped(event:any, entry:AgendaEntry) {
-		this.nav.push(AgendaDetailPage, {entry: entry});
+		this.nav.push(AgendaDetailPage, {entry: entry, start: this._range.start});
 	}
 }

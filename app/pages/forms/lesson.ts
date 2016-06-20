@@ -19,7 +19,7 @@ import {ControlGroup} from "@angular/common";
 export class LessonFormPage {
 
 	private edit:boolean;
-	private updating = false;
+	private loading = false;
 	// private lessonForm:ControlGroup;
 
 	lesson:Lesson = {
@@ -78,20 +78,19 @@ export class LessonFormPage {
 	createLesson() {
 		// console.log("Create lesson:", this.lesson);
 		let errKey = this.edit ? "lesson.error.update" : "lesson.error.insert";
-		this.updating = true;
+		this.loading = true;
 		try {
 			// if (this.edit) {
 			// 	this.agendaService.formatEntry(this.lesson).subscribe();
 			// }
 			this.lessonService.submitLesson(this.lesson, this._studentChoice, this.edit).subscribe(() => {
-				this.updating = false;
-				this.nav.pop();
+				this.nav.pop().then(() => this.loading = false, () => this.loading = false);
 			}, (err) => {
-				this.updating = false;
+				this.loading = false;
 				this.error.handler(err.code || errKey)(err)
 			});
 		} catch (err) {
-			this.updating = false;
+			this.loading = false;
 			this.error.handler(errKey)(err);
 		}
 	}

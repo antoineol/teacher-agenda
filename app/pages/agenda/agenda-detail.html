@@ -4,7 +4,7 @@
 	</button>
 	<ion-title>{{entry?.student?.name}}</ion-title>
 	<ion-buttons end>
-		<button (click)="remove()">{{"agenda.remove" | translate}}</button>
+		<button (click)="remove()" [disabled]="loading">{{"agenda.remove" | translate}}</button>
 	</ion-buttons>
 </ion-navbar>
 
@@ -17,11 +17,14 @@
 	<p>{{"agenda.from" | translate}} {{entry.dateReadable}}</p>
 	<p *ngIf="entry.repetition">{{entry.repetitionReadable}} <span *ngIf="entry.repetEnd">{{"agenda.until" | translate}} {{entry.repetEndReadable}} {{"agenda.included" | translate}}</span></p>
 
-	<div padding>
-		<button block danger (click)="cancel()">{{"agenda.cancelLesson" | translate}}</button>
+	<div padding *ngIf="!entry.cancelled">
+		<button block danger (click)="cancel()" [disabled]="loading">{{"agenda.cancelLesson" | translate}}</button>
+	</div>
+	<div padding *ngIf="entry.cancelled">
+		<button block primary (click)="holdLesson()" [disabled]="loading">{{"agenda.holdLesson" | translate}}</button>
 	</div>
 	<div padding>
-		<button block secondary (click)="edit()">{{"agenda.edit" | translate}}</button>
+		<button block secondary (click)="edit()" [disabled]="loading">{{"agenda.edit" | translate}}</button>
 	</div>
 
 </ion-content>

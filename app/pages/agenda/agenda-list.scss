@@ -1,3 +1,7 @@
+@import "~ionic-angular/util/functions";
+//@import "../../theme/app.variables";
+@import "~ionic-angular/themes/default";
+
 .agenda {
 	//ion-list {
 	//padding-top: 10px;
@@ -54,5 +58,21 @@
 
 	.no-student {
 		font-style: italic;
+	}
+	.cancelled {
+			//primary:    #387ef5,
+			//secondary:  #32db64,
+			//danger:     #f53d3d,
+			//light:      #f4f4f4,
+			//dark:       #222,
+			//favorite:   #69BB7B
+		//color: gray;
+		color: $toolbar-inactive-color;
+		text-decoration: line-through;
+
+		ion-badge {
+			//background-color: $secondary-text;
+			background-color: $toolbar-inactive-color;
+		}
 	}
 }

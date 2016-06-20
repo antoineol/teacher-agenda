@@ -1,14 +1,11 @@
-import {Moment} from "moment";
 import moment = require("moment");
-import {AgendaRange} from "../model/AgendaRange";
 
 let today = moment();
-// let today = moment("2016-05-18T07:00:00.000Z");
 
 export class AgendaConfig {
 
-	// static defaultDate = "2016-05-18";
 	static defaultDate = today.format().substr(0, 10);
+	static defaultStartBillingDate = today.clone().startOf('day').format();
 	static defaultDuration = 45;
 
 	// private static defaultStart:Moment = today.clone().startOf('day');

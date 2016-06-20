@@ -56,6 +56,20 @@ export class Utils {
 			duration: entry.duration,
 			repetition: entry.repetition,
 			repetitionEnd: entry.repetitionEnd,
+			cancellations: entry.cancellations,
 		};
+	}
+	
+	static truncateDatetime(datetime:string):string {
+		return datetime.substr(0, 16);
+	}
+	static truncateDate(date:string):string {
+		return date.substr(0, 10);
+	}
+
+	static entryCancelled(entry:AgendaEntry):boolean {
+		return Array.isArray(entry.cancellations) && !!entry.cancellations.find((cancellation:string) => {
+			return moment(cancellation).isSame(entry.start);
+		});
 	}
 }

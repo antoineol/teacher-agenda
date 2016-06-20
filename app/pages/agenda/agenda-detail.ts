@@ -9,6 +9,7 @@ import {LessonFormPage} from "../forms/lesson";
 import {Observable} from "rxjs/Observable";
 import moment = require("moment");
 import {LessonFormService} from "../../business/LessonFormService";
+import {AgendaService} from "../../business/AgendaService";
 
 @Component({
 	templateUrl: 'build/pages/agenda/agenda-detail.html'
@@ -17,21 +18,22 @@ export class AgendaDetailPage {
 
 	private entry:AgendaEntry;
 	private removePopup:Observable<Alert>;
+	private loading:boolean;
 	// private fromDate:string;
 	// private toDate:string;
 	// private repetition:string;
 	// private price:string;
 
-	constructor(private nav:NavController, navParams:NavParams, private agendaDao:AgendaDao, private error:ErrorService, private translate:TranslateService, private lessonService:LessonFormService) {
+	constructor(private nav:NavController, navParams:NavParams, private agendaDao:AgendaDao, private error:ErrorService, private translate:TranslateService, private lessonService:LessonFormService, agendaService:AgendaService) {
 		let errKey = "global.error.init";
 		try {
 			this.entry = navParams.get('entry');
-			// This page is not actively listening to the update from the storage, so we catch updates from the update service.
-			// If it causes sync issues, we can update this component to subscribe to the storage instead.
-			lessonService.updateLessonEmitter.subscribe((lesson:Lesson) => {
-				this.entry = lesson;
-				// console.log("New entry:", this.entry);
-			});
+			let start = navParams.get('start');
+			// Get live updates. Useful when the entry has been modified by a form, then we go back to this view.
+			agendaService.getFormattedEntry(this.entry.$key, start).subscribe((entry:AgendaEntry) => {
+				// console.log("AgendaDetailPage new entry:", entry);
+				this.entry = entry;
+			}, (err:any) => error.handler(err.code || errKey)(err));
 
 			this.removePopup = this.translate.getTranslation(Conf.lang).map(() => {
 				let confirm = Alert.create({
@@ -65,7 +67,27 @@ export class AgendaDetailPage {
 	}
 
 	cancel() {
-		this.lessonService.cancelLesson(this.entry);
+		this.loading = true;
+		this.lessonService.cancelLesson(this.entry).then(() => {
+			// this.loading = false;
+			// this.nav.pop();
+			this.nav.pop().then(() => this.loading = false, () => this.loading = false);
+		}).catch((err:any) => {
+			this.loading = false;
+			this.error.handler(err.code)(err);
+		});
+	}
+
+	holdLesson() {
+		this.loading = true;
+		this.lessonService.restoreLesson(this.entry).then(() => {
+			// this.loading = false;
+			// this.nav.pop();
+			this.nav.pop().then(() => this.loading = false, () => this.loading = false);
+		}).catch((err:any) => {
+			this.loading = false;
+			this.error.handler(err.code)(err);
+		});
 	}
 
 	edit() {

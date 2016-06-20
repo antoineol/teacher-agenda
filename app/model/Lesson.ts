@@ -16,6 +16,7 @@ export interface AgendaEntry extends Lesson {
 	marginTopBottom?:string; // display info
     student?:Student; // ref to the student having the lesson
 	adjacent?:boolean; // true if this lesson is immediately following another lesson.
+	cancelled?:boolean;
 }
 
 export interface AgendaListFirebase {

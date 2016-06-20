@@ -5,6 +5,8 @@ import {Student} from "../../model/Student";
 import {ErrorService} from "../../framework/ErrorService";
 import {AgendaService} from "../../business/AgendaService";
 import {StudentFormService} from "../../business/StudentFormService";
+import {Utils} from "../../business/Utils";
+import {AgendaConfig} from "../../config/AgendaConfig";
 
 
 @Component({
@@ -12,40 +14,39 @@ import {StudentFormService} from "../../business/StudentFormService";
 })
 export class StudentFormPage {
 	edit:boolean;
-	updating = false;
+	loading = false;
 
 	student:Student = {
-		// id: null,
 		name: null,
-		price: null
+		price: null,
+		startBilling: AgendaConfig.defaultStartBillingDate
 	};
 
 	constructor(private nav:NavController, private navParams:NavParams, private agendaService:AgendaService, private agendaDao:AgendaDao, private error:ErrorService, private studentService:StudentFormService) {
-		let initStudent = navParams.get('student');
+		let initStudent:Student = navParams.get('student');
 		this.edit = !!initStudent;
 		if (this.edit) {
 			this.student = {
 				$key: initStudent.$key,
 				name: initStudent.name,
-				price: initStudent.price
+				price: initStudent.price,
+				startBilling: Utils.truncateDate(initStudent.startBilling)
 			};
 		}
-		// this.student = initStudent || this.student;
 	}
 
 	createStudent() {
 		let errKey = this.edit ? "student.error.update" : "student.error.insert";
-		this.updating = true;
+		this.loading = true;
 		try {
 			this.studentService.submitStudent(this.student, this.edit).then(() => {
-				this.updating = false;
-				this.nav.pop();
+				this.nav.pop().then(() => this.loading = false, () => this.loading = false);
 			}, (err) => {
-				this.updating = false;
+				this.loading = false;
 				this.error.handler(err.code || errKey)(err)
 			});
 		} catch (err) {
-			this.updating = false;
+			this.loading = false;
 			this.error.handler(errKey)(err);
 		}
 	}

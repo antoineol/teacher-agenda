@@ -45,7 +45,7 @@
 		</ion-list>
 
 		<div padding>
-			<button block primary type="submit" [disabled]="updating || !lessonForm.valid">{{ (edit ? "lesson.validateEdit" : "lesson.validateAdd") | translate}}</button>
+			<button block primary type="submit" [disabled]="loading || !lessonForm.valid">{{ (edit ? "lesson.validateEdit" : "lesson.validateAdd") | translate}}</button>
 		</div>
 	</form>
 

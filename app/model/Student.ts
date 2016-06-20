@@ -1,6 +1,9 @@
 export interface Student {
-	// id:string;
 	$key?:string;
     name:string;
     price: number;
+	startBilling:string; // Date.toJSON()
+
+	// To display
+	startBillingReadable?:string;
 }
