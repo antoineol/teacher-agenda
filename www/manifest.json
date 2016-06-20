@@ -31,8 +31,15 @@
 			"src": "resources/android/icon/drawable-xxxhdpi-icon.png",
 			"sizes": "192x192",
 			"type": "image/png"
+		},
+		{
+			"src": "resources/icon.png",
+			"sizes": "1024x1024",
+			"type": "image/png"
 		}
 	],
-	"start_url": "/index.html",
-	"display": "standalone"
+	"start_url": "/?utm_source=web_app_manifest",
+	"display": "standalone",
+	"background_color": "#FFFFFF",
+	"theme_color": "#FFFFFF"
 }
