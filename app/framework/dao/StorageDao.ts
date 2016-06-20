@@ -10,6 +10,7 @@ export abstract class StorageDao {
 	abstract pushToList(collection:string, entity:any):Promise<void>;
 	abstract pushToListGlobal(collection:string, entity:any):Promise<void>;
 	abstract updateInList(collection:string, entity:any):Promise<void>;
+	abstract updateList(collection:string, entities:any):Promise<void>;
 	abstract removeInList(collection:string, entity:any):Promise<void>;
 	abstract removeAllList(collection:string):Promise<void>;
 	abstract insertObject(collection:string, entity:any):Promise<void>;

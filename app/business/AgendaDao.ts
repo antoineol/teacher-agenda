@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs/Observable";
-import {AgendaEntry, Freq} from "../model/Lesson";
+import {AgendaEntry, Freq, AgendaListFirebase} from "../model/Lesson";
 import {Student} from "../model/Student";
 import {Parameters} from "../model/Parameters";
 import {StorageDao} from "../framework/dao/StorageDao";
@@ -31,6 +31,10 @@ export class AgendaDao {
 				for (let entry of agenda) {
 					let modified:boolean = false;
 					// TODO Intercept: if entries are found with incorrect data, they are fixed and updated on-the-fly.
+					if (typeof entry.price === 'string') {
+						entry.price = +entry.price; // convert to number
+						modified = true;
+					}
 					if (!entry.date) {
 						entry.date = new Date().toJSON();
 						modified = true;
@@ -52,7 +56,7 @@ export class AgendaDao {
 						update[k] = e;
 					}
 					// We actually update a list of entries in once
-					this.updateAgendaEntry(update);
+					this.updateAgendaList(update);
 					return false;
 				}
 				return true;
@@ -110,6 +114,10 @@ export class AgendaDao {
 		// 	// because it is an internal Firebase logic.
 		// 	return this.dao.updateInList(COLLECTION_AGENDA, entry);
 		// });
+	}
+
+	updateAgendaList(entries:AgendaListFirebase):Promise<void> {
+		return this.dao.updateList(COLLECTION_AGENDA, entries);
 	}
 
 	removeAgendaEntry(entry:AgendaEntry):Promise<void> {

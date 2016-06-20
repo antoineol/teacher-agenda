@@ -18,6 +18,10 @@ export interface AgendaEntry extends Lesson {
 	adjacent?:boolean; // true if this lesson is immediately following another lesson.
 }
 
+export interface AgendaListFirebase {
+	[$key:string]:AgendaEntry;
+}
+
 export const Freq = {
 	NONE: 0, // or falsy (undefined, null, false...)
 	DAILY: 1,

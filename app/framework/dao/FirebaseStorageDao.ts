@@ -84,6 +84,12 @@ export class FirebaseStorageDao implements StorageDao {
 		});
 	}
 
+	updateList(collection:string, entities:any):Promise<void> {
+		return this.auth().then((user:FirebaseAuthState) => {
+			return this.getListBinding('', user).update(collection, entities);
+		});
+	}
+
 	removeInList(collection:string, entity:any):Promise<void> {
 		return this.auth().then((user:FirebaseAuthState) => {
 			this.checkUpdateFirebaseEntity(entity);
@@ -122,7 +128,7 @@ export class FirebaseStorageDao implements StorageDao {
 
 	private checkUpdateFirebaseEntity(entity:any):void {
 		if (!entity || !entity.$key) {
-			throw new Error("Not a firebase entity, null or without $key: " + entity);
+			throw new Error("Not a firebase entity, null or without $key: " + JSON.stringify(entity));
 		}
 		this.checkFirebaseEntity(entity);
 	}
