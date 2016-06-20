@@ -44,7 +44,14 @@
 	.swiper-slide {
 		align-items: flex-start;
 	}
-	
+
+	.separator.item {
+		min-height: 1rem;
+		ion-label {
+			margin: 0;
+		}
+	}
+
 	.no-student {
 		font-style: italic;
 	}

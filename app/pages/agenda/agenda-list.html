@@ -10,10 +10,17 @@
 		</button>
 		<!--<span *ngIf="entry.student && !entry.adjacent" class="start-time">{{entry.startReadable}}</span>
         <span *ngIf="entry.student" class="end-time">{{entry.endReadable}}</span>-->
-		<div *ngIf="!entry.start" class="agenda-entry" ion-item>
+
+		<!--<ion-item-divider *ngIf="!entry.start" class="agenda-entry" light>A</ion-item-divider>-->
+		<div *ngIf="!entry.start" class="separator" ion-item>
+		</div>
+		<!--<div *ngIf="!entry.start" class="agenda-entry" ion-item>
 			<div class="item-note duration" item-right>
 				{{entry.durationReadable}}
 			</div>
-		</div>
+		</div>-->
+		<!--<p *ngIf="!entry.start" class="agenda-entry">
+			&nbsp;
+		</p>-->
 	</div>
 </ion-list>

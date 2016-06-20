@@ -8,6 +8,7 @@
 node_modules/
 www/build/
 www/resources/
+www/my.appcache
 platforms/
 plugins/
 /typings

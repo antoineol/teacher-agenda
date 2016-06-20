@@ -19,3 +19,11 @@
     - For a given lesson, it is indicated whether the student already paid for it.
 - Student detail view: a way to display lessons for this student (could be a link)
 - Prices can change from a date. It should not impact the calculation of salaries for previous lessons
+
+## FAQ
+
+### How to change the price of lessons from date xxx?
+
+1) Modify the price of the student,
+2) Modify the existing lesson: set an end date to xxx - 1 (last lesson without the price change),
+3) Create a new lesson for this student with the new price from date xxx.
