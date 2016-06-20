@@ -61,7 +61,7 @@ export class LessonFormPage {
 			lessonService.prepareLessonForForm(this.lesson, navParams.get('studentId'));
 
 			agendaDao.findStudents().subscribe((students:Student[]) => {
-				if (agendaEntry) {
+				if (agendaEntry && agendaEntry.student) {
 					this.studentChoice = students.find((s:Student) => s.$key === agendaEntry.student.$key);
 				}
 				this.students = students;

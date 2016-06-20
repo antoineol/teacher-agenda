@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs/Observable";
-import {AgendaEntry} from "../model/Lesson";
+import {AgendaEntry, Freq} from "../model/Lesson";
 import {Student} from "../model/Student";
 import {Parameters} from "../model/Parameters";
 import {StorageDao} from "../framework/dao/StorageDao";
@@ -24,7 +24,32 @@ export class AgendaDao {
 	// }
 
 	findAgenda():Observable<AgendaEntry[]> {
-		return this.dao.findAll(COLLECTION_AGENDA).map((agenda:AgendaEntry[]) => agenda ? agenda : []);
+		return this.dao.findAll(COLLECTION_AGENDA)
+			.map((agenda:AgendaEntry[]) => agenda ? agenda : [])
+			.filter((agenda:AgendaEntry[]) => {
+				let entriesToUpdate:AgendaEntry[] = [];
+				for (let entry of agenda) {
+					// TODO Intercept: if entries are found with incorrect data, they are fixed and updated on-the-fly.
+					if (entry.repetition === Freq.NONE) {
+						entry.repetition = Freq.WEEKLY;
+						entriesToUpdate.push(entry);
+					}
+				}
+				if (entriesToUpdate.length) {
+					let update:any = {};
+					for (let entry of entriesToUpdate) {
+						let k = entry.$key;
+						let e = Object.assign({}, entry);
+						delete e.$key;
+						update[k] = e;
+					}
+					// We actually update a list of entries in once
+					this.updateAgendaEntry(update);
+					return false;
+				}
+				return true;
+			})
+			;
 	}
 
 	findStudents():Observable<Student[]> {
@@ -47,7 +72,7 @@ export class AgendaDao {
 					params.defaultDuration = AgendaConfig.defaultDuration;
 				}
 				this.dao.insertObject(COLLECTION_PARAMETERS, params);
-				return false
+				return false;
 			})
 			.map((params:Parameters) => params ? params : {});
 	}

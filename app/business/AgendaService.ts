@@ -174,7 +174,7 @@ export class AgendaService {
 			if (entry.date) {
 				entry.dateReadable = moment(entry.date).format('L');
 			}
-			if (entry.student) {
+			if (entry.price || entry.student) {
 				entry.priceReadable = Utils.formatCurrency(entry.price ? entry.price : entry.student.price);
 			}
 

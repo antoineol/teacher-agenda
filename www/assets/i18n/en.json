@@ -11,6 +11,7 @@
 		"from": "From",
 		"until": "until",
 		"included": "included",
+		"noStudent": "No student selected",
 		"deleteConfirm": {
 			"title": "Delete the lesson",
 			"message": "Please confirm the removal of this lesson. Beware: all occurrences of this series will be removed."

@@ -11,6 +11,7 @@
 		"from": "Depuis le",
 		"until": "jusqu'au",
 		"included": "inclus",
+		"noStudent": "Pas d'élève choisi",
 		"deleteConfirm": {
 			"title": "Supprimer le cours",
 			"message": "Veuillez confirmer la suppression de ce cours. Attention : toutes les occurrences de cette série seront supprimées."
