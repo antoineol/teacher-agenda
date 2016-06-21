@@ -11,6 +11,12 @@ export class ErrorDao {
 	}
 
 	addError(error:any, friendlyErrorMessageKey:string):Promise<void> {
+		// Can send the error to a tool like Crittercism here
+		if (error && typeof error === 'object') {
+			console.error(error.stack || error);
+		} else {
+			console.error(error);
+		}
 
 		let errModel:ErrorModel = {
 			errorMessage: error.message || error.toString(),

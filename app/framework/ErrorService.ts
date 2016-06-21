@@ -29,12 +29,6 @@ export class ErrorService {
 				return;
 			}
 
-			// Can send the error to a tool like Crittercism here
-			if (error && typeof error === 'object') {
-				console.error(error.stack || error);
-			} else {
-				console.error(error);
-			}
 			this.errorDao.addError(error, friendlyErrorMessageKey);
 
 			if (!friendlyErrorMessageKey) {
