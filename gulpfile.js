@@ -96,7 +96,7 @@ gulp.task('cache', function() {
 			// network: ['http://*', 'https://*', '*'],
 			timestamp: true,
 			filename: 'my.appcache',
-			exclude: ['stub', 'my.appcache', 'resources', 'index.html']
+			exclude: ['stub', 'my.appcache', 'resources', 'index.html', 'build/css', 'build/js/app.bundle.js.map']
 		}))
 		.pipe(gulp.dest('www'));
 });
