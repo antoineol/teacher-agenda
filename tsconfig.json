@@ -14,9 +14,5 @@
 		"node_modules",
 		"platform",
 		"plugins"
-	],
-	"compileOnSave": false,
-	"atom": {
-		"rewriteTsconfig": false
-	}
+	]
 }

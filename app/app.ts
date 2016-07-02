@@ -1,4 +1,3 @@
-/// <reference path="../typings_manual/my.d.ts" />
 // import 'es6-shim';
 
 import {Conf} from "./config/Config";
@@ -15,6 +14,7 @@ import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/first';
+import 'rxjs/add/operator/filter';
 import 'rxjs/add/observable/combineLatest';
 import "rxjs/add/observable/of";
 import "rxjs/add/observable/from";

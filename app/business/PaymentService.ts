@@ -36,9 +36,11 @@ export class PaymentService {
 
 		let q:Query = {
 			orderByChild: 'studentId',
-			equalTo: student.$key
+			equalTo: student.$key // TODO KO
 		};
 		this.agendaDao.findAgenda(q).subscribe((entries:AgendaEntry[]) => {
+			// TODO KO:
+			// Does not filter + trigger many times
 			console.log("Entries:", entries);
 		}, (err:any) => {
 			console.error(err.code);

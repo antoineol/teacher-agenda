@@ -17,7 +17,7 @@ export class AuthFormPage {
 	private signUpMode:string = '';
 
 	static _show(nav:NavController):void {
-		let loginPage = Modal.create(AuthFormPage);
+		let loginPage = Modal.create(AuthFormPage, {}, {enableBackdropDismiss: false});
 		// Workaround: https://github.com/driftyco/ionic/issues/6933#issuecomment-226508870
 		//(<any>loginPage).fireOtherLifecycles = false;
 		nav.present(loginPage);

@@ -1,5 +1,5 @@
-import {Moment} from "moment";
 import moment = require("moment");
+import Moment = moment.Moment;
 
 
 export class AgendaRange {

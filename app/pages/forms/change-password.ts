@@ -16,7 +16,7 @@ export class ChangePasswordPage {
 
 
 	static _show(nav:NavController, password:FirebaseAuthDataPassword):void {
-		let modal = Modal.create(ChangePasswordPage, {password: password});
+		let modal = Modal.create(ChangePasswordPage, {password: password}, {enableBackdropDismiss: false});
 		nav.present(modal);
 	}
 

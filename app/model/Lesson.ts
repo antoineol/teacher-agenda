@@ -1,5 +1,5 @@
 import {Student} from "./Student";
-import {Moment} from "~moment/moment";
+import Moment = moment.Moment;
 
 // Extension of Lesson to manipulate and display - built in AgendaService
 export interface AgendaEntry extends Lesson {

@@ -8,16 +8,10 @@ import {
 	AngularFire,
 } from "angularfire2";
 import {ReplaySubject} from "rxjs/ReplaySubject";
-import {Deferred} from "promise-defer";
 import {AuthConfiguration} from "angularfire2/es6/providers/auth_backend";
 import {Utils} from "../business/Utils";
-// import {Deferred} from "promise-defer";
 import defer = require("promise-defer");
 // import {FirebaseSdkAuthBackend} from "angularfire2/es6/providers/firebase_sdk_auth_backend";
-// import Deferred = require("promise-defer");
-// import defer = require("promise-defer");
-// import Deferred = require("promise-defer");
-// import Deferred = require("promise-defer");
 
 @Injectable()
 export class AuthService {

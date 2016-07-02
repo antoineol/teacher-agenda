@@ -47,23 +47,25 @@ gulp.task('watch', ['clean'], function(done){
   );
 });
 
-gulp.task('build', ['clean', 'icons'], function (done) {
+gulp.task('build', ['clean', 'icons'], function (callback) {
 	runSequence(
 		'clean',
 		['sass', 'html', 'fonts', 'scripts', 'icons'],
 		'cache',
-		function () {
-			buildBrowserify({
-				minify: true,
-				uglifyOptions: {
-					mangle: false
-				},
-				browserifyOptions: {
-					debug: false/*!isRelease*/
-				}
-			}).on('end', done);
-		}
+		'bundle',
+		callback
 	);
+});
+gulp.task('bundle', function(done) {
+	buildBrowserify({
+		minify: true,
+		uglifyOptions: {
+			mangle: false
+		},
+		browserifyOptions: {
+			debug: false/*!isRelease*/
+		}
+	}).on('end', done);
 });
 gulp.task('sass', function() {
 	return buildSass({sassOptions: {

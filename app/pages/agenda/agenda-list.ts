@@ -1,7 +1,6 @@
 import {Component, Input} from "@angular/core";
 import {NavController} from "ionic-angular";
 import {Subscription} from "rxjs/Subscription";
-import {Moment} from "moment";
 import {AgendaEntry} from "../../model/Lesson";
 import {AgendaService} from "../../business/AgendaService";
 import {AgendaDetailPage} from "./agenda-detail";
