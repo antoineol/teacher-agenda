@@ -1,7 +1,6 @@
 import {Injectable} from "@angular/core";
 import {Http, Response} from "@angular/http";
 import {Observable} from "rxjs/Observable";
-import {FirebaseStorageDao} from "./FirebaseStorageDao";
 import {StorageDao} from "./StorageDao";
 import {Query} from "angularfire2/es6/utils/query_observable";
 

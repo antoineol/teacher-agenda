@@ -1,15 +1,15 @@
 import {Component} from "@angular/core";
 import {NavParams, NavController, Alert} from "ionic-angular";
-import {AgendaEntry, Lesson} from "../../model/Lesson";
+import {AgendaEntry} from "../../model/Lesson";
 import {AgendaDao} from "../../business/AgendaDao";
 import {ErrorService} from "../../framework/ErrorService";
 import {TranslateService} from "ng2-translate/ng2-translate";
 import {Conf} from "../../config/Config";
 import {LessonFormPage} from "../forms/lesson";
 import {Observable} from "rxjs/Observable";
-import moment = require("moment");
 import {LessonFormService} from "../../business/LessonFormService";
 import {AgendaService} from "../../business/AgendaService";
+import moment = require("moment");
 
 @Component({
 	templateUrl: 'build/pages/agenda/agenda-detail.html'

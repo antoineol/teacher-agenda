@@ -1,10 +1,8 @@
-import {Injectable, EventEmitter} from "@angular/core";
-import {Lesson, FreqChoice, Freq, AgendaEntry} from "../model/Lesson";
+import {Injectable} from "@angular/core";
+import {Lesson, AgendaEntry} from "../model/Lesson";
 import {Observable} from "rxjs/Observable";
 import {Parameters} from "../model/Parameters";
 import {AgendaDao} from "./AgendaDao";
-import {Conf} from "../config/Config";
-import {TranslateService} from "ng2-translate/ng2-translate";
 import {Utils} from "./Utils";
 import {AgendaService} from "./AgendaService";
 import {Student} from "../model/Student";

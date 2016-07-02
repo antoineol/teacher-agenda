@@ -4,8 +4,8 @@ import {AddPopover} from "../pop/add-popover";
 import {Student} from "../../model/Student";
 import {StudentDao} from "../../business/StudentDao";
 import {StudentDetailPage} from "./student-detail";
-import moment = require("moment");
 import {ErrorService} from "../../framework/ErrorService";
+import moment = require("moment");
 
 
 @Component({

@@ -8,9 +8,9 @@ import {TranslateService} from "ng2-translate/ng2-translate";
 import {StudentDao} from "../../business/StudentDao";
 import {ErrorService} from "../../framework/ErrorService";
 import {AgendaDao} from "../../business/AgendaDao";
-import moment = require("moment");
 import {PayFormPage} from "../forms/pay";
 import {PaymentService} from "../../business/PaymentService";
+import moment = require("moment");
 
 @Component({
 	templateUrl: 'build/pages/students/student-detail.html'

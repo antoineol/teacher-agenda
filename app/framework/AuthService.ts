@@ -1,12 +1,5 @@
 import {Injectable, Inject} from "@angular/core";
-import {
-	FirebaseAuth,
-	FirebaseAuthState,
-	FirebaseRef,
-	AuthProviders,
-	AuthMethods,
-	AngularFire,
-} from "angularfire2";
+import {FirebaseAuth, FirebaseAuthState, FirebaseRef, AuthProviders, AuthMethods} from "angularfire2";
 import {ReplaySubject} from "rxjs/ReplaySubject";
 import {AuthConfiguration} from "angularfire2/es6/providers/auth_backend";
 import {Utils} from "../business/Utils";

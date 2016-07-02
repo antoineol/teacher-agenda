@@ -1,4 +1,4 @@
-import {Component, ViewChild} from "@angular/core";
+import {Component} from "@angular/core";
 import {ViewController, NavController, Popover, App, NavParams} from "ionic-angular/index";
 import {LessonFormPage} from "../forms/lesson";
 import {StudentFormPage} from "../forms/student";
