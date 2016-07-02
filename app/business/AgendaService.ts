@@ -1,9 +1,7 @@
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs/Observable";
-import moment = require("moment");
-import _ = require("underscore");
 import {AgendaDao} from "./AgendaDao";
-import {AgendaEntry, Freq, FreqChoice} from "../model/Lesson";
+import {AgendaEntry, Freq} from "../model/Lesson";
 import {Student} from "../model/Student";
 import {Parameters} from "../model/Parameters";
 import {Conf} from "../config/Config";
@@ -12,6 +10,8 @@ import {AgendaRange} from "../model/AgendaRange";
 import {Slides} from "ionic-angular/index";
 import {Utils} from "./Utils";
 import {MiscService} from "./MiscService";
+import moment = require("moment");
+import _ = require("underscore");
 import Moment = moment.Moment;
 
 @Injectable()
