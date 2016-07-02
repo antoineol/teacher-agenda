@@ -47,11 +47,12 @@ export class AuthService {
 		// console.log("Firebase fbAuth:", authBackend._fbAuth.sendPasswordResetEmail);
 
 		this.auth.subscribe((authInfo:FirebaseAuthState) => {
-			// console.log("authInfo:", authInfo);
+			console.log("authInfo:", authInfo);
 			if (!authInfo) {
 				this.requestAuth();
-			} else if (authInfo.password && authInfo.password.isTemporaryPassword) {
-				this.requestPwdChange(authInfo.password);
+				// TODO used in angularfire2 beta 0
+			// } else if (authInfo.password && authInfo.password.isTemporaryPassword) {
+			// 	this.requestPwdChange(authInfo.password);
 			}
 		});
 	}
@@ -139,12 +140,20 @@ export class AuthService {
 
 	signup(credentials:FirebaseCredentials):Promise<void> {
 		credentials.password = Utils.randomPassword();
-		return this.auth.createUser(credentials).then((authData: FirebaseAuthData) => {
+		// angularfire2 beta 2
+		return this.auth.createUser(credentials).then((authData: FirebaseAuthState) => {
 			console.log(authData);
 			return this.resetPasswordFirebase({email: credentials.email}).then(() => {
 				return this.login(AuthService.METHOD_PASSWORD, credentials);
 			});
-		})
+		});
+		// angularfire2 beta 0
+		// return this.auth.createUser(credentials).then((authData: FirebaseAuthData) => {
+		// 	console.log(authData);
+		// 	return this.resetPasswordFirebase({email: credentials.email}).then(() => {
+		// 		return this.login(AuthService.METHOD_PASSWORD, credentials);
+		// 	});
+		// });
 	}
 
 	changePassword(credentials:FirebaseChangePasswordCredentials):Promise<void> {

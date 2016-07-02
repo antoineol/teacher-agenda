@@ -34,13 +34,15 @@ export const injectables:any[] = [
 
 	// Firebase Angular2 adapter
 	FIREBASE_PROVIDERS,
-	defaultFirebase("https://crackling-heat-2871.firebaseio.com"),
-	// defaultFirebase({
-	// 	apiKey: "AIzaSyA0gBTBwU7x2m6dQVOormHdf8UnifI7Tu4",
-	// 	authDomain: "crackling-heat-2871.firebaseapp.com",
-	// 	databaseURL: "https://crackling-heat-2871.firebaseio.com", // "https://teacher-agenda-812ca.firebaseio.com"
-	// 	storageBucket: "crackling-heat-2871.appspot.com",
-	// }),
+	// angularfire2 beta 0
+	// defaultFirebase("https://crackling-heat-2871.firebaseio.com"),
+	// angularfire2 beta 2
+	defaultFirebase({
+		apiKey: "AIzaSyA0gBTBwU7x2m6dQVOormHdf8UnifI7Tu4",
+		authDomain: "crackling-heat-2871.firebaseapp.com",
+		databaseURL: "https://crackling-heat-2871.firebaseio.com", // "https://teacher-agenda-812ca.firebaseio.com"
+		storageBucket: "crackling-heat-2871.appspot.com",
+	}),
 	// TODO test and replace by a better auth config
 	firebaseAuthConfig({
 		provider: AuthProviders.Password,
