@@ -1,4 +1,4 @@
-import {Pipe, PipeTransform} from '@angular/core';
+import {Pipe, PipeTransform} from "@angular/core";
 import {Utils} from "../../business/Utils";
 
 @Pipe({name: 'currency'})

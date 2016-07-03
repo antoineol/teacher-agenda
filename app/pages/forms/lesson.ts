@@ -1,6 +1,6 @@
 import {Component} from "@angular/core";
 import {NavParams, NavController} from "ionic-angular";
-import {Lesson, Freq, FreqChoice, AgendaEntry} from "../../model/Lesson";
+import {Lesson, FreqChoice, AgendaEntry} from "../../model/Lesson";
 import {Utils} from "../../business/Utils";
 import {AgendaDao} from "../../business/AgendaDao";
 import {Student} from "../../model/Student";
@@ -9,7 +9,6 @@ import {LessonFormService} from "../../business/LessonFormService";
 import {MiscService} from "../../business/MiscService";
 import {AgendaService} from "../../business/AgendaService";
 import {Conf} from "../../config/Config";
-import {ControlGroup} from "@angular/common";
 // import moment = require("moment");
 
 

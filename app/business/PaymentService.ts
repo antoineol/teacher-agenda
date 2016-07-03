@@ -34,11 +34,12 @@ export class PaymentService {
 		//    use moment().unix() to return the unix timestamp, moment.unix(ts) to create a moment from a unix timestamp
 		// - Loop: stop when it consumed all paid amount, deduce the 'paid until' date
 
-		let q:Query = {
-			orderByChild: 'studentId',
-			equalTo: student.$key // TODO KO
-		};
-		this.agendaDao.findAgenda(q).subscribe((entries:AgendaEntry[]) => {
+		// let q:Query = {
+		// 	orderByChild: 'studentId',
+		// 	equalTo: student.$key // TODO KO
+		// };
+		console.log("checkPayment"/*, student*/);
+		this.agendaDao.findAgenda(/*q*/).subscribe((entries:AgendaEntry[]) => {
 			// TODO KO:
 			// Does not filter + trigger many times
 			console.log("Entries:", entries);

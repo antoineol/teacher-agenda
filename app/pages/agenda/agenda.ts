@@ -1,4 +1,4 @@
-import {Component, ViewChild} from "@angular/core";
+import {Component, ViewChild, OnDestroy} from "@angular/core";
 import {NavController, Slides} from "ionic-angular";
 import {AgendaEntry} from "../../model/Lesson";
 import {AgendaList} from "./agenda-list";
@@ -10,13 +10,28 @@ import {AuthFormPage} from "../pop/auth";
 import {AuthService} from "../../framework/AuthService";
 import {ChangePasswordPage} from "../forms/change-password";
 import moment = require("moment");
+import {PaymentService} from "../../business/PaymentService";
+import {AgendaDao} from "../../business/AgendaDao";
+import {Subscription} from "rxjs/Subscription";
 
 
 @Component({
 	templateUrl: 'build/pages/agenda/agenda.html',
 	directives: [AgendaList]
 })
-export class AgendaPage {
+export class AgendaPage implements OnDestroy {
+
+	// TODO Required/useful? Not sure, it seems to add a delay when reloading the page.
+	private _sub:Subscription[] = [];
+	private sub(subscription:Subscription):Subscription {
+		// this._sub.push(subscription);
+		return subscription;
+	}
+	ngOnDestroy():any {
+		for (let sub of this._sub) {
+			sub.unsubscribe();
+		}
+	}
 
 	private ranges:AgendaRange[];
 
@@ -41,24 +56,32 @@ export class AgendaPage {
 
 	@ViewChild('slider') slider:Slides;
 
-	constructor(private nav:NavController, private agendaService:AgendaService, private authService:AuthService) {
+	constructor(private nav:NavController, private agendaService:AgendaService, private authService:AuthService, paymentService:PaymentService, private agendaDao:AgendaDao) {
 		// console.log("agenda constructor");
 		this.ranges = agendaService.initRanges();
+
+		// paymentService.checkPayment(null);
+		this.sub(this.agendaDao.findAgenda().subscribe((agenda:AgendaEntry[]) => {
+			console.log("agenda:", agenda);
+			this.sub(this.agendaDao.findAgenda().subscribe((agenda:AgendaEntry[]) => console.log("agenda2:", agenda)));
+		}));
+		// setTimeout(() => {
+		// }, 3000);
 	}
 
 	onPageDidEnter() {
 		// console.log("Agenda onPageDidEnter");
-		this.authService.popAuth.subscribe((show:boolean) => {
+		this.sub(this.authService.popAuth.subscribe((show:boolean) => {
 			// console.log("Agenda received popAuth:", show);
 			if (show) {
 				AuthFormPage._show(this.nav);
 			}
 		});
-		this.authService.popChangePwd.subscribe((email:string/*password:FirebaseAuthDataPassword*/) => {
+		this.sub(this.authService.popChangePwd.subscribe((email:string/*password:FirebaseAuthDataPassword*/) => {
 			if (email) {
 				ChangePasswordPage._show(this.nav, email/*password*/);
 			}
-		});
+		}));
 	}
 
 	ngAfterViewInit() {

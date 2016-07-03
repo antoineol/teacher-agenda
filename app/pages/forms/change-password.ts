@@ -2,7 +2,7 @@ import {Component} from "@angular/core";
 import {NavController, Modal, ViewController, NavParams} from "ionic-angular/index";
 import {AuthService} from "../../framework/AuthService";
 import {ErrorService} from "../../framework/ErrorService";
-import {ControlGroup, FormBuilder, Validators, AbstractControl} from "@angular/common";
+import {ControlGroup, FormBuilder, Validators} from "@angular/common";
 import {Toaster} from "../../framework/Toaster";
 
 @Component({
