@@ -113,6 +113,7 @@ export class AuthService {
 	// https://github.com/angular/angularfire2/issues/220#issuecomment-225317731
 
 	resetPasswordFirebase(email:string):Promise<void> {
+		// TODO implement the access view on demand to reset the password
 		return this.fbAuth.sendPasswordResetEmail(email);
 		// return this.fbAuth.sendPasswordResetEmail(credentials.email);
 		// return new Promise<void>((resolve, reject) => {
@@ -146,6 +147,7 @@ export class AuthService {
 	}
 
 	changeEmailFirebase(newEmail:string):Promise<void> {
+		// TODO implement the view for that
 		return this.fbAuth.currentUser.updateEmail(newEmail);
 
 		// return new Promise<void>((resolve, reject) => {
@@ -195,6 +197,7 @@ export class AuthService {
 		// angularfire2 beta 2
 		return this.af.auth.createUser(credentials).then((authData: FirebaseAuthState) => {
 			console.log(authData);
+			// TODO implement the email validation the firebase 3 way
 			return this.resetPasswordFirebase(credentials.email).then(() => {
 				return this.login(AuthService.METHOD_PASSWORD, credentials);
 			});
@@ -208,9 +211,8 @@ export class AuthService {
 		// });
 	}
 
-	changePassword(email:string /*credentials:FirebaseChangePasswordCredentials*/):Promise<void> {
-		// TODO continue from here
-		return this.changePasswordFirebase(email).then(() => {
+	changePassword(newPassword:string /*credentials:FirebaseChangePasswordCredentials*/):Promise<void> {
+		return this.changePasswordFirebase(newPassword).then(() => {
 			this.popChangePwd.next(null);
 			this.modalShown = false;
 		})

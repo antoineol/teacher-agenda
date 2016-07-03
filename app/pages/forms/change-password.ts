@@ -35,7 +35,7 @@ export class ChangePasswordPage {
 	}
 
 
-	private changePassword(/*credentials:any*/ /*FirebaseChangePasswordCredentials*/):void {
+	private changePassword(formInfo:{newPassword:string}/*credentials:any*/ /*FirebaseChangePasswordCredentials*/):void {
 		this.loading = true;
 		// credentials.email = this.password.email;
 
@@ -44,7 +44,7 @@ export class ChangePasswordPage {
 		// this.loading = false;
 		// return;
 
-		this.authService.changePassword(this.email).then(() => {
+		this.authService.changePassword(formInfo.newPassword).then(() => {
 			this.loading = false;
 			this._dismiss();
 		}, (err:any) => {
