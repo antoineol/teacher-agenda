@@ -1,4 +1,5 @@
 import {Component} from "@angular/core";
+import {ControlGroup, FormBuilder, Validators} from "@angular/common";
 import {NavController, Modal, ViewController} from "ionic-angular";
 import {ErrorService} from "../../framework/ErrorService";
 import {AuthService} from "../../framework/AuthService";
@@ -6,7 +7,7 @@ import {AuthConfiguration, EmailPasswordCredentials} from "angularfire2/es6/prov
 import {Toaster} from "../../framework/Toaster";
 import {AuthMethods} from "angularfire2/angularfire2";
 import {Credentials} from "../../../typings_manual/global/angularfire";
-// import moment = require("moment");
+import {matchingPasswords} from "../../framework/validators/matchingPasswordsValidator";
 
 
 @Component({
@@ -16,6 +17,7 @@ export class AuthFormPage {
 
 	loading:boolean;
 	private signUpMode:string = '';
+	private loginCreds:ControlGroup;
 
 	static _show(nav:NavController):void {
 		let loginPage = Modal.create(AuthFormPage, {}, {enableBackdropDismiss: false});
@@ -25,8 +27,13 @@ export class AuthFormPage {
 		// console.log("AuthFormPage present");
 	}
 
-	constructor(private authService:AuthService, private viewCtrl:ViewController,
+	constructor(private authService:AuthService, private viewCtrl:ViewController, fb:FormBuilder,
 				private error:ErrorService, private toaster:Toaster) {
+		this.loginCreds= fb.group({
+			email: ['', Validators.required],
+			password: ['', Validators.required],
+			confirmPassword: ['', Validators.required],
+		}, {validator: matchingPasswords('password', 'confirmPassword')});
 	}
 
 	private loginWithGithub():void {
@@ -51,8 +58,11 @@ export class AuthFormPage {
 		this.loading = true;
 		this.authService.signup(credentials).then(() => {
 			this.loading = false;
-			this.toaster.toast('auth.checkEmailSent');
 			this.signUpMode = '';
+			// the signup seems to include the sign-in, we can close the popup.
+			return this._dismiss();
+		}).then(() => {
+			this.toaster.toast('auth.checkEmailSent');
 		}, (err:any) => {
 			this.loading = false;
 			this.error.handler(err.code)(err);
@@ -83,7 +93,7 @@ export class AuthFormPage {
 			}
 		}).then(() => {
 			this.loading = false;
-			this._dismiss();
+			return this._dismiss();
 		}).catch((err:any) => {
 			this.loading = false;
 			this.error.handler(err.code)(err);
@@ -91,8 +101,8 @@ export class AuthFormPage {
 	}
 
 	// Call me only after a successful authentication.
-	private _dismiss():void {
-		this.viewCtrl.dismiss();
+	private _dismiss():Promise<void> {
+		return this.viewCtrl.dismiss();
 	}
 
 }

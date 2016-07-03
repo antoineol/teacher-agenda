@@ -1,11 +1,11 @@
 import moment = require("moment");
 
-let today = moment();
-
 export class AgendaConfig {
+	
+	private static today = moment();
 
-	static defaultDate = today.format().substr(0, 10);
-	static defaultStartBillingDate = today.clone().startOf('day').format();
+	static defaultDate = AgendaConfig.today.format().substr(0, 10);
+	static defaultStartBillingDate = AgendaConfig.today.clone().startOf('day').format();
 	static defaultDuration = 45;
 
 	// private static defaultStart:Moment = today.clone().startOf('day');

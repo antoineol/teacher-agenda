@@ -5,7 +5,6 @@ import {Student} from "../../model/Student";
 import {StudentDao} from "../../business/StudentDao";
 import {StudentDetailPage} from "./student-detail";
 import {ErrorService} from "../../framework/ErrorService";
-import moment = require("moment");
 
 
 @Component({

@@ -13,6 +13,7 @@ import moment = require("moment");
 import {PaymentService} from "../../business/PaymentService";
 import {AgendaDao} from "../../business/AgendaDao";
 import {Subscription} from "rxjs/Subscription";
+import {UnverifiedEmailPopover} from "../pop/UnverifiedEmailPopover";
 
 
 @Component({
@@ -143,6 +144,14 @@ export class AgendaPage implements OnDestroy {
 
 	popAddList(event:Event) {
 		this.nav.present(AddPopover.make(), {ev: event});
+	}
+
+	get emailVerified():boolean {
+		return this.authService.emailVerified;
+	}
+
+	verifyPasswordWarning(event:Event) {
+		this.nav.present(UnverifiedEmailPopover.make(), {ev: event});
 	}
 
 }

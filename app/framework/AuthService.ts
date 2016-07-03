@@ -1,20 +1,19 @@
 import {Injectable, Inject} from "@angular/core";
-import {
-	FirebaseAuthState, FirebaseRef, AuthProviders, AuthMethods, AngularFire, AngularFireAuth,
-	FirebaseApp, FirebaseAuthConfig
-} from "angularfire2";
+import {FirebaseAuthState, AuthProviders, AuthMethods, AngularFire, AngularFireAuth, FirebaseApp} from "angularfire2";
 import {ReplaySubject} from "rxjs/ReplaySubject";
 import {AuthConfiguration, EmailPasswordCredentials} from "angularfire2/es6/providers/auth_backend";
 import {Utils} from "../business/Utils";
 import {Credentials} from "../../typings_manual/global/angularfire";
-import defer = require("promise-defer");
 import {Toaster} from "./Toaster";
+import defer = require("promise-defer");
 import App = firebase.app.App;
 import Auth = firebase.auth.Auth;
 import User = firebase.User;
 
 @Injectable()
 export class AuthService {
+
+	emailVerified:boolean; // updated over time. If an observable is required, to refactor.
 
 	private fbAuth:Auth;
 
@@ -66,6 +65,11 @@ export class AuthService {
 				console.warn('TODO: implement email verification the firebase 3 way.');
 			} else {
 				console.log("ok onAuthStateChanged Email verified. Current user:", this.fbAuth.currentUser);
+			}
+			if (this.fbAuth && this.fbAuth.currentUser) {
+				this.emailVerified = this.fbAuth.currentUser.emailVerified;
+			} else {
+				this.emailVerified = null;
 			}
 		}, (error:any) => {
 
@@ -195,12 +199,14 @@ export class AuthService {
 	signup(credentials:EmailPasswordCredentials):Promise<void> {
 		credentials.password = Utils.randomPassword();
 		// angularfire2 beta 2
-		return this.af.auth.createUser(credentials).then((authData: FirebaseAuthState) => {
-			console.log(authData);
-			// TODO implement the email validation the firebase 3 way
-			return this.resetPasswordFirebase(credentials.email).then(() => {
-				return this.login(AuthService.METHOD_PASSWORD, credentials);
-			});
+		return this.af.auth.createUser(credentials).then((authData:FirebaseAuthState) => {
+			// console.log(authData);
+
+			this.fbAuth.currentUser.sendEmailVerification();
+
+			// return this.resetPasswordFirebase(credentials.email).then(() => {
+			// 	return this.login(AuthService.METHOD_PASSWORD, credentials);
+			// });
 		});
 		// angularfire2 beta 0
 		// return this.auth.createUser(credentials).then((authData: FirebaseAuthData) => {

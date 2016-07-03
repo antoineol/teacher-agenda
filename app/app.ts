@@ -5,7 +5,7 @@ import {Conf} from "./config/Config";
 import moment = require("moment");
 import 'moment/locale/fr';
 import 'moment/locale/zh-cn';
-moment.locale(Conf.langMoment);
+// moment.locale(Conf.langMoment);
 
 // Starts by adding operators and methods to observables
 // import 'rxjs/add/observable/forkJoin';
@@ -31,6 +31,7 @@ import {ErrorService} from "./framework/ErrorService";
 import {StudentsPage} from "./pages/students/students";
 import {AuthService} from "./framework/AuthService";
 
+moment.locale(Conf.langMoment);
 
 // TODO display loader while caching. See event listeners:
 // https://jonathanstark.com/blog/debugging-html-5-offline-application-cache?filename=2009/09/27/debugging-html-5-offline-application-cache/
@@ -42,6 +43,10 @@ import {AuthService} from "./framework/AuthService";
 // HTML5 offline: Service Worker
 // https://developer.mozilla.org/fr/docs/Web/API/Service_Worker_API/Using_Service_Workers
 // Deprecated but usable: AppCache (with manifest)
+
+// Guides for progressive web apps (mobile):
+// https://github.com/angular/mobile-toolkit
+// implemented by https://github.com/mgechev/angular2-seed
 
 interface PageEntry {
 	title:string;

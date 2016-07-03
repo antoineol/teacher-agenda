@@ -67,23 +67,22 @@ export class FirebaseStorageDao implements StorageDao {
 	pushToList(collection:string, entity:any):Promise<void> {
 		return this.auth().then((user:FirebaseAuthState) => {
 			this.checkFirebaseEntity(entity);
+			// console.log("pushToList", collection, entity);
 			return /*<Promise<void>>*/this.getListBinding(collection, user).push(entity);
 		});
 	}
 
 	pushToListGlobal(collection:string, entity:any):Promise<void> {
 		this.checkFirebaseEntity(entity);
+		// console.log("pushToListGlobal", collection, entity);
 		return /*<Promise<void>>*/this.getListBinding(collection).push(entity);
 	}
 
 	updateInList(collection:string, entity:any):Promise<void> {
 		return this.auth().then((user:FirebaseAuthState) => {
 			this.checkUpdateFirebaseEntity(entity);
-			// console.log("Update collection", collection, ":", entity.$key, entity);
-			// TODO dirty but there is no clear/simple way yet to update the whole object in once.
-			// https://github.com/angular/angularfire2/issues/190
-			let updateEntity = Object.assign({}, entity);
-			delete updateEntity.$key;
+			let updateEntity = this.entityToJSON(entity);
+			// console.log("updateInList", collection, entity);
 			return this.getListBinding(collection, user).update(entity, updateEntity);
 		});
 	}
@@ -93,10 +92,9 @@ export class FirebaseStorageDao implements StorageDao {
 			let update:any = {};
 			for (let entry of entities) {
 				let k = entry.$key;
-				let e = Object.assign({}, entry);
-				delete e.$key;
-				update[k] = e;
+				update[k] = this.entityToJSON(entry);
 			}
+			// console.log("updateList", collection, entities);
 			return this.getListBinding('', user).update(collection, update);
 		});
 	}
@@ -104,12 +102,14 @@ export class FirebaseStorageDao implements StorageDao {
 	removeInList(collection:string, entity:any):Promise<void> {
 		return this.auth().then((user:FirebaseAuthState) => {
 			this.checkUpdateFirebaseEntity(entity);
+			// console.log("removeInList", collection, entity);
 			return this.getListBinding(collection, user).remove(entity.$key);
 		});
 	}
 
 	removeAllList(collection:string):Promise<void> {
 		return this.auth().then((user:FirebaseAuthState) => {
+			// console.log("removeAllList", collection);
 			return this.getListBinding(collection, user).remove();
 		});
 	}
@@ -117,6 +117,8 @@ export class FirebaseStorageDao implements StorageDao {
 	insertObject(collection:string, entity:any):Promise<void> {
 		return this.auth().then((user:FirebaseAuthState) => {
 			this.checkFirebaseEntity(entity);
+			entity = this.entityToJSON(entity);
+			// console.log("insertObject", collection, entity);
 			return this.getObjectBinding(collection, user).set(entity);
 		});
 	}
@@ -124,18 +126,29 @@ export class FirebaseStorageDao implements StorageDao {
 	updateObject(collection:string, entity:any):Promise<void> {
 		return this.auth().then((user:FirebaseAuthState) => {
 			this.checkFirebaseEntity(entity);
+			entity = this.entityToJSON(entity);
+			// console.log("updateObject", collection, entity);
 			return this.getObjectBinding(collection, user).update(entity);
 		});
 	}
 
 	removeObject(collection:string):Promise<void> {
 		return this.auth().then((user:FirebaseAuthState) => {
+			// console.log("removeObject", collection);
 			return this.getObjectBinding(collection, user).remove();
 		});
 	}
 
 
 	// Internal Firebase util
+
+	private entityToJSON(entity:any) {
+		// TODO dirty but there is no clear/simple way yet to update the whole object in once.
+		// https://github.com/angular/angularfire2/issues/190
+		let e = Object.assign({}, entity);
+		delete e.$key;
+		return e;
+	}
 
 	private checkUpdateFirebaseEntity(entity:any):void {
 		if (!entity || !entity.$key) {

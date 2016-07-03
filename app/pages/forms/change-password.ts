@@ -4,6 +4,7 @@ import {AuthService} from "../../framework/AuthService";
 import {ErrorService} from "../../framework/ErrorService";
 import {ControlGroup, FormBuilder, Validators} from "@angular/common";
 import {Toaster} from "../../framework/Toaster";
+import {matchingPasswords} from "../../framework/validators/matchingPasswordsValidator";
 
 @Component({
 	templateUrl: 'build/pages/forms/change-password.html'
@@ -70,20 +71,3 @@ export class ChangePasswordPage {
 	}
 
 }
-
-
-// Custom validator
-export function matchingPasswords(passwordKey: string, confirmPasswordKey: string) {
-	return (group: ControlGroup): {[key: string]: any} => {
-		let password = group.controls[passwordKey];
-		let confirmPassword = group.controls[confirmPasswordKey];
-		// console.log("Matching password:", password, confirmPassword);
-
-		if (password.value !== confirmPassword.value) {
-			return {
-				differentPasswords: true
-			};
-		}
-	}
-}
-
