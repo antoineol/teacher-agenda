@@ -2,9 +2,10 @@ import {Component} from "@angular/core";
 import {NavController, Modal, ViewController} from "ionic-angular";
 import {ErrorService} from "../../framework/ErrorService";
 import {AuthService} from "../../framework/AuthService";
-import {AuthConfiguration} from "angularfire2/es6/providers/auth_backend";
+import {AuthConfiguration, EmailPasswordCredentials} from "angularfire2/es6/providers/auth_backend";
 import {Toaster} from "../../framework/Toaster";
 import {AuthMethods} from "angularfire2/angularfire2";
+import {Credentials} from "../../../typings_manual/global/angularfire";
 // import moment = require("moment");
 
 
@@ -32,7 +33,7 @@ export class AuthFormPage {
 		this.login(AuthService.METHOD_GITHUB);
 	}
 
-	private loginWithEmail(credentials:FirebaseCredentials):void {
+	private loginWithEmail(credentials:EmailPasswordCredentials):void {
 		if (this.signUpMode === 'signup') {
 			// console.log("Sign up with email:", credentials);
 			this.signUp(credentials);
@@ -46,7 +47,7 @@ export class AuthFormPage {
 	// 	this.signUp = true;
 	// }
 
-	private signUp(credentials:FirebaseCredentials):void {
+	private signUp(credentials:EmailPasswordCredentials):void {
 		this.loading = true;
 		this.authService.signup(credentials).then(() => {
 			this.loading = false;
@@ -58,9 +59,9 @@ export class AuthFormPage {
 		});
 	}
 
-	private resetPassword(credentials:FirebaseResetPasswordCredentials):void {
+	private resetPassword(credentials:{email:string}):void {
 		this.loading = true;
-		this.authService.resetPasswordFirebase(credentials).then(() => {
+		this.authService.resetPasswordFirebase(credentials.email).then(() => {
 			this.loading = false;
 			this.toaster.toast('auth.checkEmailSent');
 			this.signUpMode = '';
@@ -71,7 +72,7 @@ export class AuthFormPage {
 	}
 
 
-	private login(options?:AuthConfiguration, credentials?:FirebaseCredentials):void {
+	private login(options?:AuthConfiguration, credentials?:Credentials):void {
 		this.loading = true;
 		this.authService.login(options, credentials).catch((err:any) => {
 			if (err.code === 'TRANSPORT_UNAVAILABLE') {

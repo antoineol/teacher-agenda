@@ -1,20 +1,22 @@
 import {Injectable, Inject} from "@angular/core";
 import {
-	FirebaseAuth,
-	FirebaseAuthState,
-	FirebaseRef,
-	AuthProviders,
-	AuthMethods,
-	AngularFire,
+	FirebaseAuthState, FirebaseRef, AuthProviders, AuthMethods, AngularFire, AngularFireAuth,
+	FirebaseApp, FirebaseAuthConfig
 } from "angularfire2";
 import {ReplaySubject} from "rxjs/ReplaySubject";
-import {AuthConfiguration} from "angularfire2/es6/providers/auth_backend";
+import {AuthConfiguration, EmailPasswordCredentials} from "angularfire2/es6/providers/auth_backend";
 import {Utils} from "../business/Utils";
+import {Credentials} from "../../typings_manual/global/angularfire";
 import defer = require("promise-defer");
-// import {FirebaseSdkAuthBackend} from "angularfire2/es6/providers/firebase_sdk_auth_backend";
+import {Toaster} from "./Toaster";
+import App = firebase.app.App;
+import Auth = firebase.auth.Auth;
+import User = firebase.User;
 
 @Injectable()
 export class AuthService {
+
+	private fbAuth:Auth;
 
 	// TODO fallback popup to redirect when not available
 	static METHOD_GITHUB = {
@@ -29,10 +31,13 @@ export class AuthService {
 
 	private authDeferred:Deferred<FirebaseAuthState>;
 	popAuth = new ReplaySubject<boolean>(1);
-	popChangePwd = new ReplaySubject<FirebaseAuthDataPassword>(1);
+	popChangePwd = new ReplaySubject<string>(1);
 	// private fbAuth:firebase.auth.Auth;
 
-	constructor(private auth: FirebaseAuth, @Inject(FirebaseRef) private ref:Firebase/*, private af:AngularFire*/) {
+	// To get firebase reference: @Inject(FirebaseRef) _firebase:App
+	// Use either FirebaseRef or FirebaseApp opaque token to inject it.
+	constructor(private auth: AngularFireAuth, @Inject(FirebaseApp) private app:App, private af:AngularFire, private toaster:Toaster) {
+		this.fbAuth = app.auth();
 		// subscribe to the auth object to check for the login status
 		// of the user, if logged in, save some user information and
 		// execute the firebase query...
@@ -46,15 +51,52 @@ export class AuthService {
 		// console.log("Firebase authBackend:", authBackend);//_fbAuth
 		// console.log("Firebase fbAuth:", authBackend._fbAuth.sendPasswordResetEmail);
 
-		this.auth.subscribe((authInfo:FirebaseAuthState) => {
-			console.log("authInfo:", authInfo);
+		// console.log('ref:', this.fbAuth);
+		this.fbAuth.onAuthStateChanged((authInfo:User) => {
+			// console.log("onAuthStateChanged authInfo:", authInfo);
 			if (!authInfo) {
 				this.requestAuth();
 				// TODO used in angularfire2 beta 0
-			// } else if (authInfo.password && authInfo.password.isTemporaryPassword) {
-			// 	this.requestPwdChange(authInfo.password);
+				// } else if (authInfo.password && authInfo.password.isTemporaryPassword) {
+				// 	this.requestPwdChange(authInfo.password);
+			} else if (!this.fbAuth.currentUser) {
+				console.log("## KO: onAuthStateChanged no currentUser!", this.fbAuth.currentUser);
+			} else if (!this.fbAuth.currentUser.emailVerified) {
+				console.log("## KO: onAuthStateChanged Email not verified! current user:", this.fbAuth.currentUser);
+				console.warn('TODO: implement email verification the firebase 3 way.');
+			} else {
+				console.log("ok onAuthStateChanged Email verified. Current user:", this.fbAuth.currentUser);
 			}
-		});
+		}, (error:any) => {
+
+			// TODO move auth listener outside AuthService (so that we can inject the ErrorService -here: circular dependency-)
+			// and report errors properly. It makes sense since the auth state listener has no caller.
+			// The authentication API, on the other side, has a caller that can then raise the error.
+			if (error && typeof error === 'object') {
+				console.error(error.stack || error);
+			} else {
+				console.error(error);
+			}
+			this.toaster.toast('error');
+		}, () => console.log("##onAuthStateChanged completed!"));
+
+		// Angularfire 2 is not working as well as firebase itself, so we skip it for authentication layer.
+		// this.auth.subscribe((authInfo:FirebaseAuthState) => {
+		// 	console.log("authInfo:", authInfo);
+		// 	console.log('ref2:', this.fbAuth);
+		// 	if (!authInfo) {
+		// 		this.requestAuth();
+		// 		// TODO used in angularfire2 beta 0
+		// 	// } else if (authInfo.password && authInfo.password.isTemporaryPassword) {
+		// 	// 	this.requestPwdChange(authInfo.password);
+		// 	} else if (!this.fbAuth.currentUser) {
+		// 		console.log("## KO: no currentUser!", this.fbAuth.currentUser);
+		// 	} else if (!this.fbAuth.currentUser.emailVerified) {
+		// 		console.log("## KO: Email not verified! current user:", this.fbAuth.currentUser);
+		// 	} else {
+		// 		console.log("ok Email verified. Current user:", this.fbAuth.currentUser);
+		// 	}
+		// });
 	}
 
 	// init(/*nav:Nav*/):void {
@@ -70,41 +112,51 @@ export class AuthService {
 	// TODO Temporary implementation until angularfire2 supports Firebase SDK v3
 	// https://github.com/angular/angularfire2/issues/220#issuecomment-225317731
 
-	resetPasswordFirebase(credentials:FirebaseResetPasswordCredentials):Promise<void> {
+	resetPasswordFirebase(email:string):Promise<void> {
+		return this.fbAuth.sendPasswordResetEmail(email);
 		// return this.fbAuth.sendPasswordResetEmail(credentials.email);
-		return new Promise<void>((resolve, reject) => {
-			this.ref.resetPassword(credentials, (error:any) => {
-				if (error) {
-					reject(error);
-				} else {
-					resolve();
-				}
-			});
-		});
+		// return new Promise<void>((resolve, reject) => {
+		// 	this.fbAuth.resetPassword(credentials, (error:any) => {
+		// 		if (error) {
+		// 			reject(error);
+		// 		} else {
+		// 			resolve();
+		// 		}
+		// 	});
+		// });
 	}
 
-	changePasswordFirebase(credentials:FirebaseChangePasswordCredentials):Promise<void> {
-		return new Promise<void>((resolve, reject) => {
-			this.ref.changePassword(credentials, (error:any) => {
-				if (error) {
-					reject(error);
-				} else {
-					resolve();
-				}
-			});
-		});
+	changePasswordFirebase(newPassword:string/*credentials:FirebaseChangePasswordCredentials*/):Promise<void> {
+		console.log("## Don't forget to check the reset password code, if any!");
+		return this.fbAuth.currentUser.updatePassword(newPassword);
+
+		// new:
+		// this.fbAuth.confirmPasswordReset(code, newPassword)
+		// and/or this.fbAuth.verifyPasswordResetCode
+
+		// return new Promise<void>((resolve, reject) => {
+		// 	this.fbAuth.changePassword(credentials, (error:any) => {
+		// 		if (error) {
+		// 			reject(error);
+		// 		} else {
+		// 			resolve();
+		// 		}
+		// 	});
+		// });
 	}
 
-	changeEmailFirebase(credentials:FirebaseChangeEmailCredentials):Promise<void> {
-		return new Promise<void>((resolve, reject) => {
-			this.ref.changeEmail(credentials, (error:any) => {
-				if (error) {
-					reject(error);
-				} else {
-					resolve();
-				}
-			});
-		});
+	changeEmailFirebase(newEmail:string):Promise<void> {
+		return this.fbAuth.currentUser.updateEmail(newEmail);
+
+		// return new Promise<void>((resolve, reject) => {
+		// 	this.fbAuth.changeEmail(credentials, (error:any) => {
+		// 		if (error) {
+		// 			reject(error);
+		// 		} else {
+		// 			resolve();
+		// 		}
+		// 	});
+		// });
 	}
 
 	// End of temporary implementation
@@ -119,8 +171,8 @@ export class AuthService {
 		});
 	}
 
-	login(options?:AuthConfiguration, credentials?:FirebaseCredentials):Promise<void> {
-		let loginPromise = credentials ? this.auth.login(credentials, options) : this.auth.login(options);
+	login(options?:AuthConfiguration, credentials?:Credentials):Promise<void> {
+		let loginPromise = credentials ? this.af.auth.login(credentials, options) : this.auth.login(options);
 		return loginPromise.then((user:FirebaseAuthState) => {
 			if (!this.authDeferred) {
 				console.warn("Calling login(), but the deferred object is falsy: it seems the authentication was already completed. The application should avoid to request twice the authentication on the same time.");
@@ -138,12 +190,12 @@ export class AuthService {
 		this.auth.logout();
 	}
 
-	signup(credentials:FirebaseCredentials):Promise<void> {
+	signup(credentials:EmailPasswordCredentials):Promise<void> {
 		credentials.password = Utils.randomPassword();
 		// angularfire2 beta 2
-		return this.auth.createUser(credentials).then((authData: FirebaseAuthState) => {
+		return this.af.auth.createUser(credentials).then((authData: FirebaseAuthState) => {
 			console.log(authData);
-			return this.resetPasswordFirebase({email: credentials.email}).then(() => {
+			return this.resetPasswordFirebase(credentials.email).then(() => {
 				return this.login(AuthService.METHOD_PASSWORD, credentials);
 			});
 		});
@@ -156,9 +208,9 @@ export class AuthService {
 		// });
 	}
 
-	changePassword(credentials:FirebaseChangePasswordCredentials):Promise<void> {
+	changePassword(email:string /*credentials:FirebaseChangePasswordCredentials*/):Promise<void> {
 		// TODO continue from here
-		return this.changePasswordFirebase(credentials).then(() => {
+		return this.changePasswordFirebase(email).then(() => {
 			this.popChangePwd.next(null);
 			this.modalShown = false;
 		})
@@ -174,11 +226,11 @@ export class AuthService {
 	}
 
 	private modalShown:boolean;
-	private requestPwdChange(password:FirebaseAuthDataPassword):Promise<void> {
+	private requestPwdChange(email:string/*password:FirebaseAuthDataPassword*/):Promise<void> {
 		if (this.modalShown) {
 			return;
 		}
 		this.modalShown = true;
-		this.popChangePwd.next(password);
+		this.popChangePwd.next(email);
 	}
 }

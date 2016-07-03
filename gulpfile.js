@@ -36,13 +36,15 @@ var copyHTML = require('ionic-gulp-html-copy');
 var copyFonts = require('ionic-gulp-fonts-copy');
 var copyScripts = require('ionic-gulp-scripts-copy');
 
+const bundleSrc = ['./app/app.ts', './typings/index.d.ts', './typings_manual/index.d.ts'];
+
 gulp.task('watch', ['clean'], function(done){
   runSequence(
     ['sass', 'html', 'fonts', 'scripts'],
     function(){
       gulpWatch('app/**/*.scss', function(){ gulp.start('sass'); });
       gulpWatch('app/**/*.html', function(){ gulp.start('html'); });
-      buildBrowserify({ watch: true, src: ['./app/app.ts', './typings/index.d.ts', './typings_manual/index.d.ts'] }).on('end', done);
+      buildBrowserify({ watch: true, src: bundleSrc }).on('end', done);
     }
   );
 });
@@ -58,6 +60,7 @@ gulp.task('build', ['clean', 'icons'], function (callback) {
 });
 gulp.task('bundle', function(done) {
 	buildBrowserify({
+		src: bundleSrc,
 		minify: true,
 		uglifyOptions: {
 			mangle: false

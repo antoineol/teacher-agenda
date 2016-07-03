@@ -54,9 +54,9 @@ export class AgendaPage {
 				AuthFormPage._show(this.nav);
 			}
 		});
-		this.authService.popChangePwd.subscribe((password:FirebaseAuthDataPassword) => {
-			if (password) {
-				ChangePasswordPage._show(this.nav, password);
+		this.authService.popChangePwd.subscribe((email:string/*password:FirebaseAuthDataPassword*/) => {
+			if (email) {
+				ChangePasswordPage._show(this.nav, email/*password*/);
 			}
 		});
 	}

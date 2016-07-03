@@ -10,13 +10,13 @@ import {Toaster} from "../../framework/Toaster";
 })
 export class ChangePasswordPage {
 
-	private password:FirebaseAuthDataPassword;
+	private email:string/*password:FirebaseAuthDataPassword*/;
 	private loading:boolean;
 	private changePasswordForm:ControlGroup;
 
 
-	static _show(nav:NavController, password:FirebaseAuthDataPassword):void {
-		let modal = Modal.create(ChangePasswordPage, {password: password}, {enableBackdropDismiss: false});
+	static _show(nav:NavController, email:string/*password:FirebaseAuthDataPassword*/):void {
+		let modal = Modal.create(ChangePasswordPage, {email: email}/*{password: password}*/, {enableBackdropDismiss: false});
 		nav.present(modal);
 	}
 
@@ -25,7 +25,8 @@ export class ChangePasswordPage {
 	// http://stackoverflow.com/questions/31788681/angular2-validator-which-relies-on-multiple-form-fields
 	// http://stackoverflow.com/questions/35474991/angular-2-form-validating-for-repeat-password
 	constructor(private authService:AuthService, private error:ErrorService, private viewCtrl:ViewController, fb:FormBuilder, params:NavParams, private toaster:Toaster) {
-		this.password = params.get('password');
+		// this.password = params.get('password');
+		this.email = params.get('email');
 		this.changePasswordForm= fb.group({
 			oldPassword: ['', Validators.required],
 			newPassword: ['', Validators.required],
@@ -34,16 +35,16 @@ export class ChangePasswordPage {
 	}
 
 
-	private changePassword(credentials:FirebaseChangePasswordCredentials):void {
+	private changePassword(/*credentials:any*/ /*FirebaseChangePasswordCredentials*/):void {
 		this.loading = true;
-		credentials.email = this.password.email;
+		// credentials.email = this.password.email;
 
 		// console.log("credentials:", credentials);
 		// console.error("Form validated! It should have checked first if the confirm password is okay");
 		// this.loading = false;
 		// return;
 
-		this.authService.changePassword(credentials).then(() => {
+		this.authService.changePassword(this.email).then(() => {
 			this.loading = false;
 			this._dismiss();
 		}, (err:any) => {
@@ -54,7 +55,7 @@ export class ChangePasswordPage {
 
 	private resendPassword():void {
 		this.loading = true;
-		this.authService.resetPasswordFirebase({email: this.password.email}).then(() => {
+		this.authService.resetPasswordFirebase(this.email/*{email: this.password.email}*/).then(() => {
 			this.loading = false;
 			this.toaster.toast('auth.checkEmailSent');
 		}, (err:any) => {
