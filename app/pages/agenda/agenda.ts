@@ -76,7 +76,7 @@ export class AgendaPage implements OnDestroy {
 			if (show) {
 				AuthFormPage._show(this.nav);
 			}
-		});
+		}));
 		this.sub(this.authService.popChangePwd.subscribe((email:string/*password:FirebaseAuthDataPassword*/) => {
 			if (email) {
 				ChangePasswordPage._show(this.nav, email/*password*/);
