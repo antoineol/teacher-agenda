@@ -42,6 +42,9 @@ export class FirebaseStorageDao implements StorageDao {
 
 	findAll(collection:string, query?:Query):Observable<any> {
 		return this.authObs().mergeMap((user:FirebaseAuthState) => {
+			// let obs = this.getListBinding(collection, user, query).share();
+			// obs.subscribe((result:any) => console.log("In firebase dao:", result));
+			// return obs;
 			return this.getListBinding(collection, user, query);
 		});
 	}
@@ -67,7 +70,7 @@ export class FirebaseStorageDao implements StorageDao {
 			return /*<Promise<void>>*/this.getListBinding(collection, user).push(entity);
 		});
 	}
- 
+
 	pushToListGlobal(collection:string, entity:any):Promise<void> {
 		this.checkFirebaseEntity(entity);
 		return /*<Promise<void>>*/this.getListBinding(collection).push(entity);
