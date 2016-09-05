@@ -1,5 +1,5 @@
 import {Component} from "@angular/core";
-import {NavParams, NavController, Alert} from "ionic-angular";
+import {NavParams, NavController, Alert, AlertController} from "ionic-angular";
 import {AgendaEntry} from "../../model/Lesson";
 import {AgendaDao} from "../../business/AgendaDao";
 import {ErrorService} from "../../framework/ErrorService";
@@ -24,7 +24,7 @@ export class AgendaDetailPage {
 	// private repetition:string;
 	// private price:string;
 
-	constructor(private nav:NavController, navParams:NavParams, private agendaDao:AgendaDao, private error:ErrorService, private translate:TranslateService, private lessonService:LessonFormService, agendaService:AgendaService) {
+	constructor(private nav:NavController, navParams:NavParams, private agendaDao:AgendaDao, private error:ErrorService, private translate:TranslateService, private lessonService:LessonFormService, agendaService:AgendaService, alertCtlr: AlertController) {
 		let errKey = "global.error.init";
 		try {
 			this.entry = navParams.get('entry');
@@ -36,7 +36,7 @@ export class AgendaDetailPage {
 			}, (err:any) => error.handler(err.code || errKey)(err));
 
 			this.removePopup = this.translate.getTranslation(Conf.lang).map(() => {
-				let confirm = Alert.create({
+				let confirm = alertCtlr.create({
 					title: this.translate.instant('agenda.deleteConfirm.title'),
 					message: this.translate.instant('agenda.deleteConfirm.message'),
 					buttons: [

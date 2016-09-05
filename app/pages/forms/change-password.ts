@@ -1,5 +1,5 @@
 import {Component} from "@angular/core";
-import {NavController, Modal, ViewController, NavParams} from "ionic-angular/index";
+import {ViewController, NavParams} from "ionic-angular/index";
 import {AuthService} from "../../framework/AuthService";
 import {ErrorService} from "../../framework/ErrorService";
 import {ControlGroup, FormBuilder, Validators} from "@angular/common";
@@ -11,15 +11,17 @@ import {matchingPasswords} from "../../framework/validators/matchingPasswordsVal
 })
 export class ChangePasswordPage {
 
+	static opts = {enableBackdropDismiss: false};
+
 	private email:string/*password:FirebaseAuthDataPassword*/;
 	private loading:boolean;
 	private changePasswordForm:ControlGroup;
 
 
-	static _show(nav:NavController, email:string/*password:FirebaseAuthDataPassword*/):void {
-		let modal = Modal.create(ChangePasswordPage, {email: email}/*{password: password}*/, {enableBackdropDismiss: false});
-		nav.present(modal);
-	}
+	// static _show(nav:NavController, email:string/*password:FirebaseAuthDataPassword*/):void {
+	// 	let modal = Modal.create(ChangePasswordPage, {email: email}/*{password: password}*/, {enableBackdropDismiss: false});
+	// 	nav.present(modal);
+	// }
 
 	// Custom validator:
 	// https://auth0.com/blog/2016/05/03/angular2-series-forms-and-custom-validation/

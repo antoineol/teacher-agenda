@@ -1,5 +1,5 @@
 import {Component} from "@angular/core";
-import {NavParams, NavController, Alert} from "ionic-angular/index";
+import {NavParams, NavController, Alert, AlertController} from "ionic-angular/index";
 import {Student} from "../../model/Student";
 import {StudentFormPage} from "../forms/student";
 import {Observable} from "rxjs/Observable";
@@ -27,7 +27,7 @@ export class StudentDetailPage {
 	}
 	private removePopup:Observable<Alert>;
 
-	constructor(navParams:NavParams, private nav:NavController, translate:TranslateService, studentDao:StudentDao, private error:ErrorService, private agendaDao:AgendaDao, private paymentService:PaymentService) {
+	constructor(navParams:NavParams, private nav:NavController, alertCtrl: AlertController, translate:TranslateService, studentDao:StudentDao, private error:ErrorService, private agendaDao:AgendaDao, private paymentService:PaymentService) {
 		let errKey = "global.error.init";
 		try {
 			this.student = navParams.get('student');
@@ -37,7 +37,7 @@ export class StudentDetailPage {
 			}, (err:any) => error.handler(err.code || "global.error.init")(err));
 
 			this.removePopup = translate.getTranslation(Conf.lang).map(() => {
-				let confirm = Alert.create({
+				let confirm = alertCtrl.create({
 					title: translate.instant('student.deleteConfirm.title'),
 					message: translate.instant('student.deleteConfirm.message'),
 					buttons: [

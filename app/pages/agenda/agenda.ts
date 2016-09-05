@@ -1,5 +1,5 @@
 import {Component, ViewChild, OnDestroy} from "@angular/core";
-import {NavController, Slides} from "ionic-angular";
+import {NavController, Slides, PopoverController, ModalController} from "ionic-angular";
 import {AgendaEntry} from "../../model/Lesson";
 import {AgendaList} from "./agenda-list";
 import {AgendaRange} from "../../model/AgendaRange";
@@ -57,7 +57,9 @@ export class AgendaPage implements OnDestroy {
 
 	@ViewChild('slider') slider:Slides;
 
-	constructor(private nav:NavController, private agendaService:AgendaService, private authService:AuthService, paymentService:PaymentService, private agendaDao:AgendaDao) {
+	constructor(private nav:NavController, private popoverCtrl: PopoverController, private modalCtrl: ModalController,
+				private agendaService:AgendaService, private authService:AuthService,
+				paymentService:PaymentService, private agendaDao:AgendaDao) {
 		// console.log("agenda constructor");
 		this.ranges = agendaService.initRanges();
 
@@ -75,12 +77,23 @@ export class AgendaPage implements OnDestroy {
 		this.sub(this.authService.popAuth.subscribe((show:boolean) => {
 			// console.log("Agenda received popAuth:", show);
 			if (show) {
-				AuthFormPage._show(this.nav);
+				// AuthFormPage._show(this.nav);
+
+				let loginPage = this.modalCtrl.create(AuthFormPage, AuthFormPage.data, AuthFormPage.opts);
+				// Workaround: https://github.com/driftyco/ionic/issues/6933#issuecomment-226508870
+				//(<any>loginPage).fireOtherLifecycles = false;
+				this.nav.present(loginPage);
+				// console.log("AuthFormPage present");
+
 			}
 		}));
 		this.sub(this.authService.popChangePwd.subscribe((email:string/*password:FirebaseAuthDataPassword*/) => {
 			if (email) {
-				ChangePasswordPage._show(this.nav, email/*password*/);
+				// ChangePasswordPage._show(this.nav, email/*password*/);
+
+				let modal = this.modalCtrl.create(ChangePasswordPage, {email: email}/*{password: password}*/, ChangePasswordPage.opts);
+				this.nav.present(modal);
+
 			}
 		}));
 	}
@@ -143,7 +156,7 @@ export class AgendaPage implements OnDestroy {
 	// }
 
 	popAddList(event:Event) {
-		this.nav.present(AddPopover.make(), {ev: event});
+		this.nav.present(this.popoverCtrl.create(AddPopover, AddPopover.data, AddPopover.opts), {ev: event});
 	}
 
 	get emailVerified():boolean {
@@ -151,7 +164,7 @@ export class AgendaPage implements OnDestroy {
 	}
 
 	verifyPasswordWarning(event:Event) {
-		this.nav.present(UnverifiedEmailPopover.make(), {ev: event});
+		this.nav.present(this.popoverCtrl.create(UnverifiedEmailPopover, UnverifiedEmailPopover.data, UnverifiedEmailPopover.opts), {ev: event});
 	}
 
 }

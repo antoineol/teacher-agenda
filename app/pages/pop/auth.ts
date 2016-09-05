@@ -15,17 +15,20 @@ import {matchingPasswords} from "../../framework/validators/matchingPasswordsVal
 })
 export class AuthFormPage {
 
+	static data = {};
+	static opts = {enableBackdropDismiss: false};
+
 	loading:boolean;
 	private signUpMode:string = '';
 	private loginCreds:ControlGroup;
 
-	static _show(nav:NavController):void {
-		let loginPage = Modal.create(AuthFormPage, {}, {enableBackdropDismiss: false});
-		// Workaround: https://github.com/driftyco/ionic/issues/6933#issuecomment-226508870
-		//(<any>loginPage).fireOtherLifecycles = false;
-		nav.present(loginPage);
-		// console.log("AuthFormPage present");
-	}
+	// static _show(nav:NavController):void {
+	// 	let loginPage = Modal.create(AuthFormPage, {}, {enableBackdropDismiss: false});
+	// 	// Workaround: https://github.com/driftyco/ionic/issues/6933#issuecomment-226508870
+	// 	//(<any>loginPage).fireOtherLifecycles = false;
+	// 	nav.present(loginPage);
+	// 	// console.log("AuthFormPage present");
+	// }
 
 	constructor(private authService:AuthService, private viewCtrl:ViewController, fb:FormBuilder,
 				private error:ErrorService, private toaster:Toaster) {

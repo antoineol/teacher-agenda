@@ -1,23 +1,23 @@
-<ion-navbar *navbar>
+<ion-header>
+	<ion-navbar>
+		<ion-segment [(ngModel)]="signUpMode">
+			<ion-segment-button [value]="''">
+				{{ "auth.signin" | translate }}
+			</ion-segment-button>
+			<ion-segment-button [value]="'signup'">
+				{{ "auth.signup" | translate }}
+			</ion-segment-button>
+			<ion-segment-button [value]="'forgot'">
+				{{ "auth.forgot" | translate }}
+			</ion-segment-button>
+		</ion-segment>
 
-	<ion-segment [(ngModel)]="signUpMode">
-		<ion-segment-button [value]="''">
-			{{ "auth.signin" | translate }}
-		</ion-segment-button>
-		<ion-segment-button [value]="'signup'">
-			{{ "auth.signup" | translate }}
-		</ion-segment-button>
-		<ion-segment-button [value]="'forgot'">
-			{{ "auth.forgot" | translate }}
-		</ion-segment-button>
-	</ion-segment>
-
-	<!--<ion-title>{{ "auth.title" | translate }}</ion-title>-->
-	<ion-buttons end>
-		<ion-spinner *ngIf="loading"></ion-spinner>
-	</ion-buttons>
-</ion-navbar>
-
+		<!--<ion-title>{{ "auth.title" | translate }}</ion-title>-->
+		<ion-buttons end>
+			<ion-spinner *ngIf="loading"></ion-spinner>
+		</ion-buttons>
+	</ion-navbar>
+</ion-header>
 
 <ion-content class="lesson-form">
 

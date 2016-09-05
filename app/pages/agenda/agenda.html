@@ -1,18 +1,21 @@
-<ion-navbar *navbar>
-	<button menuToggle>
-		<ion-icon name="menu"></ion-icon>
-	</button>
-	<ion-title><ion-input type="date" [(ngModel)]="currentDate"></ion-input></ion-title>
-	<ion-buttons end>
-		<button *ngIf="emailVerified === false" (click)="verifyPasswordWarning($event)">
-			<ion-icon name="warning"></ion-icon>
+<ion-header>
+	<ion-navbar>
+		<button menuToggle>
+			<ion-icon name="menu"></ion-icon>
 		</button>
-		<button (click)="popAddList($event)">
-			<ion-icon name="add"></ion-icon>
-		</button>
-	</ion-buttons>
-</ion-navbar>
-
+		<ion-title>
+			<ion-input type="date" [(ngModel)]="currentDate"></ion-input>
+		</ion-title>
+		<ion-buttons end>
+			<button *ngIf="emailVerified === false" (click)="verifyPasswordWarning($event)">
+				<ion-icon name="warning"></ion-icon>
+			</button>
+			<button (click)="popAddList($event)">
+				<ion-icon name="add"></ion-icon>
+			</button>
+		</ion-buttons>
+	</ion-navbar>
+</ion-header>
 
 <ion-content class="agenda">
 

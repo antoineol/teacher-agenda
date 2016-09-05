@@ -1,5 +1,5 @@
 import {Component} from "@angular/core";
-import {NavController} from "ionic-angular";
+import {NavController, PopoverController} from "ionic-angular";
 import {AddPopover} from "../pop/add-popover";
 import {Student} from "../../model/Student";
 import {StudentDao} from "../../business/StudentDao";
@@ -14,7 +14,7 @@ export class StudentsPage {
 
 	private students:Student[];
 
-	constructor(private nav:NavController, private studentDao:StudentDao, private error:ErrorService) {
+	constructor(private nav:NavController, private popoverCtrl:PopoverController, private studentDao:StudentDao, private error:ErrorService) {
 		let errKey = "global.error.init";
 		try {
 			studentDao.findStudents().subscribe((students:Student[]) => this.students = students,
@@ -25,7 +25,7 @@ export class StudentsPage {
 	}
 
 	popAddList(event:Event) {
-		this.nav.present(AddPopover.make(), {ev: event});
+		this.nav.present(this.popoverCtrl.create(AddPopover, AddPopover.data, AddPopover.opts), {ev: event});
 	}
 
 	entryTapped(event:Event, student:Student) {

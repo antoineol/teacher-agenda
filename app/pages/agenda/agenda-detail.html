@@ -1,13 +1,14 @@
-<ion-navbar *navbar>
-	<button menuToggle>
-		<ion-icon name="menu"></ion-icon>
-	</button>
-	<ion-title>{{entry?.student?.name}}</ion-title>
-	<ion-buttons end>
-		<button (click)="remove()" [disabled]="loading">{{"agenda.remove" | translate}}</button>
-	</ion-buttons>
-</ion-navbar>
-
+<ion-header>
+	<ion-navbar>
+		<button menuToggle>
+			<ion-icon name="menu"></ion-icon>
+		</button>
+		<ion-title>{{entry?.student?.name}}</ion-title>
+		<ion-buttons end>
+			<button (click)="remove()" [disabled]="loading">{{"agenda.remove" | translate}}</button>
+		</ion-buttons>
+	</ion-navbar>
+</ion-header>
 
 <ion-content padding class="agenda">
 
@@ -15,7 +16,8 @@
 	<p><em>{{entry.durationReadable}}</em></p>
 	<p>{{"agenda.price_colon" | translate}} {{entry.priceReadable}}</p>
 	<p>{{"agenda.from" | translate}} {{entry.dateReadable}}</p>
-	<p *ngIf="entry.repetition">{{entry.repetitionReadable}} <span *ngIf="entry.repetEnd">{{"agenda.until" | translate}} {{entry.repetEndReadable}} {{"agenda.included" | translate}}</span></p>
+	<p *ngIf="entry.repetition">{{entry.repetitionReadable}} <span *ngIf="entry.repetEnd">{{"agenda.until" | translate}} {{entry.repetEndReadable}} {{"agenda.included" | translate}}</span>
+	</p>
 
 	<div padding *ngIf="!entry.cancelled">
 		<button block danger (click)="cancel()" [disabled]="loading">{{"agenda.cancelLesson" | translate}}</button>
