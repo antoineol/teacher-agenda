@@ -1,4 +1,7 @@
-import {provide, PLATFORM_PIPES} from "@angular/core";
+// import {PLATFORM_PIPES} from "@angular/core";
+import {CompilerConfig} from "@angular/compiler";
+import {COMMON_PIPES} from "@angular/common/src/pipes/common_pipes";
+import {COMMON_DIRECTIVES} from "@angular/common/src/common_directives";
 import {Http} from "@angular/http";
 import {TranslateService, TranslateLoader, TranslateStaticLoader, TranslatePipe} from "ng2-translate/ng2-translate";
 import {
@@ -53,10 +56,11 @@ export const injectables:any[] = [
 		// https://firebase.google.com/docs/auth/web/github-auth#popup-mode
 	}),
 
-	provide(TranslateLoader, {
+	{
+		provide: TranslateLoader,
 		useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'),
 		deps: [Http]
-	}),
+	},
 	// If the default behavior (fallback to default language, then to the key) is not good enough:
 	// provide(MissingTranslationHandler, { useClass: MyMissingTranslationHandler }),
 	TranslateService,
@@ -64,14 +68,22 @@ export const injectables:any[] = [
 	// Global pipes
 	// http://stackoverflow.com/questions/35044068/is-it-possible-to-override-the-built-in-angular-2-pipes-so-they-can-be-used-glob
 	// For directives: https://forum.ionicframework.com/t/how-to-make-custom-pipes-application-wide/42843/10
-	provide(PLATFORM_PIPES, {useValue: pipes, multi: true}),
+	{ provide: PLATFORM_PIPES, useValue: pipes, multi: true },
+
+	provide(CompilerConfig, {
+		useValue: new CompilerConfig({
+			platformPipes: [...COMMON_PIPES, CapitalizePipe],
+			platformDirectives: [...COMMON_DIRECTIVES],
+			genDebugInfo: true
+		})
+	}),
 
 	AgendaDao,
 	// Cache,
 	// StorageDao,
 	// FirebaseStorageDao,
 	// StubStorageDao,
-	provide(StorageDao, {useClass: Conf.stub ? StubStorageDao : FirebaseStorageDao}),
+	{ provide: StorageDao, useClass: Conf.stub ? StubStorageDao : FirebaseStorageDao },
 	ErrorService,
 	AgendaService,
 	LessonFormService,

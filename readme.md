@@ -4,6 +4,8 @@
 
 (press) ionic event
 
+- check ionSwipe as alternative to the slide-box. Maybe more adapted to an infinite slidebox?
+
 - persist in local storage + env switch to use mocks when useful
 - Add students
 - handle the case when the price changes from a date for a given student

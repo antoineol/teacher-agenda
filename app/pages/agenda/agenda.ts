@@ -82,7 +82,7 @@ export class AgendaPage implements OnDestroy {
 				let loginPage = this.modalCtrl.create(AuthFormPage, AuthFormPage.data, AuthFormPage.opts);
 				// Workaround: https://github.com/driftyco/ionic/issues/6933#issuecomment-226508870
 				//(<any>loginPage).fireOtherLifecycles = false;
-				this.nav.present(loginPage);
+				loginPage.present();
 				// console.log("AuthFormPage present");
 
 			}
@@ -92,7 +92,7 @@ export class AgendaPage implements OnDestroy {
 				// ChangePasswordPage._show(this.nav, email/*password*/);
 
 				let modal = this.modalCtrl.create(ChangePasswordPage, {email: email}/*{password: password}*/, ChangePasswordPage.opts);
-				this.nav.present(modal);
+				modal.present();
 
 			}
 		}));
@@ -156,7 +156,7 @@ export class AgendaPage implements OnDestroy {
 	// }
 
 	popAddList(event:Event) {
-		this.nav.present(this.popoverCtrl.create(AddPopover, AddPopover.data, AddPopover.opts), {ev: event});
+		this.popoverCtrl.create(AddPopover, AddPopover.data, AddPopover.opts).present({ev: event});
 	}
 
 	get emailVerified():boolean {
@@ -164,7 +164,7 @@ export class AgendaPage implements OnDestroy {
 	}
 
 	verifyPasswordWarning(event:Event) {
-		this.nav.present(this.popoverCtrl.create(UnverifiedEmailPopover, UnverifiedEmailPopover.data, UnverifiedEmailPopover.opts), {ev: event});
+		this.popoverCtrl.create(UnverifiedEmailPopover, UnverifiedEmailPopover.data, UnverifiedEmailPopover.opts).present({ev: event});
 	}
 
 }

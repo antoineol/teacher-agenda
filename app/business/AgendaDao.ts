@@ -5,7 +5,7 @@ import {Student} from "../model/Student";
 import {Parameters} from "../model/Parameters";
 import {StorageDao} from "../framework/dao/StorageDao";
 import {AgendaConfig} from "../config/AgendaConfig";
-import {Query} from "angularfire2/es6/utils/query_observable";
+import {Query} from "angularfire2/interfaces";
 
 export const COLLECTION_AGENDA = "agenda";
 export const COLLECTION_STUDENTS = "students";

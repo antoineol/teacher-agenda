@@ -8,7 +8,7 @@ import {
 } from "angularfire2/angularfire2";
 import {StorageDao} from "./StorageDao";
 import {AuthService} from "../AuthService";
-import {Query} from "angularfire2/es6/utils/query_observable";
+import {Query} from "angularfire2/interfaces";
 
 
 @Injectable()
@@ -64,7 +64,7 @@ export class FirebaseStorageDao implements StorageDao {
 		});
 	}
 
-	pushToList(collection:string, entity:any):Promise<void> {
+	pushToList(collection:string, entity:any):Promise<any> {
 		return this.auth().then((user:FirebaseAuthState) => {
 			this.checkFirebaseEntity(entity);
 			// console.log("pushToList", collection, entity);
@@ -72,13 +72,13 @@ export class FirebaseStorageDao implements StorageDao {
 		});
 	}
 
-	pushToListGlobal(collection:string, entity:any):Promise<void> {
+	pushToListGlobal(collection:string, entity:any):Promise<any> {
 		this.checkFirebaseEntity(entity);
 		// console.log("pushToListGlobal", collection, entity);
-		return /*<Promise<void>>*/this.getListBinding(collection).push(entity);
+		return <Promise<any>>this.getListBinding(collection).push(entity);
 	}
 
-	updateInList(collection:string, entity:any):Promise<void> {
+	updateInList(collection:string, entity:any):Promise<any> {
 		return this.auth().then((user:FirebaseAuthState) => {
 			this.checkUpdateFirebaseEntity(entity);
 			let updateEntity = this.entityToJSON(entity);
@@ -87,7 +87,7 @@ export class FirebaseStorageDao implements StorageDao {
 		});
 	}
 
-	updateList(collection:string, entities:any[]):Promise<void> {
+	updateList(collection:string, entities:any[]):Promise<any> {
 		return this.auth().then((user:FirebaseAuthState) => {
 			let update:any = {};
 			for (let entry of entities) {
@@ -99,7 +99,7 @@ export class FirebaseStorageDao implements StorageDao {
 		});
 	}
 
-	removeInList(collection:string, entity:any):Promise<void> {
+	removeInList(collection:string, entity:any):Promise<any> {
 		return this.auth().then((user:FirebaseAuthState) => {
 			this.checkUpdateFirebaseEntity(entity);
 			// console.log("removeInList", collection, entity);
@@ -107,14 +107,14 @@ export class FirebaseStorageDao implements StorageDao {
 		});
 	}
 
-	removeAllList(collection:string):Promise<void> {
+	removeAllList(collection:string):Promise<any> {
 		return this.auth().then((user:FirebaseAuthState) => {
 			// console.log("removeAllList", collection);
 			return this.getListBinding(collection, user).remove();
 		});
 	}
 
-	insertObject(collection:string, entity:any):Promise<void> {
+	insertObject(collection:string, entity:any):Promise<any> {
 		return this.auth().then((user:FirebaseAuthState) => {
 			this.checkFirebaseEntity(entity);
 			entity = this.entityToJSON(entity);
@@ -123,7 +123,7 @@ export class FirebaseStorageDao implements StorageDao {
 		});
 	}
 
-	updateObject(collection:string, entity:any):Promise<void> {
+	updateObject(collection:string, entity:any):Promise<any> {
 		return this.auth().then((user:FirebaseAuthState) => {
 			this.checkFirebaseEntity(entity);
 			entity = this.entityToJSON(entity);
@@ -132,7 +132,7 @@ export class FirebaseStorageDao implements StorageDao {
 		});
 	}
 
-	removeObject(collection:string):Promise<void> {
+	removeObject(collection:string):Promise<any> {
 		return this.auth().then((user:FirebaseAuthState) => {
 			// console.log("removeObject", collection);
 			return this.getObjectBinding(collection, user).remove();

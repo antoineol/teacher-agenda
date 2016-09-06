@@ -2,7 +2,6 @@ import {Injectable} from "@angular/core";
 import {PaymentDetail, Student} from "../model/Student";
 import {PaymentDao} from "./PaymentDao";
 import {AgendaDao} from "./AgendaDao";
-import {Query} from "angularfire2/es6/utils/query_observable";
 import {AgendaEntry} from "../model/Lesson";
 
 

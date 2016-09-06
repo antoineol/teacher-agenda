@@ -18,11 +18,6 @@ export class ChangePasswordPage {
 	private changePasswordForm:ControlGroup;
 
 
-	// static _show(nav:NavController, email:string/*password:FirebaseAuthDataPassword*/):void {
-	// 	let modal = Modal.create(ChangePasswordPage, {email: email}/*{password: password}*/, {enableBackdropDismiss: false});
-	// 	nav.present(modal);
-	// }
-
 	// Custom validator:
 	// https://auth0.com/blog/2016/05/03/angular2-series-forms-and-custom-validation/
 	// http://stackoverflow.com/questions/31788681/angular2-validator-which-relies-on-multiple-form-fields

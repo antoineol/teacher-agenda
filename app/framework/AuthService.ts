@@ -1,7 +1,10 @@
 import {Injectable, Inject} from "@angular/core";
-import {FirebaseAuthState, AuthProviders, AuthMethods, AngularFire, AngularFireAuth, FirebaseApp} from "angularfire2";
+import {
+	FirebaseAuthState, AuthProviders, AuthMethods, AngularFire, AngularFireAuth, FirebaseApp,
+	AuthConfiguration
+} from "angularfire2";
 import {ReplaySubject} from "rxjs/ReplaySubject";
-import {AuthConfiguration, EmailPasswordCredentials} from "angularfire2/es6/providers/auth_backend";
+// import {AuthConfiguration, EmailPasswordCredentials} from "angularfire2/es6/providers/auth_backend";
 import {Utils} from "../business/Utils";
 import {Credentials} from "../../typings_manual/global/angularfire";
 import {Toaster} from "./Toaster";
@@ -9,6 +12,7 @@ import defer = require("promise-defer");
 import App = firebase.app.App;
 import Auth = firebase.auth.Auth;
 import User = firebase.User;
+import {EmailPasswordCredentials} from "angularfire2/auth";
 
 @Injectable()
 export class AuthService {

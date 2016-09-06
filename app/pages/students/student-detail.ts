@@ -71,7 +71,7 @@ export class StudentDetailPage {
 
 	remove() {
 		this.removePopup.first().subscribe((confirm:Alert) => {
-			this.nav.present(confirm);
+			confirm.present();
 		});
 	}
 

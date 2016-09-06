@@ -1,6 +1,6 @@
 import {Observable} from "rxjs/Observable";
 import {Injectable} from "@angular/core";
-import {Query} from "angularfire2/es6/utils/query_observable";
+import {Query} from "angularfire2/interfaces";
 
 
 @Injectable()

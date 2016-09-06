@@ -25,7 +25,7 @@ export class StudentsPage {
 	}
 
 	popAddList(event:Event) {
-		this.nav.present(this.popoverCtrl.create(AddPopover, AddPopover.data, AddPopover.opts), {ev: event});
+		this.popoverCtrl.create(AddPopover, AddPopover.data, AddPopover.opts).present({ev: event});
 	}
 
 	entryTapped(event:Event, student:Student) {

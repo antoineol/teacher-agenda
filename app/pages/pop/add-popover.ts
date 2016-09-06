@@ -19,10 +19,6 @@ export class AddPopover {
 	static data = {};
 	static opts = {cssClass: 'add-popover'};
 
-	// static make():Popover {
-	// 	return Popover.create(AddPopover, {}, {cssClass: 'add-popover'});
-	// }
-
 	private pageNav:NavController;
 
 	constructor(private nav:NavController, private viewCtrl:ViewController, private app:App, private params:NavParams) {

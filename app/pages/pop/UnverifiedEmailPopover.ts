@@ -15,10 +15,6 @@ export class UnverifiedEmailPopover {
 	static data = {};
 	static opts = {cssClass: 'add-popover'};
 
-	// static make():Popover {
-	// 	return Popover.create(UnverifiedEmailPopover, {}, {cssClass: 'add-popover'});
-	// }
-
 	constructor(private viewCtrl:ViewController) {
 	}
 
