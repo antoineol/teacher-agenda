@@ -68,15 +68,18 @@ export const injectables:any[] = [
 	// Global pipes
 	// http://stackoverflow.com/questions/35044068/is-it-possible-to-override-the-built-in-angular-2-pipes-so-they-can-be-used-glob
 	// For directives: https://forum.ionicframework.com/t/how-to-make-custom-pipes-application-wide/42843/10
-	{ provide: PLATFORM_PIPES, useValue: pipes, multi: true },
+	// { provide: PLATFORM_PIPES, useValue: pipes, multi: true },
 
-	provide(CompilerConfig, {
+	// temporary solution, providing a CompilerConfig
+	// https://medium.com/front-end-hacking/angular2-platform-pipes-globally-available-custom-pipe-will-be-deprecated-soon-c6ad16812c11#.kotstnul4
+	// Angular RC5 comes with a new way to provide compiler options (custom directives)
+	{ provide: CompilerConfig,
 		useValue: new CompilerConfig({
-			platformPipes: [...COMMON_PIPES, CapitalizePipe],
+			platformPipes: [...COMMON_PIPES, ...pipes],
 			platformDirectives: [...COMMON_DIRECTIVES],
 			genDebugInfo: true
 		})
-	}),
+	},
 
 	AgendaDao,
 	// Cache,
