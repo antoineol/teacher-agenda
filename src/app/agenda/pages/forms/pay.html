@@ -1,0 +1,35 @@
+<ion-header>
+	<ion-navbar>
+		<button menuToggle>
+			<ion-icon name="menu"></ion-icon>
+		</button>
+		<ion-title>{{ "pay.title" | translate }}</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content>
+
+	<form [formGroup]="form" (submit)="addPayment()">
+		<ion-list>
+			<ion-item>
+				<ion-label>{{"lesson.student" | translate}}</ion-label>
+				<ion-select formControlName="studentChoice" okText="{{'alert.validate' | translate}}" cancelText="{{'alert.cancel' | translate}}" required>
+					<ion-option *ngFor="let student of students" [value]="student">{{student.name}}</ion-option>
+				</ion-select>
+			</ion-item>
+			<ion-item>
+				<ion-label>{{"pay.date" | translate}}</ion-label>
+				<ion-input type="date" required formControlName="date"></ion-input>
+			</ion-item>
+			<ion-item>
+				<ion-label>{{"pay.amount" | translate}}</ion-label>
+				<ion-input type="number" min="0" formControlName="amount" required></ion-input>
+			</ion-item>
+		</ion-list>
+
+		<div padding>
+			<button block primary type="submit" [disabled]="loading || !form.valid">{{ "pay.title" | translate}}</button>
+		</div>
+	</form>
+
+</ion-content>

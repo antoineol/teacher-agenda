@@ -1,5 +1,5 @@
 
-import {EmailPasswordCredentials} from "angularfire2/es6/providers/auth_backend";
+import {EmailPasswordCredentials} from "angularfire2/auth";
 
 // type _Credentials = EmailPasswordCredentials | firebase.auth.AuthCredential | string;
 // interface Credentials extends _Credentials {

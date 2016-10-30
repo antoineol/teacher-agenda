@@ -1,0 +1,77 @@
+<ion-header>
+	<ion-navbar>
+		<ion-segment [(ngModel)]="signUpMode">
+			<ion-segment-button [value]="''">
+				{{ "auth.signin" | translate }}
+			</ion-segment-button>
+			<ion-segment-button [value]="'signup'">
+				{{ "auth.signup" | translate }}
+			</ion-segment-button>
+			<ion-segment-button [value]="'forgot'">
+				{{ "auth.forgot" | translate }}
+			</ion-segment-button>
+		</ion-segment>
+
+		<!--<ion-title>{{ "auth.title" | translate }}</ion-title>-->
+		<ion-buttons end>
+			<ion-spinner *ngIf="loading"></ion-spinner>
+		</ion-buttons>
+	</ion-navbar>
+</ion-header>
+
+<ion-content class="lesson-form">
+
+	<form *ngIf="signUpMode !== 'forgot'" [formGroup]="loginCreds" (submit)="loginWithEmail()">
+		<ion-list>
+			<ion-item>
+				<ion-label>{{ "auth.email" | translate }}</ion-label>
+				<ion-input type="email" required formControlName="email"></ion-input>
+			</ion-item>
+			<ion-item>
+				<ion-label>{{ "auth.password" | translate }}</ion-label>
+				<ion-input type="password" required formControlName="password"></ion-input>
+			</ion-item>
+			<ion-item>
+				<ion-label *ngIf="signUpMode === 'signup'">{{ "auth.confirmPassword" | translate }}</ion-label>
+				<ion-input *ngIf="signUpMode === 'signup'" type="password" formControlName="confirmPassword" required></ion-input>
+			</ion-item>
+			<div class="item error" *ngIf="loginCreds.hasError('differentPasswords') && loginCreds.controls['confirmPassword'].value">
+				{{ "auth.differentPasswords" | translate }}
+			</div>
+		</ion-list>
+		<div padding>
+			<button block primary type="submit" [disabled]="loading || !loginCreds.valid">{{ (signUpMode ? "auth.signup" :
+				"auth.signin") | translate }}
+			</button>
+		</div>
+	</form>
+	<form *ngIf="signUpMode === ''" class="center" (submit)="loginWithGithub()">
+		<h2>{{'auth.withProvider' | translate}}</h2>
+		<button type="submit" [disabled]="loading" provider>
+			<ion-icon name="logo-github"></ion-icon>{{'auth.github' | translate}}
+		</button>
+	</form>
+
+
+	<form *ngIf="signUpMode === 'forgot'" [formGroup]="resetForm" (submit)="resetPassword()">
+		<p class="center">{{ "auth.forgotFull" | translate }}</p>
+		<ion-list>
+			<ion-item>
+				<ion-label>{{ "auth.email" | translate }}</ion-label>
+				<ion-input type="email" required formControlName="email"></ion-input>
+			</ion-item>
+		</ion-list>
+		<div padding>
+			<button block secondary type="submit" [disabled]="loading || !resetForm.valid">{{ "auth.resetPassword" | translate }}
+			</button>
+		</div>
+	</form>
+
+
+	<!--<div *ngIf="signUpMode === 'forgot'" padding>
+		<p class="center">{{ "auth.forgotFull" | translate }}</p>
+		<button block secondary type="button" (click)="resetPassword()" [disabled]="loading">{{ "auth.resetPassword" | translate }}
+		</button>
+	</div>-->
+
+</ion-content>
