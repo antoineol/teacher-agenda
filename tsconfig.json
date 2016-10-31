@@ -11,11 +11,17 @@
 		"module": "es2015",
 		"moduleResolution": "node",
 		"target": "es5",
-		"noEmit": true,
-		"noImplicitAny": true
+		"noImplicitAny": true,
+		"types": [
+			"firebase"
+		]
 	},
 	"exclude": [
+		"bkp",
+		"old",
 		"node_modules",
+		"resources",
+		"www",
 		"platform",
 		"plugins"
 	],

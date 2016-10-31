@@ -4,7 +4,7 @@ import {Parameters} from "./parameters.model";
 import {AgendaDao} from "./agenda.dao";
 import {AgendaService} from "./agenda.service";
 import {Student} from "./student.model";
-import * as moment from "moment";
+import moment from "moment";
 import {Lesson, AgendaEntry} from "../../shared/lesson.model";
 import {Utils} from "../../shared/utils";
 

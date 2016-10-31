@@ -4,7 +4,7 @@ import {Observable} from "rxjs/Observable";
 import {TranslateService} from "ng2-translate/ng2-translate";
 import {StudentFormPage} from "../forms/student";
 import {PayFormPage} from "../forms/pay";
-import * as moment from "moment";
+import moment from "moment";
 import {Student} from "../../business/student.model";
 import {StudentDao} from "../../business/student.dao";
 import {ErrorService} from "../../../core/framework/error.service";

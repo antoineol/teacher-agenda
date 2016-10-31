@@ -13,7 +13,14 @@ plugins[commonjsPluginIndex(plugins)] = commonjs({
 	include: [
 		'node_modules/rxjs/**',
 		'node_modules/angularfire2/**',
-		'node_modules/firebase/**'
+		'node_modules/firebase/**',
+		'node_modules/promise-defer/**',
+		// TODO remove once momentjs locales support es2015 modules
+		'node_modules/moment/**',
+
+		'node_modules/humanize-duration/**',
+		'node_modules/underscore/**',
+		'node_modules/underscore.string/**',
 	],
 	namedExports: namedExports
 });

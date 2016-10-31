@@ -117,7 +117,7 @@ export class AuthFormPage implements OnInit {
 	}
 
 	// Call me only after a successful authentication.
-	private _dismiss(): Promise<void> {
+	private _dismiss(): Promise<boolean> {
 		return this.viewCtrl.dismiss();
 	}
 

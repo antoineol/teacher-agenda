@@ -1,4 +1,4 @@
-import * as moment from "moment";
+import moment from "moment";
 import {IntlPolyfill} from "../core/framework/polyfills/intl.polyfill";
 import {AgendaEntry, Lesson} from "./lesson.model";
 import {Conf} from "./config/Config";
@@ -16,8 +16,6 @@ class UtilsClass {
 	// 		return v.toString(16);
 	// 	});
 	// }
-
-	browserLang:string = navigator.language.split('-')[0];
 
 	now = moment();
 

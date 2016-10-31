@@ -7,7 +7,7 @@ import {ReplaySubject} from "rxjs/ReplaySubject";
 // import {AuthConfiguration, EmailPasswordCredentials} from "angularfire2/es6/providers/auth_backend";
 import {Utils} from "../../shared/utils";
 import {Toaster} from "./toaster.service";
-import * as defer from "promise-defer";
+import defer from "promise-defer";
 import App = firebase.app.App;
 import Auth = firebase.auth.Auth;
 import User = firebase.User;

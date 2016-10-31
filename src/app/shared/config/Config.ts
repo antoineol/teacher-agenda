@@ -1,12 +1,13 @@
-import * as humanizeDuration from 'humanize-duration';
+import humanizeDuration from "humanize-duration";
 import {Freq} from "../lesson.model";
-import {Utils} from "../utils";
 
 class ConfClass {
 	defaultLang = 'en';
 	defaultLessonFrequency = Freq.WEEKLY;
 
-	lang = /(fr|en|zh)/gi.test(Utils.browserLang) ? Utils.browserLang : 'en';
+	browserLang:string = navigator.language.split('-')[0];
+
+	lang = /(fr|en|zh)/gi.test(this.browserLang) ? this.browserLang : 'en';
 	langMoment = this.lang.replace('zh', 'zh-CN');
 	langHumanize = this.lang.replace('zh', 'zh-CN');
 
